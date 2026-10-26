@@ -177,6 +177,8 @@ protected:
 	void HandleLook(const FInputActionValue& Value);
 	void HandleLeanLeft(const FInputActionValue& Value);
 	void HandleLeanRight(const FInputActionValue& Value);
+	void HandleLeanLeftCompleted(const FInputActionValue& Value);
+	void HandleLeanRightCompleted(const FInputActionValue& Value);
 	void HandleBraceStarted(const FInputActionValue& Value);
 	void HandleBraceCompleted(const FInputActionValue& Value);
 	void HandleInteract(const FInputActionValue& Value);
@@ -201,6 +203,7 @@ private:
 	float LeanLeftValue = 0.f;
 	float LeanRightValue = 0.f;
 	bool bBraceHeld = false;
+	bool bAxePlanted = false;
 	float FallenTimeS = 0.f;
 	bool bDead = false;
 	bool bChangingMode = false;
