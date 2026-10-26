@@ -45,6 +45,11 @@ struct ThermalState {
   std::array<double, 3> extremityTempC{30.0, 30.0, 32.0};   // indexed by BodyPart
   std::array<double, 3> frostbiteDamage01{0.0, 0.0, 0.0};   // permanent tissue damage accumulated
   double shivering01 = 0.0;
+
+  // Additional state / diagnostics.
+  std::array<double, 3> perfusion01{1.0, 1.0, 1.0};  // extremity blood flow (0 = max vasoconstriction)
+  double heatProductionW = 0.0;                       // metabolic + shivering, last step
+  double respiratoryHeatLossW = 0.0;                  // warming and humidifying inspired air
 };
 
 struct ThermalInputs {
@@ -54,6 +59,11 @@ struct ThermalInputs {
   double bodyMassKg = 75.0;
   double spo2 = 0.98;             // hypoxia blunts shivering and increases peripheral vasoconstriction
   double hydrationDeficitL = 0.0; // dehydration reduces peripheral perfusion
+
+  // Additional inputs.
+  double minuteVentilationLMin = 8.0;  // respiratory heat loss (BTPS)
+  double pressureKPa = 101.325;        // thin air carries less heat (convection, respiration)
+  double glycogenFraction01 = 1.0;     // shivering needs carbohydrate
 };
 
 // Two-node (core/skin) heat balance after Gagge et al. (1971), with three peripheral nodes for

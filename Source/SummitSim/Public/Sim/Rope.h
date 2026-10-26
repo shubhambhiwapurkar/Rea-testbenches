@@ -48,6 +48,10 @@ struct Anchor {
   double ageDays = 0.0;              // melt-out / UV degradation (fixed lines on Everest!)
 };
 
+// Typical rated strength of the hardware of each anchor type (EN/UIAA minimums), a sensible value for
+// Anchor::ratedStrengthKN when the gameplay layer has nothing better (e.g. 25 kN for a bolt).
+double NominalAnchorStrengthKN(AnchorType type);
+
 // Strength after medium quality and temperature. Ice is brittle when very cold and soft when warm,
 // and snow anchors depend on snow hardness.
 double AnchorEffectiveStrengthKN(const Anchor& anchor, double mediumQuality01, double temperatureC);
@@ -73,6 +77,10 @@ struct FallScenario {
 
 FallOutcome ResolveFall(const FallScenario& scenario, const RopeSpec& rope, const Anchor& anchor,
                         double mediumQuality01, double temperatureC, Pcg32& rng);
+
+// Injury severity (0..1, 1 = fatal) of an unprotected fall or slide of the given length. Falls beyond
+// ~20-30 m on steep ground are usually fatal; on gentle slopes much longer slides are survivable.
+double UnprotectedFallInjury01(double fallDistanceM, double slopeAngleDeg);
 
 // Unroped slide on snow/ice: probability a self-arrest with an ice axe succeeds (0..1) given
 // slope, surface and reaction time. Slides on hard snow above ~40° rarely stop.

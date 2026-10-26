@@ -11,6 +11,10 @@ namespace summit::sim {
 // lower at high latitude (Denali) and in winter.
 double BarometricPressureKPa(double altitudeM, double latitudeDeg = 28.0, int dayOfYear = 140);
 
+// Inverse of the uncorrected West (1996) model (28°N, May): the altitude at which PB equals
+// `pressureKPa`. Used for "physiological equivalent altitude".
+double AltitudeForPressureKPa(double pressureKPa);
+
 // ICAO standard atmosphere (troposphere + lower stratosphere), for reference and comparison.
 double IsaPressureKPa(double altitudeM);
 

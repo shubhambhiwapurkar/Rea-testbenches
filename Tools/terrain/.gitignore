@@ -1,0 +1,3 @@
+# Raw DEM downloads and generated heightmaps are large and re-creatable.
+cache/
+output/

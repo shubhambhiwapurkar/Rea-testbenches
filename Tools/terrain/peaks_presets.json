@@ -1,0 +1,136 @@
+{
+  "_comment": "Peak presets for summit_terrain.py. WGS84 decimal degrees; elevation_m = current official / most authoritative survey (m above mean sea level). snowline_m / grassline_m drive the paint-layer masks (regional estimates). landmarks are optional points sampled and reported by `build`. Coordinates checked against the Copernicus GLO-30 local maximum with `summit_terrain.py check-presets`.",
+  "peaks": [
+    {
+      "id": "everest", "name": "Mount Everest (Sagarmatha / Chomolungma)",
+      "lat": 27.98811, "lon": 86.92499, "elevation_m": 8848.86,
+      "elevation_source": "Nepal-China joint survey, announced 8 Dec 2020",
+      "default_extent_km": 20, "snowline_m": 5700, "grassline_m": 4800,
+      "landmarks": [
+        {"name": "Everest Base Camp", "lat": 28.0043, "lon": 86.8571, "elevation_m": 5364},
+        {"name": "South Col (approx.)", "lat": 27.9733, "lon": 86.9300, "elevation_m": 7906},
+        {"name": "Lhotse summit", "lat": 27.96175, "lon": 86.93306, "elevation_m": 8516, "summit": true}
+      ]
+    },
+    {
+      "id": "lhotse", "name": "Lhotse",
+      "lat": 27.96175, "lon": 86.93306, "elevation_m": 8516,
+      "elevation_source": "Nepal Survey Department",
+      "default_extent_km": 16, "snowline_m": 5700, "grassline_m": 4800
+    },
+    {
+      "id": "k2", "name": "K2 (Chhogori)",
+      "lat": 35.88136, "lon": 76.51376, "elevation_m": 8611,
+      "elevation_source": "Survey of India / Desio 1954 (Ardito Desio 1987 GPS re-survey 8616 m not adopted)",
+      "default_extent_km": 20, "snowline_m": 5200, "grassline_m": 4200
+    },
+    {
+      "id": "kangchenjunga", "name": "Kangchenjunga",
+      "lat": 27.70250, "lon": 88.14750, "elevation_m": 8586,
+      "elevation_source": "Survey of India",
+      "default_extent_km": 20, "snowline_m": 5500, "grassline_m": 4600
+    },
+    {
+      "id": "ama_dablam", "name": "Ama Dablam",
+      "lat": 27.86139, "lon": 86.86111, "elevation_m": 6812,
+      "elevation_source": "Nepal Survey Department",
+      "default_extent_km": 10, "snowline_m": 5700, "grassline_m": 4800
+    },
+    {
+      "id": "island_peak", "name": "Island Peak (Imja Tse)",
+      "lat": 27.92050, "lon": 86.93530, "elevation_m": 6165,
+      "elevation_source": "Nepal Mountaineering Association trekking-peak list (often quoted 6189 m)",
+      "default_extent_km": 10, "snowline_m": 5700, "grassline_m": 4800
+    },
+    {
+      "id": "mera_peak", "name": "Mera Peak (Mera North)",
+      "lat": 27.70944, "lon": 86.86833, "elevation_m": 6476,
+      "elevation_source": "Nepal Mountaineering Association",
+      "default_extent_km": 12, "snowline_m": 5500, "grassline_m": 4500
+    },
+    {
+      "id": "matterhorn", "name": "Matterhorn (Monte Cervino)",
+      "lat": 45.97639, "lon": 7.65861, "elevation_m": 4478,
+      "elevation_source": "swisstopo",
+      "default_extent_km": 10, "snowline_m": 3000, "grassline_m": 2500
+    },
+    {
+      "id": "mont_blanc", "name": "Mont Blanc (Monte Bianco)",
+      "lat": 45.83264, "lon": 6.86517, "elevation_m": 4805.59,
+      "elevation_source": "Haute-Savoie biennial survey, Sept 2023 (snow cap; varies by a few metres)",
+      "default_extent_km": 16, "snowline_m": 3000, "grassline_m": 2400
+    },
+    {
+      "id": "eiger", "name": "Eiger",
+      "lat": 46.57750, "lon": 8.00528, "elevation_m": 3967,
+      "elevation_source": "swisstopo",
+      "default_extent_km": 10, "snowline_m": 2900, "grassline_m": 2300
+    },
+    {
+      "id": "denali", "name": "Denali",
+      "lat": 63.06917, "lon": -151.00639, "elevation_m": 6190.5,
+      "elevation_source": "NOAA NGS / USGS 2015 GPS survey (20,310 ft)",
+      "default_extent_km": 24, "snowline_m": 2000, "grassline_m": 1000
+    },
+    {
+      "id": "aconcagua", "name": "Aconcagua",
+      "lat": -32.65306, "lon": -70.01083, "elevation_m": 6961,
+      "elevation_source": "Instituto Geografico Nacional (Argentina), 2012 GPS survey",
+      "default_extent_km": 20, "snowline_m": 5300, "grassline_m": 3500
+    },
+    {
+      "id": "kilimanjaro", "name": "Kilimanjaro (Uhuru Peak, Kibo)",
+      "lat": -3.07583, "lon": 37.35333, "elevation_m": 5895,
+      "elevation_source": "Tanzania National Parks (2008 GPS survey: 5891.8 m)",
+      "default_extent_km": 20, "snowline_m": 5600, "grassline_m": 4100
+    },
+    {
+      "id": "elbrus", "name": "Mount Elbrus (West summit)",
+      "lat": 43.35240, "lon": 42.43790, "elevation_m": 5642,
+      "elevation_source": "Russian topographic survey",
+      "default_extent_km": 16, "snowline_m": 3800, "grassline_m": 3000
+    },
+    {
+      "id": "vinson", "name": "Mount Vinson (Vinson Massif)",
+      "lat": -78.52500, "lon": -85.61722, "elevation_m": 4892,
+      "elevation_source": "Omega Foundation / Vinson Massif Survey 2004 (GPS)",
+      "default_extent_km": 20, "snowline_m": 0, "grassline_m": -1000
+    },
+    {
+      "id": "carstensz", "name": "Carstensz Pyramid (Puncak Jaya)",
+      "lat": -4.07889, "lon": 137.15833, "elevation_m": 4884,
+      "elevation_source": "Australian Universities expedition 1973 (4884 m)",
+      "default_extent_km": 10, "snowline_m": 4750, "grassline_m": 4000
+    },
+    {
+      "id": "rainier", "name": "Mount Rainier (Tahoma, Columbia Crest)",
+      "lat": 46.85278, "lon": -121.76028, "elevation_m": 4392,
+      "elevation_source": "NGS / NPS 2010 survey (14,411 ft)",
+      "default_extent_km": 16, "snowline_m": 2200, "grassline_m": 1900
+    },
+    {
+      "id": "cho_oyu", "name": "Cho Oyu",
+      "lat": 28.09417, "lon": 86.66083, "elevation_m": 8188,
+      "elevation_source": "Nepal Survey Department",
+      "default_extent_km": 16, "snowline_m": 5800, "grassline_m": 4800
+    },
+    {
+      "id": "manaslu", "name": "Manaslu",
+      "lat": 28.55000, "lon": 84.55972, "elevation_m": 8163,
+      "elevation_source": "Nepal Survey Department",
+      "default_extent_km": 16, "snowline_m": 5300, "grassline_m": 4300
+    },
+    {
+      "id": "nanga_parbat", "name": "Nanga Parbat (Diamir)",
+      "lat": 35.23750, "lon": 74.58917, "elevation_m": 8126,
+      "elevation_source": "Survey of Pakistan",
+      "default_extent_km": 20, "snowline_m": 4900, "grassline_m": 4000
+    },
+    {
+      "id": "annapurna_i", "name": "Annapurna I (Main)",
+      "lat": 28.59611, "lon": 83.82028, "elevation_m": 8091,
+      "elevation_source": "Nepal Survey Department",
+      "default_extent_km": 16, "snowline_m": 5200, "grassline_m": 4200
+    }
+  ]
+}

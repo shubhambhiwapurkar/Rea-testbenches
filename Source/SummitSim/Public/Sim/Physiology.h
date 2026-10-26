@@ -32,6 +32,21 @@ struct PhysiologyInputs {
   bool sleeping = false;
   OxygenSupply oxygen;
   Medications meds;
+  double ambientTempC = 15.0;  // cold air and cold exposure promote HAPE
+};
+
+// One evaluation of the ventilation / gas-exchange model (see Physiology.cpp for sources).
+struct GasExchange {
+  double effectiveFiO2 = 0.2093;
+  double inspiredPO2MmHg = 149.0;
+  double paCO2MmHg = 40.0;
+  double alveolarPO2MmHg = 100.0;
+  double arterialPO2MmHg = 95.0;
+  double arterialPH = 7.40;
+  double spo2 = 0.98;
+  double minuteVentilationLMin = 7.0;   // BTPS
+  double vo2MaxMlKgMin = 55.0;          // achievable at this inspired PO2
+  double equivalentAltitudeM = 0.0;     // altitude with the same PiO2 breathing air
 };
 
 struct PhysiologyState {
@@ -58,6 +73,14 @@ struct PhysiologyState {
   // Cumulative deterioration above ~7500 m that acclimatization cannot fix.
   double highAltitudeDeterioration01 = 0.0;
   double secondsInDeathZone = 0.0;
+
+  // Additional state (saved with the rest). Exposure altitudes are physiological (equivalent)
+  // altitudes, so breathing bottled O2 lowers them.
+  double exposureAltitudeM = 0.0;    // time-weighted recent altitude, dominated by sleeping altitude
+  double recentMaxAltitudeM = 0.0;   // decaying recent maximum ("climb high, sleep low" credit)
+  double equivalentAltitudeM = 0.0;  // pressure altitude with the same PiO2 breathing air
+  double arterialPO2MmHg = 95.0;
+  double arterialPH = 7.40;
 };
 
 class Physiology {
@@ -92,6 +115,30 @@ class Physiology {
 
   // Effective FiO2 with an open-circuit mask: O2 flow mixes with entrained ambient air.
   static double EffectiveFiO2(double o2FlowLMin, double minuteVentilationLMin);
+
+  // FiO2 actually breathed with a real mask set: regulator flow (litres at standard conditions)
+  // expands at altitude, and a constant-flow mask with reservoir wastes part of it. Calibrated so
+  // that 2 L/min on the summit while climbing ≈ 7,900 m and 4 L/min ≈ 7,000 m.
+  static double DeliveredFiO2(const OxygenSupply& oxygen, double pressureKPa, double minuteVentilationLMin);
+
+  // Severinghaus (1979) with the in-vivo Bohr shift (pH and PCO2 correction of the "virtual" PO2).
+  static double SaturationFromPO2Shifted(double po2MmHg, double pH, double pco2MmHg);
+
+  // Ventilation, alveolar and arterial gases for given conditions using the current acclimatization
+  // state, without advancing time. Useful for previews (e.g. max speed with a different O2 flow).
+  GasExchange EvaluateGasExchange(double pressureKPa, double exertion01, bool sleeping,
+                                  const OxygenSupply& oxygen, const Medications& meds) const;
+
+  // VO2max (mL/kg/min) at a given inspired PO2 with the current acclimatization and illness state.
+  double VO2MaxAtInspiredPO2(double inspiredPO2MmHg) const;
+
+  // 0..1 ventilatory / hematologic adaptation relative to what the given altitude demands
+  // (capped at the ~5,400 m ceiling of full acclimatization).
+  double VentilatoryAdaptationFor(double altitudeM) const;
+  double HematologicAdaptationFor(double altitudeM) const;
+
+  // Altitude above which acclimatization cannot progress (no permanent habitation above it).
+  static constexpr double kAcclimatizationCeilingM = 5400.0;
 
  private:
   PhysiologyParams params_;

@@ -1,0 +1,7 @@
+# SUMMIT terrain pipeline (Python 3.10+). Install: pip install -r Tools/terrain/requirements.txt
+# rasterio ships manylinux/macOS/Windows wheels that bundle GDAL; no system GDAL needed.
+rasterio>=1.3.9
+pyproj>=3.6
+numpy>=1.24
+scipy>=1.10
+pillow>=10.1

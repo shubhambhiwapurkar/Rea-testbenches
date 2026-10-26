@@ -29,6 +29,13 @@ struct EnergyState {
   double fatigue01 = 0.0;                // accumulated muscular/central fatigue; sleep restores
   double sleepDebtHours = 0.0;
   double bodyMassLostKg = 0.0;           // expeditions commonly cost 5-10 kg
+
+  // Additional state.
+  double appetite01 = 1.0;               // share of normal appetite; falls above ~3,500 m
+  double stomachKcal = 0.0;              // eaten but not yet absorbed
+  double recentIntakeKcal = 0.0;         // rolling ~24 h intake; Eat() refuses beyond appetite
+  double lastMealAcceptedKcal = 0.0;     // what the last Eat() call actually got down
+  double lastSleepQuality01 = 1.0;       // periodic breathing at altitude fragments sleep
 };
 
 struct EnergyInputs {
@@ -59,9 +66,20 @@ class EnergySystem {
   static double RespiratoryWaterLossLPerHour(double minuteVentilationLMin, double ambientTempC,
                                              double relativeHumidity01);
 
+  // Saturation vapour pressure (kPa) over water (T >= 0) or ice (T < 0), Buck (1996).
+  static double SaturationVapourPressureKPa(double temperatureC);
+
+  // Appetite (0..1 of sea-level appetite) and sleep quality (0..1) at a physiological altitude.
+  static double AppetiteFactor01(double altitudeM);
+  static double SleepQuality01(double altitudeM);
+
+  // Kcal the climber could still eat right now before appetite refuses.
+  double RemainingAppetiteKcal() const;
+
  private:
   EnergyParams params_;
   EnergyState state_;
+  double lastAltitudeM_ = 0.0;
 };
 
 }  // namespace summit::sim

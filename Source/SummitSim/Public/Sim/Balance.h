@@ -1,5 +1,7 @@
 #pragma once
 
+#include <array>
+#include <cstdint>
 #include <string>
 #include <vector>
 
@@ -37,6 +39,7 @@ struct BalanceInputs {
   double cognitiveImpairment01 = 0.0;   // hypoxia slows corrections
   double leanInput = 0.0;       // player: -1 left .. +1 right (L2/R2 in Death Stranding)
   bool bracing = false;         // player holds both: slow, very stable
+  double airDensityKgM3 = 0.74; // for wind drag; ~0.74 at 5000 m (ISA), 1.225 at sea level
 };
 
 struct BalanceState {
@@ -89,6 +92,31 @@ class BalanceModel {
   BalanceState state_;
   Pcg32 rng_;
   double swayPhase_ = 0.0;
+
+  // --- Internal state (additive; not part of the API contract) ---
+  static constexpr int kDelayBufferSize = 64;   // >= max reaction delay / sub-step (0.5 s at 1/120 s)
+  void SubStep(double h, const BalanceInputs& in);
+  void RecomputeCargo();
+
+  Vec3 combinedCoM_{0.0, 0.0, 1.0};   // cached CombinedCoM()
+  double cargoMassKg_ = 0.0;
+  double unstrappedMassKg_ = 0.0;
+  double comLatRad_ = 0.0;            // CoM angle from the support centre (includes cargo bias)
+  double comFwdRad_ = 0.0;
+  double timeAccumulatorS_ = 0.0;     // fixed-step accumulator
+  double gustState_ = 0.0;            // Ornstein-Uhlenbeck gust noise (unit variance)
+  double stepPhase_ = 0.0;            // gait accumulator; a step event fires each time it passes 1
+  double slipTimerS_ = 0.0;           // stumble animation timer after a slip or recovery step
+  double stepCooldownS_ = 0.0;
+  double xcomOutsideS_ = 0.0;         // time the extrapolated CoM has been outside support
+  double recentSteps_ = 0.0;          // decaying count of recent recovery steps
+  double distEstLat_ = 0.0;           // controller's low-passed estimate of persistent disturbance
+  double distEstFwd_ = 0.0;
+  std::array<double, kDelayBufferSize> delayLat_{};
+  std::array<double, kDelayBufferSize> delayLatVel_{};
+  std::array<double, kDelayBufferSize> delayFwd_{};
+  std::array<double, kDelayBufferSize> delayFwdVel_{};
+  int delayHead_ = 0;
 };
 
 // Load-to-bodyweight guidance: >30-35% of body mass sharply raises injury and stumble rates

@@ -1,0 +1,29 @@
+{
+	"FileVersion": 3,
+	"EngineAssociation": "5.6",
+	"Category": "",
+	"Description": "SUMMIT: a realistic high-altitude mountaineering expedition RPG.",
+	"Modules": [
+		{
+			"Name": "Summit",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		},
+		{
+			"Name": "SummitSim",
+			"Type": "Runtime",
+			"LoadingPhase": "PreDefault"
+		}
+	],
+	"Plugins": [
+		{ "Name": "EnhancedInput", "Enabled": true },
+		{ "Name": "ModelingToolsEditorMode", "Enabled": true, "TargetAllowList": [ "Editor" ] },
+		{ "Name": "MotionWarping", "Enabled": true },
+		{ "Name": "PoseSearch", "Enabled": true },
+		{ "Name": "Chooser", "Enabled": true },
+		{ "Name": "AnimationWarping", "Enabled": true },
+		{ "Name": "Niagara", "Enabled": true },
+		{ "Name": "CableComponent", "Enabled": true },
+		{ "Name": "CesiumForUnreal", "Enabled": true, "Optional": true }
+	]
+}
