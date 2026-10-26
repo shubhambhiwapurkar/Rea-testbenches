@@ -50,6 +50,7 @@ struct ThermalState {
   std::array<double, 3> perfusion01{1.0, 1.0, 1.0};  // extremity blood flow (0 = max vasoconstriction)
   double heatProductionW = 0.0;                       // metabolic + shivering, last step
   double respiratoryHeatLossW = 0.0;                  // warming and humidifying inspired air
+  double shiveringFatigue01 = 0.0;                    // hours of shivering exhaust its capacity
 };
 
 struct ThermalInputs {

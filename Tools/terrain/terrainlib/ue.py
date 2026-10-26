@@ -132,7 +132,7 @@ def z_mapping(min_m: float, max_m: float, z_origin: str = "mid") -> ZMapping:
         raise ValueError(f"unknown z_origin {z_origin!r}")
     loc_z = round(loc_z, 3)
     sea = loc_z - half_range_cm - 100.0 * min_m  # consistent with the rounded values
-    return ZMapping(min_m, max_m, scale_z, loc_z, round(sea, 3))
+    return ZMapping(min_m, max_m, scale_z, loc_z, round(sea, 3) + 0.0)  # +0.0: no "-0.0"
 
 
 def import_settings(n: int, pixel_m: float, zmap: ZMapping, layout: LandscapeLayout | None,

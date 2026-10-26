@@ -134,10 +134,11 @@ Scale.Z, named `<name>_x{i}_y{j}`, plus a `<name>_full.png` for a single World P
    Rotation (0, 0, 0) and Scale from `ue_import` in the JSON, which `build` also prints. Check that
    Section Size, Sections Per Component and Number of Components match `landscape_layout`. Overall
    Resolution must equal the file size.
-2. **World Partition.** In a World Partition level, tick *Enable World Partition* (or *World Partition
-   Grid Size* in 5.4 and later). UE splits the Landscape into streaming proxies, about 2x2 components
-   each, which keeps a 20 km mountain streaming. For `--tiles` builds, either import `<name>_full.png`
-   as one landscape, or import each `_x{i}_y{j}` tile with its own Location from `ue_import.tiles`.
+2. **World Partition.** In a World Partition level, tick *Enable World Partition* in the New Landscape
+   panel and set *World Partition Region Size* (in components; 2 to 4 is typical). UE splits the
+   Landscape into Landscape Streaming Proxies, which keeps a 20 km mountain streaming. For `--tiles`
+   builds, either import `<name>_full.png` as one landscape, or import each `_x{i}_y{j}` tile with its
+   own Location from `ue_import.tiles`. The tiles share edge vertices, Scale and Location.Z.
 3. **Nanite Landscape (5.3 and later).** In Landscape Details → Nanite, tick *Enable Nanite* and run
    *Build Nanite Data*. You get much better close-range silhouettes on cliffs and ridges for the cost of
    a Nanite mesh per proxy. Keep a non-Nanite fallback for physics, which uses the heightfield anyway.
