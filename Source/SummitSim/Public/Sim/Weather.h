@@ -41,10 +41,21 @@ struct ClimateProfile {
   std::array<double, 12> precipitationMmPerDay{};
   double lapseRateCPerKm = 6.5;
   double prevailingWindFromDeg = 270.0;              // westerlies
+  // Optional per-month lapse rate (deg C per km). A zero entry falls back to lapseRateCPerKm.
+  // Free-air lapse rates over the Himalaya are steeper in the dry season than in the saturated monsoon.
+  std::array<double, 12> lapseRateCPerKmByMonth{};
 };
 
 // A Himalaya (Khumbu) climatology for tests and the CLI.
 ClimateProfile KhumbuClimate();
+
+// Solar elevation angle above the horizon (deg, negative at night) for local solar time.
+// Declination after Cooper (1969); hour angle 15 deg per hour from solar noon.
+double SolarElevationDeg(double latitudeDeg, int dayOfYear, double hourOfDay);
+
+// Clear-sky global shortwave irradiance on a horizontal surface (W/m^2) at a given altitude.
+// Zero when the sun is below the horizon.
+double ClearSkyGlobalIrradianceWm2(double latitudeDeg, int dayOfYear, double hourOfDay, double altitudeM);
 
 struct ForecastEntry {
   SimTimeSeconds time = 0.0;
@@ -83,6 +94,9 @@ class WeatherSystem {
   };
 
  private:
+  // Full weather evaluation at time t. `climatological` replaces the stochastic parts (storms, jet
+  // oscillation, synoptic anomalies) with their expected values; Forecast() blends toward it.
+  WeatherSample Evaluate(SimTimeSeconds t, double altitudeM, double exposure01, bool climatological) const;
   double StormIntensityAt(SimTimeSeconds t) const;
   double JetStreamFactorAt(SimTimeSeconds t) const;
   void ScheduleStormsUntil(SimTimeSeconds t);

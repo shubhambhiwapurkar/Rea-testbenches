@@ -17,6 +17,10 @@ struct SnowpackState {
   double persistentWeakLayer01 = 0.0;  // buried surface hoar / facets, slow to heal
   double baseDepthCm = 150.0;
   double hoursSinceLoading = 999.0;    // instability peaks during and just after loading
+  // New snow that has not yet settled and bonded (cm). Grows with snowfall and decays with a time
+  // scale of ~2-3 days when cold, faster near 0 deg C. Outlives the 72 h window for slow settling.
+  double unsettledNewSnowCm = 0.0;
+  double surfaceHoar01 = 0.0;          // surface hoar on the snow surface; becomes a weak layer when buried
 };
 
 struct SlopeInfo {
@@ -33,6 +37,9 @@ struct SlopeInfo {
 double SlopeAngleFactor(double angleDeg);
 
 DangerLevel RegionalDanger(const SnowpackState& snow);
+
+// Continuous danger index on the EAWS scale (1.0 .. 5.0). RegionalDanger() rounds it.
+double DangerIndex(const SnowpackState& snow);
 
 // Natural release probability per hour for a slope.
 double NaturalReleaseProbabilityPerHour(const SnowpackState& snow, const SlopeInfo& slope);
@@ -61,6 +68,10 @@ class SnowpackModel {
   int hourIndex_ = 0;
   double hourAccumulatorS_ = 0.0;
   double currentHourSnowCm_ = 0.0;
+  double tempEmaC_ = 0.0;     // ~24 h running mean air temperature, for rapid-warming detection
+  bool tempEmaValid_ = false;
+
+  void StepChunk(double dtSeconds, const WeatherSample& weather, double windExposure01);
 };
 
 }  // namespace summit::sim
