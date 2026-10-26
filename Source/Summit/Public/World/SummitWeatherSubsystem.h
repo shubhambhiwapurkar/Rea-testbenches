@@ -101,9 +101,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Summit|Avalanche", meta = (ClampMin = "0", ClampMax = "1"))
 	float SnowpackWindExposure01 = 0.7f;
 
-	// Yaw (deg) of geographic north in world space. 0 = +X is north (+Y is then east).
+	// Yaw (deg) of geographic north in world space. Tools/terrain imports heightmaps with +X = east and
+	// +Y = south, so north is -Y, i.e. yaw -90. Azimuths map to world yaw as NorthYawDeg + azimuth.
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Summit|Sun")
-	float NorthYawDeg = 0.f;
+	float NorthYawDeg = -90.f;
 
 	// Actor tags used to find presentation actors in the level.
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Summit|Presentation")

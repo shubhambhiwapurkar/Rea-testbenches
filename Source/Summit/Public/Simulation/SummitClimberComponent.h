@@ -83,6 +83,11 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Summit|Gear")
 	bool bIceAxes = false;
 
+	// Pair of boots. Weight on the feet costs several times weight on the back (Legg & Mahanty 1986):
+	// trail shoe ~0.8 kg, mountaineering boot ~2.0, 8000 m boot ~2.8.
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Summit|Gear", meta = (ClampMin = "0", Units = "Kilograms"))
+	float FootwearMassKg = 2.0f;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Summit|Gear")
 	bool bGlacierGoggles = true;
 
@@ -195,7 +200,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Summit|Actions")
 	void Drink(float Liters);
 
-	// Eats/drinks from the cargo component's consumables. Returns the amount actually consumed.
+	// Eats/drinks from the cargo component's consumables (food limited by appetite). Returns the amount
+	// actually consumed.
 	UFUNCTION(BlueprintCallable, Category = "Summit|Actions")
 	float EatFromPack(float Kcal);
 

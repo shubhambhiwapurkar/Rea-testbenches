@@ -55,7 +55,7 @@ namespace
 	// Loads Data/Mountains/climate/<id>.json on top of the Khumbu profile.
 	// Schema (all optional): latitude_deg, reference_elevation_m, lapse_rate_c_per_km, prevailing_wind_from_deg,
 	// and 12-element arrays mean_temp_c, diurnal_range_c, jet_stream_wind_ms, storms_per_week,
-	// precipitation_mm_per_day.
+	// precipitation_mm_per_day, lapse_rate_c_per_km_by_month.
 	bool LoadClimateJson(const FString& Path, summit::sim::ClimateProfile& InOut)
 	{
 		FString Text;
@@ -81,6 +81,7 @@ namespace
 		ReadMonthly(Root, TEXT("jet_stream_wind_ms"), InOut.jetStreamWindMS);
 		ReadMonthly(Root, TEXT("storms_per_week"), InOut.stormsPerWeek);
 		ReadMonthly(Root, TEXT("precipitation_mm_per_day"), InOut.precipitationMmPerDay);
+		ReadMonthly(Root, TEXT("lapse_rate_c_per_km_by_month"), InOut.lapseRateCPerKmByMonth);
 		return true;
 	}
 }
@@ -146,14 +147,16 @@ void USummitWeatherSubsystem::BuildClimate()
 {
 	const USummitSettings* Settings = USummitSettings::Get();
 
+	// Data/Mountains/climate/<id>.json is the source of truth; the built-in Khumbu profile is the base that
+	// partial files override and the fallback when a file is missing (e.g. a packaged build without Data/).
 	summit::sim::ClimateProfile Climate = summit::sim::KhumbuClimate();
-	if (!Settings->ClimateId.IsNone() && Settings->ClimateId != FName(TEXT("khumbu")))
+	if (!Settings->ClimateId.IsNone())
 	{
 		const FString Path = FPaths::Combine(FPaths::ProjectDir(), Settings->MountainDataDir, TEXT("climate"),
 			Settings->ClimateId.ToString() + TEXT(".json"));
 		if (!LoadClimateJson(Path, Climate))
 		{
-			UE_LOG(LogSummit, Warning, TEXT("Weather: climate '%s' not found at %s, using Khumbu"),
+			UE_LOG(LogSummit, Warning, TEXT("Weather: climate '%s' not found at %s, using built-in Khumbu"),
 				*Settings->ClimateId.ToString(), *Path);
 		}
 	}
@@ -334,21 +337,20 @@ void USummitWeatherSubsystem::ComputeSunPosition(double InLatitudeDeg, int32 Day
 {
 	// Declination: Cooper (1969), delta = 23.44° sin(360° (284 + N) / 365), N = 1-based day of year.
 	// Hour angle: 15° per hour from local solar noon (sim time is local solar time, so no equation of time).
-	// Elevation and azimuth from the standard spherical-astronomy relations (e.g. Duffie & Beckman,
-	// Solar Engineering of Thermal Processes, ch. 1). Accuracy ~1°, ample for lighting.
+	// Azimuth from the standard spherical-astronomy relation (e.g. Duffie & Beckman, Solar Engineering of
+	// Thermal Processes, ch. 1), using the same declination as summit::sim::SolarElevationDeg. ~1° accuracy.
 	const double N = static_cast<double>(DayOfYear + 1);
 	const double Decl = FMath::DegreesToRadians(23.44 * FMath::Sin(FMath::DegreesToRadians(360.0 * (284.0 + N) / 365.0)));
 	const double Lat = FMath::DegreesToRadians(InLatitudeDeg);
 	const double HourAngle = FMath::DegreesToRadians(15.0 * (HourOfDay - 12.0));
 
-	const double SinElev = FMath::Sin(Lat) * FMath::Sin(Decl) + FMath::Cos(Lat) * FMath::Cos(Decl) * FMath::Cos(HourAngle);
-	const double Elev = FMath::Asin(FMath::Clamp(SinElev, -1.0, 1.0));
+	// Elevation comes from the sim so the light matches the solar radiation the climbers are heated by.
+	OutElevationDeg = summit::sim::SolarElevationDeg(InLatitudeDeg, DayOfYear, HourOfDay);
 
 	// Azimuth measured from south (positive west), then shifted to clockwise-from-north.
 	const double AzFromSouth = FMath::Atan2(FMath::Sin(HourAngle),
 		FMath::Cos(HourAngle) * FMath::Sin(Lat) - FMath::Tan(Decl) * FMath::Cos(Lat));
 
-	OutElevationDeg = FMath::RadiansToDegrees(Elev);
 	OutAzimuthDeg = FMath::Fmod(FMath::RadiansToDegrees(AzFromSouth) + 180.0 + 360.0, 360.0);
 }
 

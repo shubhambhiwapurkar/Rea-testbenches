@@ -208,7 +208,7 @@ public:
 	float GetClimbSpeedCmS() const;
 
 	UFUNCTION(BlueprintPure, Category = "Summit|Rope")
-	ASummitFixedRope* GetAttachedRope() const { return AttachedRope.Get(); }
+	ASummitFixedRope* GetAttachedRope() const;
 
 	float GetRopeDistance() const { return RopeDistanceCm; }
 

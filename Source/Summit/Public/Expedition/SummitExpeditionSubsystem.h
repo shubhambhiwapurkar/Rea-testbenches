@@ -40,6 +40,10 @@ struct SUMMIT_API FSummitPeakInfo
 
 	UPROPERTY(BlueprintReadOnly, Category = "Summit|Expedition")
 	float ProminenceM = 0.f;
+
+	// Climate profile (Data/Mountains/climate/<id>.json) for USummitSettings::ClimateId on this peak's maps.
+	UPROPERTY(BlueprintReadOnly, Category = "Summit|Expedition")
+	FName ClimateId;
 };
 
 USTRUCT(BlueprintType)

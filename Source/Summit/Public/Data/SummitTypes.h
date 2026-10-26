@@ -118,6 +118,25 @@ enum class ESummitClimbMode : uint8
 	Resting        // sitting/standing still to recover (in camp, on a ledge)
 };
 
+// Mode groupings shared by the character, movement and climbing code (non-reflected helpers).
+namespace SummitClimbModes
+{
+	inline bool IsOnWall(ESummitClimbMode Mode)
+	{
+		return Mode == ESummitClimbMode::RockClimbing || Mode == ESummitClimbMode::IceClimbing;
+	}
+
+	inline bool IsOnRope(ESummitClimbMode Mode)
+	{
+		return Mode == ESummitClimbMode::Jumaring || Mode == ESummitClimbMode::Rappelling;
+	}
+
+	inline bool IsUpright(ESummitClimbMode Mode)
+	{
+		return Mode == ESummitClimbMode::Walking || Mode == ESummitClimbMode::Scrambling;
+	}
+}
+
 // One active medical condition and its severity, for UI and events.
 USTRUCT(BlueprintType)
 struct SUMMIT_API FSummitConditionEntry
@@ -196,6 +215,14 @@ struct SUMMIT_API FSummitVitals
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Summit|Vitals")
 	float CognitiveImpairment01 = 0.f;
+
+	// Photokeratitis from UV without goggles; blurs and whites out vision.
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Summit|Vitals")
+	float SnowBlindness01 = 0.f;
+
+	// Kcal the climber could still eat right now; appetite collapses at altitude.
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Summit|Vitals")
+	float RemainingAppetiteKcal = 0.f;
 
 	// Altitude the climber "feels" given supplemental O2 (pressure-equivalent).
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Summit|Vitals")

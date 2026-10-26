@@ -260,6 +260,8 @@ bool USummitExpeditionSubsystem::LoadDatabase()
 			Peak.Range = GetString(Obj, TEXT("range"));
 			Peak.Countries = GetStringList(Obj, TEXT("country"));
 			Peak.ProminenceM = static_cast<float>(GetNumber(Obj, TEXT("prominence_m")));
+			const FString ClimateId = GetString(Obj, TEXT("climate_id"));
+			Peak.ClimateId = ClimateId.IsEmpty() ? NAME_None : FName(*ClimateId);
 		}
 	}
 
@@ -273,7 +275,8 @@ bool USummitExpeditionSubsystem::LoadDatabase()
 		FSummitRouteInfo Route;
 		if (RouteJson.IsValid() && ParseRoute(RouteJson, Path, Route))
 		{
-			Routes.Add(Route.Id, MoveTemp(Route));
+			const FName RouteId = Route.Id;
+			Routes.Add(RouteId, MoveTemp(Route));
 		}
 	}
 

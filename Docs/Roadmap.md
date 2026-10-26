@@ -6,11 +6,11 @@ Status key: ✅ done · 🟡 in progress · ⬜ not started
 
 - ✅ Repository layout, agent conventions (`CLAUDE.md`), Git LFS rules, ruflo MCP config
 - ✅ Simulation API contract (`Source/SummitSim/Public/Sim`)
-- 🟡 Simulation core implementations plus unit tests (atmosphere, physiology, energy, thermal, weather, avalanche, rope, balance, expedition)
-- 🟡 Headless CLI scenarios (`summit_sim_cli everest|trek|forecast`)
-- 🟡 UE5 project and gameplay module scaffolding (character, components, subsystems)
-- 🟡 Real-world terrain pipeline (Copernicus DEM → UE Landscape heightmaps plus layer masks)
-- 🟡 Mountain database: 100+ peaks, detailed routes, regional climatologies
+- ✅ Simulation core implementations plus 130 unit tests (atmosphere, physiology, energy, thermal, weather, avalanche, rope, balance, expedition, climber)
+- ✅ Headless CLI scenarios (`summit_sim_cli everest|trek|forecast|windows`), calibrated against summit-day reports
+- ✅ UE5 project and gameplay module written (character, climbing, balance, cargo, weather, expedition, HUD). **Not yet compiled.**
+- ✅ Real-world terrain pipeline (Copernicus DEM → UE Landscape heightmaps plus layer masks); Everest generated
+- ✅ Mountain database: 124 peaks, 17 detailed routes, 21 regional climatologies
 
 ## Phase 1: First run on a workstation (2-4 weeks)
 
@@ -22,6 +22,8 @@ Needs a Windows or Linux machine with UE 5.6+, an RTX 3070-class GPU or better, 
 4. ⬜ Lighting: Sky Atmosphere, Volumetric Clouds, a sun driven by `SummitWeatherSubsystem`, exponential height fog, Lumen.
 5. ⬜ `BP_SummitCharacter` with a MetaHuman or placeholder mannequin, input assets, and an AnimBP with motion-matching locomotion.
 6. ⬜ Graybox the EBC → C1 Icefall section and walk it with the full sim running.
+7. ⬜ Create the content assets listed in `Source/Summit/README.md` (input actions, BP_SummitCharacter, WBP_SummitHUD, MPC_Weather, physical materials, the Movable DirectionalLight tagged `Sun`).
+8. ⬜ Packaging: stage `Data/Mountains` as a non-asset directory so the expedition database loads in shipped builds.
 
 ## Phase 2: Vertical slice: Mera Peak or Island Peak (2-4 months)
 

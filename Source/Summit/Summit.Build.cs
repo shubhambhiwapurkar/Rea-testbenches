@@ -9,9 +9,10 @@ public class Summit : ModuleRules
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 		bEnableExceptions = false;
 
-		// Lets "Character/SummitCharacter.h" style includes resolve from both Public and Private.
-		PublicIncludePaths.Add(ModuleDirectory + "/Public");
-		PrivateIncludePaths.Add(ModuleDirectory + "/Private");
+		// Includes are written relative to Public/ and Private/ (e.g. "Character/SummitCharacter.h",
+		// "Data/SummitSimConversions.h"); UBT adds both folders by default. SummitSim's Public/ makes the
+		// simulation core available as "Sim/Climber.h" etc. Sim headers are only included from .cpp files
+		// (and the private Data/SummitSimConversions.h) so they never reach reflected headers.
 
 		PublicDependencyModuleNames.AddRange(new string[]
 		{

@@ -52,16 +52,6 @@ namespace
 		return T == ESummitTerrainType::HardSnow || T == ESummitTerrainType::GlacierIce || T == ESummitTerrainType::Verglas;
 	}
 
-	bool IsWallMode(ESummitClimbMode M)
-	{
-		return M == ESummitClimbMode::RockClimbing || M == ESummitClimbMode::IceClimbing;
-	}
-
-	bool IsRopeMode(ESummitClimbMode M)
-	{
-		return M == ESummitClimbMode::Jumaring || M == ESummitClimbMode::Rappelling;
-	}
-
 	double SlopeDegFromNormal(const FVector& N)
 	{
 		return FMath::RadiansToDegrees(FMath::Acos(FMath::Clamp(N.Z, -1.0, 1.0)));
@@ -125,12 +115,12 @@ FSummitLimbTarget& USummitClimbingComponent::Limb(int32 Index)
 
 void USummitClimbingComponent::HandleClimbModeChanged(ESummitClimbMode OldMode, ESummitClimbMode NewMode)
 {
-	if (!IsWallMode(NewMode))
+	if (!SummitClimbModes::IsOnWall(NewMode))
 	{
 		bHasWall = false;
 		bMantling = false;
 	}
-	else if (!IsWallMode(OldMode))
+	else if (!SummitClimbModes::IsOnWall(OldMode))
 	{
 		// Fresh on the wall: every limb needs a hold.
 		for (int32 Index = 0; Index < LimbCount; ++Index)
@@ -141,7 +131,7 @@ void USummitClimbingComponent::HandleClimbModeChanged(ESummitClimbMode OldMode, 
 		NextLimbToMove = 0;
 	}
 
-	if (!IsRopeMode(NewMode))
+	if (!SummitClimbModes::IsOnRope(NewMode))
 	{
 		AttachedRope.Reset();
 		RopeBusyS = 0.f;
@@ -155,7 +145,7 @@ void USummitClimbingComponent::HandleClimbModeChanged(ESummitClimbMode OldMode, 
 		bArresting = false;
 	}
 
-	if (!IsWallMode(NewMode) && !IsRopeMode(NewMode))
+	if (!SummitClimbModes::IsOnWall(NewMode) && !SummitClimbModes::IsOnRope(NewMode))
 	{
 		ClearLimbs();
 	}
@@ -355,7 +345,7 @@ bool USummitClimbingComponent::TryStartClimb()
 	}
 
 	const ESummitClimbMode Mode = GetMode();
-	const bool bFromRope = IsRopeMode(Mode);
+	const bool bFromRope = SummitClimbModes::IsOnRope(Mode);
 	if (Mode != ESummitClimbMode::Walking && Mode != ESummitClimbMode::Scrambling && !bFromRope)
 	{
 		return false;
@@ -368,8 +358,8 @@ bool USummitClimbingComponent::TryStartClimb()
 		return false;
 	}
 
-	ESummitTerrainType Terrain;
-	ESummitClimbMode NewMode;
+	ESummitTerrainType Terrain = ESummitTerrainType::Rock;
+	ESummitClimbMode NewMode = ESummitClimbMode::Walking;
 	if (!IsClimbableHit(Hit, Terrain) || !CanClimbTerrain(Terrain, NewMode))
 	{
 		return false;
@@ -398,7 +388,7 @@ bool USummitClimbingComponent::TryStartClimb()
 
 void USummitClimbingComponent::StopClimbing(bool bDrop)
 {
-	if (!IsWallMode(GetMode()))
+	if (!SummitClimbModes::IsOnWall(GetMode()))
 	{
 		return;
 	}
@@ -464,7 +454,7 @@ void USummitClimbingComponent::TickWall(float DeltaTime)
 	// Rock to ice (or back): switch technique, or come off if the gear is missing.
 	if (Terrain != WallTerrain)
 	{
-		ESummitClimbMode NewMode;
+		ESummitClimbMode NewMode = ESummitClimbMode::Walking;
 		if (!CanClimbTerrain(Terrain, NewMode))
 		{
 			StopClimbing(true);
@@ -590,7 +580,7 @@ void USummitClimbingComponent::UpdateWallLimbs(float DeltaTime)
 		}
 
 		FHitResult Hold;
-		ESummitTerrainType HoldTerrain;
+		ESummitTerrainType HoldTerrain = ESummitTerrainType::Rock;
 		if (TraceWall(Ideal + WallNormal * 50.f, -WallNormal, 100.f, Hold) && IsClimbableHit(Hold, HoldTerrain))
 		{
 			LimbFrom[Index] = L.bPlanted ? LimbTo[Index] : Ideal + WallNormal * 15.f;
@@ -700,7 +690,7 @@ bool USummitClimbingComponent::TryAttachToRope()
 	}
 
 	const ESummitClimbMode Mode = GetMode();
-	if (Mode != ESummitClimbMode::Walking && Mode != ESummitClimbMode::Scrambling && !IsWallMode(Mode))
+	if (Mode != ESummitClimbMode::Walking && Mode != ESummitClimbMode::Scrambling && !SummitClimbModes::IsOnWall(Mode))
 	{
 		return false;
 	}
@@ -741,9 +731,14 @@ bool USummitClimbingComponent::TryAttachToRope()
 	return true;
 }
 
+ASummitFixedRope* USummitClimbingComponent::GetAttachedRope() const
+{
+	return AttachedRope.Get();
+}
+
 void USummitClimbingComponent::DetachFromRope()
 {
-	if (!IsRopeMode(GetMode()))
+	if (!SummitClimbModes::IsOnRope(GetMode()))
 	{
 		AttachedRope.Reset();
 		return;

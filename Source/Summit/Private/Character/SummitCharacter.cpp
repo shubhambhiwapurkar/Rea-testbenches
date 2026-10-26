@@ -36,16 +36,6 @@ namespace
 			Input->BindAction(Action, Event, Character, Handler);
 		}
 	}
-
-	bool IsWallMode(ESummitClimbMode M)
-	{
-		return M == ESummitClimbMode::RockClimbing || M == ESummitClimbMode::IceClimbing;
-	}
-
-	bool IsRopeMode(ESummitClimbMode M)
-	{
-		return M == ESummitClimbMode::Jumaring || M == ESummitClimbMode::Rappelling;
-	}
 }
 
 ASummitCharacter::ASummitCharacter(const FObjectInitializer& ObjectInitializer)
@@ -210,7 +200,7 @@ void ASummitCharacter::OnMovementModeChanged(EMovementMode PrevMovementMode, uin
 	// Something outside SetClimbMode (teleport, root motion, engine fallback) knocked us out of a custom mode
 	// while on a wall or rope: reconcile. Sliding is left alone; a slide that goes airborne is resolved in Landed.
 	const UCharacterMovementComponent* Move = GetCharacterMovement();
-	if (Move && Move->MovementMode != MOVE_Custom && (IsWallMode(ClimbMode) || IsRopeMode(ClimbMode)))
+	if (Move && Move->MovementMode != MOVE_Custom && (SummitClimbModes::IsOnWall(ClimbMode) || SummitClimbModes::IsOnRope(ClimbMode)))
 	{
 		SetClimbMode(ESummitClimbMode::Walking);
 	}
@@ -450,7 +440,7 @@ void ASummitCharacter::HandleInteract(const FInputActionValue& /*Value*/)
 		TryRecoverFromFall();
 		return;
 	}
-	if (IsRopeMode(ClimbMode))
+	if (SummitClimbModes::IsOnRope(ClimbMode))
 	{
 		Climbing->DetachFromRope();
 		return;
@@ -464,7 +454,7 @@ void ASummitCharacter::HandleInteract(const FInputActionValue& /*Value*/)
 
 void ASummitCharacter::HandleClimb(const FInputActionValue& /*Value*/)
 {
-	if (IsWallMode(ClimbMode))
+	if (SummitClimbModes::IsOnWall(ClimbMode))
 	{
 		Climbing->StopClimbing(/*bDrop*/ true);
 		return;

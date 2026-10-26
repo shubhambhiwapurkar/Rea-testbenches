@@ -282,6 +282,7 @@ void USummitClimberComponent::BuildGear(summit::sim::ClimberGear& OutGear) const
 	OutGear.crampons = bCrampons;
 	OutGear.glacierGoggles = bGlacierGoggles;
 	OutGear.packMassKg = Cargo ? Cargo->GetTotalMassKg() : 0.0;
+	OutGear.footwearMassKg = FootwearMassKg;
 }
 
 double USummitClimberComponent::GetPressureKPa() const
@@ -395,6 +396,8 @@ void USummitClimberComponent::RefreshVitals()
 	Vitals.Fatigue01 = static_cast<float>(E.fatigue01);
 	Vitals.Stamina01 = static_cast<float>(E.shortTermStamina01);
 	Vitals.CognitiveImpairment01 = static_cast<float>(Climber->Physio().CognitiveImpairment01());
+	Vitals.SnowBlindness01 = static_cast<float>(Climber->SnowBlindness01());
+	Vitals.RemainingAppetiteKcal = static_cast<float>(Climber->Energy().RemainingAppetiteKcal());
 	Vitals.EquivalentAltitudeM = static_cast<float>(Climber->Physio().EquivalentAltitudeM(PressureKPa));
 	Vitals.AcclimatizedAltitudeM = static_cast<float>(P.acclimatizedAltitudeM);
 	Vitals.MetabolicRateW = static_cast<float>(Climber->LastMetabolicRateW());
@@ -498,7 +501,9 @@ void USummitClimberComponent::Drink(float Liters)
 
 float USummitClimberComponent::EatFromPack(float Kcal)
 {
-	const float Got = Cargo ? Cargo->ConsumeFood(Kcal) : 0.f;
+	// Only take out of the pack what the climber can actually get down (EnergySystem::Eat refuses the rest).
+	const float Wanted = Climber ? FMath::Min(Kcal, static_cast<float>(Climber->Energy().RemainingAppetiteKcal())) : Kcal;
+	const float Got = Cargo ? Cargo->ConsumeFood(FMath::Max(0.f, Wanted)) : 0.f;
 	Eat(Got);
 	return Got;
 }

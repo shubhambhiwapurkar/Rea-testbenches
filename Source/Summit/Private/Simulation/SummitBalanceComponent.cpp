@@ -8,6 +8,7 @@
 #include "Engine/World.h"
 #include "GameFramework/Actor.h"
 
+#include "Sim/Atmosphere.h"
 #include "Sim/Balance.h"
 
 #include <vector>
@@ -127,7 +128,7 @@ void USummitBalanceComponent::TickComponent(float DeltaTime, ELevelTick TickType
 		return;
 	}
 
-	const bool bUpright = ClimbMode == ESummitClimbMode::Walking || ClimbMode == ESummitClimbMode::Scrambling;
+	const bool bUpright = SummitClimbModes::IsUpright(ClimbMode);
 	if (!bUpright || bFallen)
 	{
 		return;
@@ -164,10 +165,12 @@ void USummitBalanceComponent::TickComponent(float DeltaTime, ELevelTick TickType
 		In.cognitiveImpairment01 = ClimberComp->GetCognitiveImpairment01();
 
 		// Crosswind: project the wind (blowing TOWARD from+180°) onto the climber's right vector.
-		const float NorthYaw = WeatherSubsystem ? WeatherSubsystem->NorthYawDeg : 0.f;
+		const float NorthYaw = WeatherSubsystem ? WeatherSubsystem->NorthYawDeg : -90.f;
 		const float ToYawRad = FMath::DegreesToRadians(NorthYaw + Weather.WindDirectionDeg + 180.f);
 		const FVector WindDir(FMath::Cos(ToYawRad), FMath::Sin(ToYawRad), 0.0);
 		In.lateralWindMS = Weather.WindSpeedMS * FVector::DotProduct(WindDir, Right);
+		// Thin air pushes less: wind force scales with density (~0.5 kg/m³ near 8000 m vs 1.2 at sea level).
+		In.airDensityKgM3 = summit::sim::AirDensityKgM3(Weather.PressureKPa, Weather.TemperatureC);
 		In.gustiness01 = Weather.WindSpeedMS > 0.5f
 			? FMath::Clamp((Weather.WindGustMS - Weather.WindSpeedMS) / Weather.WindSpeedMS, 0.f, 1.f)
 			: 0.f;
