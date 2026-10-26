@@ -37,6 +37,7 @@ struct ClimberGear {
   bool crampons = false;
   bool glacierGoggles = true;  // no eye protection at altitude -> snow blindness within hours
   double packMassKg = 15.0;
+  double footwearMassKg = 1.6;  // pair. Trail shoe ~0.8, mountaineering boot ~2.0, 8000 m boot ~2.8
 };
 
 struct ClimberEnvironment {

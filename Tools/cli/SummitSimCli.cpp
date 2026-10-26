@@ -1,9 +1,10 @@
 // Headless driver for the simulation core. Runs realistic scenarios end to end and prints a log,
 // so the models can be sanity-checked against expedition reports without opening the editor.
 //
-//   summit_sim_cli everest [--no-o2] [--flow L/min] [--seed N] [--day DOY] [--start-hour H]
+//   summit_sim_cli everest [--no-o2] [--elite] [--flow L/min] [--seed N] [--day DOY] [--start-hour H]
 //   summit_sim_cli trek    [--fast] [--seed N]
 //   summit_sim_cli forecast [--seed N] [--day DOY]
+//   summit_sim_cli windows  [--seed N]   list pre-monsoon summit windows (night-to-noon wind < 15 m/s)
 
 #include <cmath>
 #include <cstdio>
@@ -14,6 +15,7 @@
 
 #include "Sim/Atmosphere.h"
 #include "Sim/Avalanche.h"
+#include "Sim/Balance.h"
 #include "Sim/Climber.h"
 #include "Sim/Constants.h"
 #include "Sim/Expedition.h"
@@ -32,6 +34,7 @@ struct Args {
   int dayOfYear = 140;  // 20 May: the classic pre-monsoon summit window
   double startHour = 22.0;
   bool fast = false;
+  bool elite = false;
 };
 
 Args Parse(int argc, char** argv) {
@@ -46,6 +49,7 @@ Args Parse(int argc, char** argv) {
     else if (is("--day")) a.dayOfYear = std::atoi(next());
     else if (is("--start-hour")) a.startHour = std::atof(next());
     else if (is("--fast")) a.fast = true;
+    else if (is("--elite")) a.elite = true;
   }
   return a;
 }
@@ -127,6 +131,12 @@ int RunEverest(const Args& args) {
 
   ClimberProfile profile;
   profile.name = "Climber";
+  if (args.elite) {
+    // Messner/Habeler class: very high aerobic capacity, light build.
+    profile.physiology.vo2MaxSeaLevelMlKgMin = 66.0;
+    profile.physiology.bodyMassKg = 68.0;
+    profile.energy.bodyMassKg = 68.0;
+  }
   Climber climber(profile);
   ApplyFullRotationAcclimatization(climber);
 
@@ -138,7 +148,8 @@ int RunEverest(const Args& args) {
   gear.clothing.windproof01 = 0.9;
   gear.crampons = true;
   gear.glacierGoggles = true;
-  gear.packMassKg = 9.0;  // O2 bottles, water, spare mitts
+  gear.packMassKg = args.noO2 ? 4.5 : 9.0;  // O2 bottles (when used), water, spare mitts
+  gear.footwearMassKg = 2.8;  // 8000 m triple boots (pair)
   gear.oxygen.maskOn = !args.noO2;
   gear.oxygen.flowLitersPerMin = args.noO2 ? 0.0 : args.flow;
 
@@ -158,8 +169,9 @@ int RunEverest(const Args& args) {
   ClimberAction action;
   action.activity = Activity::Jumaring;  // fixed lines run almost the entire way
 
-  std::printf("Everest South Col summit push, day %d, start %02.0f:00, %s, seed %llu\n", args.dayOfYear,
-              args.startHour, args.noO2 ? "NO supplemental O2" : "supplemental O2", args.seed);
+  std::printf("Everest South Col summit push, day %d, start %02.0f:00, %s, %s climber, seed %llu\n",
+              args.dayOfYear, args.startHour, args.noO2 ? "NO supplemental O2" : "supplemental O2",
+              args.elite ? "elite" : "strong", args.seed);
   if (!args.noO2) std::printf("O2 flow %.1f L/min\n", args.flow);
   std::printf("PB at summit %.1f kPa (ISA would say %.1f kPa); water boils at %.1f C\n\n",
               BarometricPressureKPa(kSummitAltitudeM, env.latitudeDeg, args.dayOfYear),
@@ -174,6 +186,9 @@ int RunEverest(const Args& args) {
   double altitudeAtLastLog = env.altitudeM;
   SimTimeSeconds t = start;
   SimTimeSeconds summitTime = 0.0;
+  double balconyStopS = 0.0;
+  BalanceModel balance;
+  balance.SetCargo({CargoItem{"pack", gear.packMassKg, Vec3(0.0, -0.15, 0.0), true}});
 
   for (int step = 0; step < 36 * 60; ++step) {
     weather.AdvanceTo(t);
@@ -188,12 +203,46 @@ int RunEverest(const Args& args) {
 
     action.gradePercent = (descending ? -kRouteGrade : kRouteGrade) * 100.0;
     action.activity = descending ? Activity::Walking : Activity::Jumaring;
-    const double vMax = climber.MaxSustainableSpeedMS(env, action, gear);
-    action.speedMS = descending ? vMax * 0.9 : vMax;
+
+    // Real summit days are not continuous: a 5-10 min breather every hour (drink, eat a gel), a
+    // ~20 min stop at the Balcony (~8,400 m) to swap O2 bottles, and ~30 min on top.
+    const double minuteOfHour = std::fmod((t - start) / 60.0, 60.0);
+    bool stopped = minuteOfHour < 8.0 && t - start > 1800.0;
+    if (!descending && env.altitudeM >= 8400.0 && balconyStopS < 20.0 * 60.0) {
+      stopped = true;
+      balconyStopS += dt;
+    }
+    if (summited && t - summitTime < 30.0 * 60.0) stopped = true;
+    if (stopped && minuteOfHour < 1.0) {
+      climber.Energy().Eat(120.0);
+      climber.Energy().Drink(0.2);
+    }
+
+    if (stopped) {
+      action.activity = Activity::Resting;
+      action.speedMS = 0.0;
+    } else if (descending) {
+      // Descent is limited by footing and downclimbing on ~26 degree hard snow, not by oxygen.
+      BalanceInputs footing;
+      footing.slopeAlongDeg = -RadToDeg(std::atan(kRouteGrade));
+      footing.terrain = env.terrain;
+      footing.crampons = gear.crampons;
+      footing.temperatureC = env.weather.temperatureC;
+      footing.lateralWindMS = env.weather.windSpeedMS * 0.5;
+      footing.gustiness01 = 0.5;
+      footing.roughness01 = 0.5;
+      footing.fatigue01 = climber.Energy().State().fatigue01;
+      footing.cognitiveImpairment01 = climber.Physio().CognitiveImpairment01();
+      const double footingLimit = balance.SafeSpeedMS(footing);
+      action.speedMS = std::fmin(climber.MaxSustainableSpeedMS(env, action, gear), footingLimit) * 0.85;
+    } else {
+      // Experienced climbers hold ~85 % of their maximal sustainable pace (the "rest step").
+      action.speedMS = climber.MaxSustainableSpeedMS(env, action, gear) * 0.85;
+    }
 
     climber.Step(dt, env, action, gear);
     const double dz = action.speedMS * dt * kRouteGrade / std::sqrt(1.0 + kRouteGrade * kRouteGrade);
-    env.altitudeM += descending ? -dz : dz;
+    if (action.activity != Activity::Resting) env.altitudeM += descending ? -dz : dz;
 
     if (!descending && env.altitudeM >= kSummitAltitudeM) {
       env.altitudeM = kSummitAltitudeM;
@@ -334,6 +383,31 @@ int RunForecast(const Args& args) {
   return 0;
 }
 
+// Scans the pre-monsoon season for summit windows the way expedition forecasters do: a summit push
+// needs the jet stream off the summit from departure (~22:00) until the descent (~14:00).
+int RunWindows(const Args& args) {
+  WeatherSystem weather(KhumbuClimate(), args.seed);
+  std::printf("Everest summit windows, seed %llu (max summit wind 22:00-14:00 below 15 m/s)\n\n", args.seed);
+  int found = 0;
+  for (int day = 120; day <= 165; ++day) {
+    double maxWind = 0.0;
+    double minTemp = 100.0;
+    for (double h = -2.0; h <= 14.0; h += 1.0) {
+      weather.AdvanceTo(day * kSecondsPerDay + h * kSecondsPerHour);
+      const WeatherSample w = weather.Sample(8848.0, 1.0);
+      maxWind = std::fmax(maxWind, w.windSpeedMS);
+      minTemp = std::fmin(minTemp, w.temperatureC);
+    }
+    if (maxWind < 15.0) {
+      std::printf("  day %3d: max wind %4.1f m/s, min temp %5.1f C  ->  summit_sim_cli everest --seed %llu --day %d\n",
+                  day, maxWind, minTemp, args.seed, day - 1);
+      ++found;
+    }
+  }
+  if (found == 0) std::printf("  no window this season: expeditions go home without a summit attempt\n");
+  return 0;
+}
+
 }  // namespace
 
 int main(int argc, char** argv) {
@@ -341,6 +415,7 @@ int main(int argc, char** argv) {
   if (args.scenario == "everest") return RunEverest(args);
   if (args.scenario == "trek") return RunTrek(args);
   if (args.scenario == "forecast") return RunForecast(args);
-  std::printf("usage: summit_sim_cli everest|trek|forecast [options]\n");
+  if (args.scenario == "windows") return RunWindows(args);
+  std::printf("usage: summit_sim_cli everest|trek|forecast|windows [options]\n");
   return 64;
 }

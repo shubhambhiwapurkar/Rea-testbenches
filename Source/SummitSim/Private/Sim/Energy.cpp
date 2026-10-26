@@ -19,13 +19,13 @@ constexpr double kKcalPerKgTissue = 7700.0;
 // Glycogen is stored with ~3 g water per g; 1 kcal of glycogen ≈ 1 g of body mass.
 constexpr double kKgPerKcalGlycogen = 0.001;
 
-// Intake. Comfortable maximum voluntary intake ~3,500 kcal/day; above ~5,000 m appetite and absorption
+// Intake. Comfortable maximum voluntary intake ~3,200 kcal/day at sea level; above ~5,000 m appetite and absorption
 // fall (Westerterp et al. 1992 "Energy expenditure climbing Mt Everest"; Boyer & Blume 1984
 // "Weight loss and changes in body composition at high altitude", J Appl Physiol 57:1580;
 // Kayser 1992). Expeditions typically lose 5-10 kg over two months.
-constexpr double kMaxDailyIntakeKcal = 3500.0;
+constexpr double kMaxDailyIntakeKcal = 4000.0;  // rolling-window cap; ~3,200 kcal/day eaten in meals
 constexpr double kStomachEmptyingTauS = 2.0 * kHour;
-constexpr double kMealCarbShare = 0.55;
+constexpr double kMealCarbShare = 0.60;  // expedition rations are carbohydrate-heavy
 constexpr double kLipogenesisEfficiency = 0.75;
 
 // Fluids: insensible skin loss ~0.6 L/day, obligatory urine ~1 L/day, metabolic water
@@ -201,7 +201,7 @@ void EnergySystem::Step(double dtSeconds, const EnergyInputs& in) {
     const double glyLow = 1.0 - SmoothStep(0.0, 0.2, Clamp01(s.glycogenKcal / glyCap));
     // Calibrated so a 12 h summit day at ~65 % VO2max ends near 0.8 and an 8 h trekking day at
     // ~50 % near 0.2-0.3.
-    double rate = 0.32 * std::pow(std::fmax(0.0, ex - 0.3), 1.5);
+    double rate = 0.28 * std::pow(std::fmax(0.0, ex - 0.3), 1.5);
     rate *= (1.0 + glyLow) * (1.0 + 10.0 * dehydrationFrac);
     rate += 0.004 * std::fmax(0.0, s.sleepDebtHours - 8.0);
     s.fatigue01 += rate * hours;

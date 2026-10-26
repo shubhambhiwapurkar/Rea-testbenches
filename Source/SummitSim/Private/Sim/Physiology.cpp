@@ -321,31 +321,27 @@ void Physiology::Step(double dtSeconds, const PhysiologyInputs& in) {
                    (std::fmax(0.0, amsForProgression - 7.0) / 8.0 + 0.25 * std::fmax(0.0, gap - 3000.0) / 1500.0 +
                     0.4 * std::fmax(0.0, det - 0.5));
     if (in.meds.dexamethasone) drive *= 0.35;
-    double rate = drive / kDay;
-    if (drive < 0.01) {
-      const double tau = 1.5 * kDay / (1.0 + descentBonus + (in.meds.dexamethasone ? 1.0 : 0.0) + (onOxygen ? 0.5 : 0.0));
-      rate -= s.haceSeverity01 / tau;
-    }
-    s.haceSeverity01 = Clamp01(s.haceSeverity01 + rate * dtSeconds);
+    // Once the drivers are gone the brain recovers, faster with descent, dexamethasone and O2.
+    const double tau = 1.5 * kDay / (1.0 + descentBonus + (in.meds.dexamethasone ? 1.0 : 0.0) + (onOxygen ? 0.5 : 0.0));
+    const double recovery = drive < 0.01 ? s.haceSeverity01 / tau : 0.0;
+    s.haceSeverity01 = Clamp01(s.haceSeverity01 + (drive / kDay - recovery) * dtSeconds);
   }
   // HAPE: fast ascent, exertion and cold raise pulmonary artery pressure; worsens with hypoxaemia
   // until descent or O2 (Bärtsch & Swenson 2013, NEJM 368:2294; nifedipine: Bärtsch 1991).
   {
     const double cold01 = Clamp01(-in.ambientTempC / 30.0);
     double drive = params_.hapeSusceptibility *
-                   (0.3 * std::fmax(0.0, gap - 2500.0) / 1500.0 + 0.15 * std::fmax(0.0, amsForProgression - 8.0) / 2.0 +
+                   (0.15 * std::fmax(0.0, gap - 2500.0) / 1500.0 + 0.15 * std::fmax(0.0, amsForProgression - 8.0) / 2.0 +
                     0.4 * std::fmax(0.0, det - 0.5)) *
                    (1.0 + 0.8 * exCapped + 0.5 * cold01);
-    // Established HAPE feeds on its own hypoxaemia.
-    drive += 0.4 * s.hapeSeverity01 * SmoothStep(0.85, 0.65, s.spo2);
+    // Established HAPE feeds on its own hypoxaemia (hypoxic pulmonary vasoconstriction), so left
+    // at altitude it worsens; descent or O2 that restores SpO2 breaks the cycle.
+    const double feedback = 0.5 * s.hapeSeverity01 * SmoothStep(0.85, 0.60, s.spo2);
     if (in.meds.nifedipine) drive *= 0.4;
-    double rate = drive / kDay;
-    if (drive < 0.01) {
-      const double tau = 2.0 * kDay /
-                         (1.0 + descentBonus + (in.meds.nifedipine ? 0.5 : 0.0) + (s.spo2 > 0.9 ? 1.0 : 0.0));
-      rate -= s.hapeSeverity01 / tau;
-    }
-    s.hapeSeverity01 = Clamp01(s.hapeSeverity01 + rate * dtSeconds);
+    const double tau = 2.0 * kDay /
+                       (1.0 + descentBonus + (in.meds.nifedipine ? 0.5 : 0.0) + (s.spo2 > 0.9 ? 1.0 : 0.0));
+    const double recovery = drive < 0.01 ? s.hapeSeverity01 / tau : 0.0;
+    s.hapeSeverity01 = Clamp01(s.hapeSeverity01 + ((drive + feedback) / kDay - recovery) * dtSeconds);
   }
 
   // 5. Death-zone deterioration: accumulates above ~7,000 m and only recovers lower down.
@@ -371,11 +367,10 @@ double Physiology::CognitiveImpairment01() const {
 
 double Physiology::MaxSustainableExertion01() const {
   // Self-paced multi-hour work: ~0.65 of VO2max near sea level, ~0.55 at extreme altitude
-  // (Pugh 1964; Fulco et al. 1998). Illness and deterioration lower it further.
+  // (Pugh 1964; Fulco et al. 1998). AMS and deterioration already act through VO2max; pulmonary
+  // and cerebral oedema also wreck the ability to keep going.
   const double alt = state_.equivalentAltitudeM;
   double f = 0.65 - 0.10 * SmoothStep(1500.0, 7500.0, alt);
-  f -= 0.01 * state_.amsScore;
-  f -= 0.15 * state_.highAltitudeDeterioration01;
   f -= 0.20 * state_.hapeSeverity01;
   f -= 0.20 * state_.haceSeverity01;
   return Clamp(f, 0.25, 0.70);

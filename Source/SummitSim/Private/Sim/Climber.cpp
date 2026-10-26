@@ -19,6 +19,31 @@ constexpr double kRappellingMets = 3.0;
 constexpr double kMaxExertion = 1.2;
 constexpr double kMaxWalkingSpeedMS = 2.2;  // walk-run transition (Hreljac 1993)
 
+// Mass on the feet costs ~4.5-6x the same mass on the torso at normal walking speed (Soule & Goldman
+// 1969, J Appl Physiol 27:687; Legg & Mahanty 1986), because the legs must swing it. That swing cost
+// scales roughly with speed squared; at the slow pace of high-altitude ascent the vertical work
+// dominates and foot mass costs about what it weighs. Pandolf's data were collected in ~1.6 kg
+// military boots, so only footwear above that baseline is converted to equivalent pack load.
+constexpr double kFootMassLoadMultiplierAtWalkingSpeed = 5.0;
+constexpr double kPandolfBaselineFootwearKg = 1.6;
+constexpr double kCramponPairMassKg = 0.9;
+
+// Multi-layer cold-weather clothing raises the cost of moving by ~10-16 % beyond its weight through
+// friction between layers and restricted joints (Teitlebaum & Goldman 1972, J Appl Physiol 32:743;
+// Dorman & Havenith 2009, Eur J Appl Physiol 105:463). Those figures were measured at normal walking
+// pace; the penalty comes from limb movement, so it fades at the slow plod of extreme altitude.
+double ClothingHobblingFactor(const ClothingSystem& clothing, double speedMS) {
+  return 1.0 + 0.16 * SmoothStep(3.0, 8.0, clothing.torsoClo) * Clamp01(std::fabs(speedMS) / 1.34);
+}
+
+double EffectiveLoadKg(const ClimberGear& gear, double speedMS) {
+  const double feetKg = std::fmax(0.0, gear.footwearMassKg) + (gear.crampons ? kCramponPairMassKg : 0.0);
+  const double extraFeetKg = std::fmax(0.0, feetKg - kPandolfBaselineFootwearKg);
+  const double v = Clamp01(std::fabs(speedMS) / 1.34);
+  const double multiplier = 1.0 + (kFootMassLoadMultiplierAtWalkingSpeed - 1.0) * v * v;
+  return std::fmax(0.0, gear.packMassKg) + multiplier * extraFeetKg;
+}
+
 bool IsSnowOrIce(TerrainType t) {
   return t == TerrainType::HardSnow || t == TerrainType::SoftSnow || t == TerrainType::DeepSnow ||
          t == TerrainType::GlacierIce || t == TerrainType::Verglas;
@@ -60,6 +85,15 @@ TechnicalCost TechnicalCostFor(Activity activity, const ClimberProfile& p, Terra
   return {standingW, 0.13 + 0.06 * Clamp01(p.skillRope01)};
 }
 
+// On fixed lines below ~45 degrees climbers walk with the ascender sliding along as a safety rather
+// than hauling on it, so the cost is Pandolf walking plus clipping past anchors (~10 %).
+constexpr double kWalkedFixedLineMaxGradePercent = 100.0;
+constexpr double kFixedLineWalkingOverhead = 1.10;
+
+bool IsWalkedFixedLine(const ClimberAction& action) {
+  return action.activity == Activity::Jumaring && action.gradePercent < kWalkedFixedLineMaxGradePercent;
+}
+
 double StandingW(double massKg, double loadKg) {
   return 1.5 * massKg + 2.0 * (massKg + loadKg) * (loadKg / massKg) * (loadKg / massKg);
 }
@@ -82,6 +116,10 @@ double MetabolicRateW(const ClimberProfile& profile, const ClimberEnvironment& e
                                    TerrainFactorFor(env, action.activity));
     case Activity::Climbing:
     case Activity::Jumaring: {
+      if (IsWalkedFixedLine(action)) {
+        return kFixedLineWalkingOverhead * PandolfMetabolicRateW(massKg, loadKg, action.speedMS, action.gradePercent,
+                                                                 TerrainFactorFor(env, Activity::Walking));
+      }
       const TechnicalCost c = TechnicalCostFor(action.activity, profile, env.terrain, massKg, StandingW(massKg, loadKg));
       const double vVert = std::fmax(0.0, action.speedMS) * VerticalFraction(action.gradePercent);
       return c.baseW + (massKg + loadKg) * kGravity * vVert / c.efficiency;
@@ -106,11 +144,12 @@ void Climber::SubStep(double dt, const ClimberEnvironment& env, const ClimberAct
   const double pressure = BarometricPressureKPa(env.altitudeM, env.latitudeDeg, env.dayOfYear);
   lastPressureKPa_ = pressure;
   const double mass = std::fmax(30.0, profile_.physiology.bodyMassKg - energy_.State().bodyMassLostKg);
-  const double load = std::fmax(0.0, gear.packMassKg);
+  const double load = EffectiveLoadKg(gear, action.speedMS);
   const bool sleeping = action.activity == Activity::Sleeping;
 
   // 1. Metabolic demand and exertion relative to the oxygen-limited ceiling.
-  const double metabolicW = MetabolicRateW(profile_, env, action, mass, load);
+  const double hobbling = IsActive(action.activity) ? ClothingHobblingFactor(gear.clothing, action.speedMS) : 1.0;
+  const double metabolicW = hobbling * MetabolicRateW(profile_, env, action, mass, load);
   const double vo2Required = MetabolicRateToVO2MlKgMin(metabolicW, mass);
   const GasExchange preview = physiology_.EvaluateGasExchange(pressure, lastExertion01_, sleeping, gear.oxygen, gear.meds);
   const double coreT = thermal_.State().coreTempC;
@@ -211,29 +250,45 @@ double Climber::MaxSustainableSpeedMS(const ClimberEnvironment& env, const Climb
 
   const double pressure = BarometricPressureKPa(env.altitudeM, env.latitudeDeg, env.dayOfYear);
   const double mass = std::fmax(30.0, profile_.physiology.bodyMassKg - energy_.State().bodyMassLostKg);
-  const double load = std::fmax(0.0, gear.packMassKg);
+  // Technical ascent is slow, so foot mass counts at roughly its weight there.
+  const double slowLoad = EffectiveLoadKg(gear, 0.0);
   const double sustainable = physiology_.MaxSustainableExertion01();
   const GasExchange g = physiology_.EvaluateGasExchange(pressure, sustainable, false, gear.oxygen, gear.meds);
   const double thermalPerf = 0.4 + 0.6 * SmoothStep(31.0, 35.5, thermal_.State().coreTempC);
   const double vo2Target = sustainable * g.vo2MaxMlKgMin * energy_.PerformanceMultiplier() * thermalPerf;
   const double targetW = vo2Target * mass * kWattsPerMetPerKg / 3.5;
 
-  if (action.activity == Activity::Climbing || action.activity == Activity::Jumaring) {
-    const TechnicalCost c = TechnicalCostFor(action.activity, profile_, env.terrain, mass, StandingW(mass, load));
-    const double vVert = std::fmax(0.0, targetW - c.baseW) * c.efficiency / ((mass + load) * kGravity);
+  if ((action.activity == Activity::Climbing || action.activity == Activity::Jumaring) && !IsWalkedFixedLine(action)) {
+    const TechnicalCost c = TechnicalCostFor(action.activity, profile_, env.terrain, mass, StandingW(mass, slowLoad));
+    // Technical ascent runs at ~0.2-0.4 m/s along the route; evaluate clothing hobbling there.
+    const double budgetW = targetW / ClothingHobblingFactor(gear.clothing, 0.3);
+    const double vVert = std::fmax(0.0, budgetW - c.baseW) * c.efficiency / ((mass + slowLoad) * kGravity);
     return std::fmin(vVert / VerticalFraction(action.gradePercent), 1.0);
   }
 
   // Walking / trail breaking: largest speed whose Pandolf cost fits the budget. A coarse scan then
   // bisection handles the non-monotonic Santee downhill curve.
-  const double eta = TerrainFactorFor(env, action.activity);
-  const auto cost = [&](double v) { return PandolfMetabolicRateW(mass, load, v, action.gradePercent, eta); };
-  if (cost(0.0) >= targetW) return 0.0;
+  const bool fixedLine = IsWalkedFixedLine(action);
+  const double eta = TerrainFactorFor(env, fixedLine ? Activity::Walking : action.activity);
+  const double overhead = fixedLine ? kFixedLineWalkingOverhead : 1.0;
+  const auto cost = [&](double v) {
+    return overhead * ClothingHobblingFactor(gear.clothing, v) *
+           PandolfMetabolicRateW(mass, EffectiveLoadKg(gear, v), v, action.gradePercent, eta);
+  };
+  double budgetW = targetW;
+  if (cost(0.0) >= budgetW) {
+    // Exhausted or severely hypoxic: the sustainable budget no longer covers standing still, but a
+    // climber can still shuffle (above sustainable effort) while VO2max exceeds the standing cost.
+    // This is how spent climbers get themselves down; only when even that fails do they stop.
+    const double maxW = targetW / std::fmax(sustainable, 1e-3);
+    if (maxW <= cost(0.0)) return 0.0;
+    budgetW = cost(0.0) + 0.3 * (maxW - cost(0.0));
+  }
   double lo = 0.0;
   double hi = -1.0;
   constexpr double kScanStep = 0.05;
   for (double v = kScanStep; v <= kMaxWalkingSpeedMS + 1e-9; v += kScanStep) {
-    if (cost(v) > targetW) {
+    if (cost(v) > budgetW) {
       hi = v;
       break;
     }
@@ -242,7 +297,7 @@ double Climber::MaxSustainableSpeedMS(const ClimberEnvironment& env, const Climb
   if (hi < 0.0) return kMaxWalkingSpeedMS;
   for (int i = 0; i < 30; ++i) {
     const double mid = 0.5 * (lo + hi);
-    if (cost(mid) > targetW) hi = mid; else lo = mid;
+    if (cost(mid) > budgetW) hi = mid; else lo = mid;
   }
   return lo;
 }
