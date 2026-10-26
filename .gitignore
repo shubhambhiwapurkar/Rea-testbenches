@@ -1,0 +1,30 @@
+# Unreal generated
+Binaries/
+DerivedDataCache/
+Intermediate/
+Saved/
+.vs/
+.vscode/
+.idea/
+*.sln
+*.VC.db
+*.opensdf
+*.sdf
+*.suo
+*.xcodeproj
+*.xcworkspace
+Plugins/*/Binaries/
+Plugins/*/Intermediate/
+
+# Standalone builds
+build/
+cmake-build-*/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Terrain pipeline caches (raw DEM downloads are large and re-fetchable)
+Tools/terrain/cache/
+Tools/terrain/output/
