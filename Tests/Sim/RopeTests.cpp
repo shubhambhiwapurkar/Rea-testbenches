@@ -54,7 +54,7 @@ TEST_CASE("Rope: stiffness inverted from the UIAA rated impact force") {
   CHECK(RopeStiffnessN(worn) > k * 1.2);   // worn ropes absorb less energy
   RopeSpec staticRope = rope;
   staticRope.dynamic = false;
-  CHECK_RANGE(RopeStiffnessN(staticRope) / k, 10.0, 20.0);
+  CHECK_RANGE(RopeStiffnessN(staticRope) / k, 1.5, 3.0);
 }
 
 TEST_CASE("Rope: peak force reproduces the rated impact force at the UIAA standard drop") {
@@ -90,10 +90,14 @@ TEST_CASE("Rope: dynamic belay lowers peak force by 30-40 %") {
   CHECK(PeakImpactForceKN(80.0, 1.0, rope, 0.5) < locked);
 }
 
-TEST_CASE("Rope: static rope at fall factor 1 exceeds 15 kN") {
+TEST_CASE("Rope: static rope matches EN 1891 and shock-loads hard at high fall factors") {
   RopeSpec staticRope;
   staticRope.dynamic = false;
-  CHECK(PeakImpactForceKN(80.0, 1.0, staticRope) > 15.0);
+  CHECK_RANGE(PeakImpactForceKN(100.0, 0.3, staticRope), 5.0, 7.0);  // EN 1891 type A: <= ~6 kN
+  CHECK_RANGE(PeakImpactForceKN(80.0, 1.0, staticRope), 8.5, 11.0);
+  CHECK(PeakImpactForceKN(80.0, 2.0, staticRope) > 12.0);
+  RopeSpec dynamicRope;
+  CHECK(PeakImpactForceKN(80.0, 1.0, staticRope) > PeakImpactForceKN(80.0, 1.0, dynamicRope) + 2.0);
   RopeSpec rope;
   CHECK(PeakImpactForceKN(80.0, 1.0, rope) < 9.0);
 }
@@ -258,10 +262,10 @@ TEST_CASE("ResolveFall: static line shock-loads and tumbling terrain injure more
   const Anchor bolt = MakeAnchor(AnchorType::Bolt, 1.0);
   FallScenario sc;
   sc.distanceAboveProtectionM = 3.0;
-  sc.ropeOutM = 6.0;
+  sc.ropeOutM = 3.5;  // near fall factor 2: e.g. falling past a fixed-line anchor on a short lanyard
   sc.slopeAngleDeg = 90.0;
   sc.belayDynamic01 = 0.0;
-  CHECK(MeanInjury(sc, stat, bolt, 100) > MeanInjury(sc, dyn, bolt, 100) + 0.2);
+  CHECK(MeanInjury(sc, stat, bolt, 100) > MeanInjury(sc, dyn, bolt, 100) + 0.1);
   FallScenario tumble = sc;
   tumble.slopeAngleDeg = 60.0;
   CHECK(MeanInjury(tumble, dyn, bolt, 100) > MeanInjury(sc, dyn, bolt, 100));

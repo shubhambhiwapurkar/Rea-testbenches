@@ -24,12 +24,12 @@ constexpr double kMaxFallFactor = 2.0;
 // above the new-rope rating (Beal / Mammut used-rope drop tests; DAV Sicherheitsforschung).
 constexpr double kWearImpactIncrease = 0.35;
 
-// Low-stretch (EN 1891) static ropes and fixed lines: modelled as ~12x the stiffness of a dynamic rope
-// with the same rating. This reproduces the >15 kN body loads reported for factor-1 falls onto
-// static rope (Petzl technical notes on falls onto static rope / lanyards). Note: EN 1891 type A only
-// requires <= 6 kN at FF 0.3 with 100 kg, which implies a softer rope; the stiffer value is the
-// conservative choice for a game where shock-loading a fixed line must be dangerous.
-constexpr double kStaticStiffnessMultiplier = 12.0;
+// Low-stretch (EN 1891 type A) static ropes and fixed lines: ~2x the stiffness of a dynamic rope with
+// the same rating. EN 1891 allows <= 6 kN for 100 kg at fall factor 0.3, and 2x reproduces that
+// (~6.3 kN) while giving ~9-10 kN for 80 kg at FF 1, in line with drop tests on static kernmantle
+// (Petzl/Beal technical notes). Factor-2 falls still exceed 12 kN, so shock-loading a fixed line
+// stays dangerous. Dyneema slings are far stiffer and are not modelled as rope.
+constexpr double kStaticStiffnessMultiplier = 2.0;
 
 // A dynamic belay / rope slipping through a tube device lowers the peak force by up to ~35 %
 // (Petzl belay-device slip tests; Beal "dynamic belay" data: soft catches cut peak force by 30-40 %).
