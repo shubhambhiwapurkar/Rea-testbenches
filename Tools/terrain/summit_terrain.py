@@ -15,10 +15,11 @@ Examples
 --------
   python summit_terrain.py fetch --peak-id everest --extent-km 20
   python summit_terrain.py build --peak-id everest --extent-km 20 --ue-size 4033 --detail
-  python summit_terrain.py build --lat 46.5775 --lon 8.0053 --name eiger --extent-km 10 \
-      --resolution-m 2 --ue-size auto --source swissalti3d_mosaic.tif
-  python summit_terrain.py preview --metadata output/everest/everest.json --width 1400 \
+  python summit_terrain.py build --lat 46.5775 --lon 8.0053 --name eiger --elevation-m 3967
+      --extent-km 10 --resolution-m 2 --ue-size auto --source swissalti3d_mosaic.tif
+  python summit_terrain.py preview --metadata output/everest/everest.json --width 1400
       --out ../../Docs/images/everest_hillshade.png
+  (continuation lines belong to the command above them)
 """
 
 from __future__ import annotations
@@ -42,7 +43,7 @@ from rasterio.transform import Affine  # noqa: E402
 
 from terrainlib import __version__  # noqa: E402
 from terrainlib import analysis, dem, detail, export, layers, render, ue  # noqa: E402
-from terrainlib.presets import Landmark, Peak, get_preset, load_presets, slugify  # noqa: E402
+from terrainlib.presets import Peak, get_preset, load_presets, slugify  # noqa: E402
 
 TOOL_DIR = Path(__file__).resolve().parent
 CACHE_DIR = TOOL_DIR / "cache"
@@ -476,7 +477,8 @@ def build_metadata(args, peak: Peak, name: str, plan: GridPlan, src: SourceInfo,
             "attribution": dem.COPERNICUS_ATTRIBUTION if src.kind == "copernicus" else None,
         },
         "projection": {
-            "kind": args.projection, "proj4": plan.crs.to_proj4(), "wkt": plan.crs.to_wkt(),
+            "kind": args.projection, "proj4": plan.crs.to_proj4().replace("=True", ""),
+            "wkt": plan.crs.to_wkt(),
             "center_lat": lat_c, "center_lon": lon_c,
             "corners_lonlat": {k: [round(v[0], 6), round(v[1], 6)] for k, v in corners.items()},
             "map_axes": "x = east (m), y = north (m), origin at the peak",
@@ -496,6 +498,7 @@ def build_metadata(args, peak: Peak, name: str, plan: GridPlan, src: SourceInfo,
             "precision_m_per_step": round(zmap.metres_per_step, 6),
         },
         "ue_import": {
+            "file": files[0]["png"] if plan.tiles == 1 else f"{name}_full.png",
             **ue.import_settings(plan.n, plan.pixel_m, zmap, layout if plan.tiles == 1 else None),
             "z_origin": args.z_origin,
             "derivation": {
@@ -522,7 +525,7 @@ def build_metadata(args, peak: Peak, name: str, plan: GridPlan, src: SourceInfo,
 def print_import_summary(meta: dict) -> None:
     imp = meta["ue_import"]
     log("\n=== UE5 Landscape import (Landscape mode > Manage > New > Import from File) ===")
-    log(f"  Heightmap file : {imp['tiles'][0]['png']}  ({imp['heightmap_resolution']})")
+    log(f"  Heightmap file : {imp['file']}  ({imp['heightmap_resolution']})")
     log(f"  Location (cm)  : X {imp['location_cm']['x']}  Y {imp['location_cm']['y']}  "
         f"Z {imp['location_cm']['z']}")
     log(f"  Scale          : X {imp['scale']['x']}  Y {imp['scale']['y']}  Z {imp['scale']['z']}")
@@ -533,6 +536,11 @@ def print_import_summary(meta: dict) -> None:
     log(f"  SummitSettings.SeaLevelWorldZCm = {imp['sea_level_world_z_cm']}  "
         f"(altitude_m = (WorldZ_cm - SeaLevelWorldZCm)/100)")
     log(f"  height precision {imp['height_precision_m_per_step'] * 100:.2f} cm per 16-bit step")
+    if len(imp["tiles"]) > 1:
+        log("  Tiles (same Scale and Location.Z; shared edge vertices):")
+        for t in imp["tiles"]:
+            loc = t["ue_import"]["location_cm"]
+            log(f"    {t['png']}: Location X {loc['x']} Y {loc['y']} Z {loc['z']}")
     s = meta["summit"]
     log(f"  summit: source DEM local max {s['source_dem']['local_max_m']} m, final {s['final_m']} m, "
         f"reference {s['reference_m']} m")

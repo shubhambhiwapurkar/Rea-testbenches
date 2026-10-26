@@ -192,6 +192,28 @@ deterministically: the same `--seed` gives the same terrain.
 Snowline and grassline come from the preset (Khumbu: 5700 m and 4800 m), or from a rough latitude
 table. Override them with `--snowline-m` and `--grassline-m`.
 
+## Reference build: Everest
+
+Command: `build --peak-id everest --extent-km 20 --ue-size 4033 --detail --fit-landmarks`. It took about
+3 min 15 s on 4 cores, mostly thermal erosion at about 0.5 s per iteration on 16 M pixels.
+
+| Item | Value |
+|---|---|
+| Grid | 4033 x 4033, 20.000 km, 4.9603 m/px, AEQD centred on 27.98811 N, 86.92499 E |
+| Tiles | N27E086, N27E087, N28E086, N28E087 (the square plus 2 km crosses 28° N and 87° E) |
+| Elevation range | 4410.4 to 8848.9 m (range 4438.5 m), 6.77 cm per 16-bit step |
+| UE Location | X -1 000 000, Y -1 000 000, Z 0 cm (`--z-origin mid`) |
+| UE Scale | X 496.031746, Y 496.031746, Z 866.907759 |
+| Layout | 63x63 quads, 2x2 sections, 32x32 components |
+| `SeaLevelWorldZCm` | -662 968.386 (altitude = WorldZ/100 + 6629.684 m) |
+| Summit, source DEM | 8737.79 m local max, 130 m NNE of the surveyed coordinate (8720.6 m at the coordinate) |
+| Summit vs 8848.86 m | **-111.07 m** in Copernicus. Clamped with +110.37 m (r = 331 m) to 8848.832 m (-2.8 cm quantisation) |
+| Lhotse vs 8516 m | -100.0 m in Copernicus (8415.98). Clamped to 8516.0 |
+| Everest Base Camp (28.0043 N, 86.8571 E) | inside (x -6.68 km, y +1.80 km). DEM 5304.6 m vs the signposted 5364 m: **-59.7 m**. The camp sits on the thinning Khumbu glacier. |
+| South Col (approx. coordinate) | DEM 7848.6 m vs 7906 m (-57 m) |
+| Detail shift | mean 0.43 m, p99 2.8 m. 82 raw-DEM peaks moved on average 0.19 m, at most 1.03 m |
+| Layer coverage | rock 14 %, snow 42.7 %, glacier 6.5 %, scree 7 %, grass 0.9 %, dirt 28.9 % |
+
 ## Data limits and better sources
 
 **Copernicus GLO-30** is a 1 arc-second (about 30 m) **DSM**, with heights relative to the EGM2008

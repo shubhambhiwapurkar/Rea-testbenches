@@ -192,13 +192,27 @@ def render_layers(h: np.ndarray, weights: dict[str, np.ndarray], info: PreviewIn
     return _compose(rgb, info, factor, None, swatches)
 
 
+# Colours that must survive palette quantisation exactly (markers, text, legend swatches).
+_FIXED_COLOURS = [(255, 255, 255), (0, 0, 0), (10, 10, 10), (20, 20, 20), (200, 30, 30),
+                  (20, 90, 200), (250, 250, 248), (90, 90, 90), *LAYER_COLOURS.values()]
+
+
+def _quantize(img: Image.Image, colors: int) -> Image.Image:
+    """Adaptive palette for the map plus fixed overlay colours, Floyd-Steinberg dithered."""
+    n_free = colors - len(_FIXED_COLOURS)
+    base = img.quantize(colors=n_free, method=Image.Quantize.MEDIANCUT)
+    pal = base.getpalette()[: 3 * n_free]
+    pal += [v for rgb in _FIXED_COLOURS for v in rgb]
+    pal_img = Image.new("P", (1, 1))
+    pal_img.putpalette(pal)
+    return img.convert("RGB").quantize(palette=pal_img, dither=Image.Dither.FLOYDSTEINBERG)
+
+
 def save_compact_png(img: Image.Image, path, max_bytes: int | None = None) -> int:
     """Save as an adaptive-palette PNG (small, still smooth for shaded relief)."""
-    q = img.quantize(colors=256, method=Image.Quantize.MEDIANCUT, dither=Image.Dither.FLOYDSTEINBERG)
-    q.save(path, optimize=True)
-    size = path.stat().st_size if hasattr(path, "stat") else 0
-    if max_bytes and size > max_bytes:
-        q = img.quantize(colors=128, method=Image.Quantize.MEDIANCUT)
-        q.save(path, optimize=True)
+    for colors in (256, 192, 128):
+        _quantize(img, colors).save(path, optimize=True)
         size = path.stat().st_size
+        if not max_bytes or size <= max_bytes:
+            break
     return size
