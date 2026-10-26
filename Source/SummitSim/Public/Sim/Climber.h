@@ -101,6 +101,10 @@ class Climber {
   CauseOfDeath Cause() const { return cause_; }
   void Kill(CauseOfDeath cause) { cause_ = cause; }
 
+  // Additional accessors.
+  double SnowBlindness01() const { return snowBlindness01_; }
+  double LastPressureKPa() const { return lastPressureKPa_; }
+
  private:
   void SubStep(double dt, const ClimberEnvironment& env, const ClimberAction& action, const ClimberGear& gear);
 
@@ -111,6 +115,7 @@ class Climber {
   double lastMetabolicW_ = 0.0;
   double lastExertion01_ = 0.0;
   double snowBlindness01_ = 0.0;
+  double lastPressureKPa_ = 101.325;
   CauseOfDeath cause_ = CauseOfDeath::None;
 };
 

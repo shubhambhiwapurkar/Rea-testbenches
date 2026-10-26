@@ -17,7 +17,7 @@ constexpr double kReferenceHeightM = 1.78;
 constexpr double kCoreMassFraction = 0.80;
 constexpr double kSkinMassFraction = 0.15;         // vasoconstricted shell (Gagge's alpha in the cold)
 constexpr double kTissueFreezingC = -0.55;         // Danielsson 1996
-constexpr double kLatentHeatSlowdown = 4.0;        // freezing tissue water holds temperature near -0.55 °C
+constexpr double kLatentHeatSlowdown = 2.0;        // freezing tissue water holds temperature near -0.55 °C
 constexpr double kRestingMetabolismWPerKg = 1.17;  // 1 MET = 3.5 mL O2/kg/min
 
 // Extremity nodes: share of body-surface area, tissue mass per 75 kg, and perfusion conductance
@@ -30,11 +30,12 @@ struct ExtremitySpec {
   double kMinWK;
   double kMaxWK;
   double convectionBoost;  // small-radius geometry: fingers and nose shed heat faster
+  double tissueResistance; // m2K/W, node centre to skin surface (skin + subcutis conduction)
 };
 constexpr ExtremitySpec kExtremities[3] = {
-    {0.050, 0.9, 0.3, 20.0, 1.4},  // Hands
-    {0.070, 2.0, 0.5, 20.0, 1.0},  // Feet
-    {0.025, 0.4, 0.8, 6.0, 1.2},   // Face (nose, cheeks, ears)
+    {0.050, 0.45, 0.3, 15.0, 1.4, 0.030},  // Hands (fingers and superficial hand tissue at risk)
+    {0.070, 1.00, 0.5, 15.0, 1.0, 0.030},  // Feet (toes and forefoot)
+    {0.025, 0.25, 0.8, 6.0, 1.2, 0.020},   // Face (nose, cheeks, ears)
 };
 
 // DuBois & DuBois (1916) body-surface area with a reference height.
@@ -99,7 +100,7 @@ FrostbiteGrade ThermalModel::Frostbite(BodyPart part) const {
   const double d = state_.frostbiteDamage01[i];
   if (d >= 0.5) return FrostbiteGrade::Deep;
   if (d >= 0.15) return FrostbiteGrade::Superficial;
-  if (d >= 0.01 || state_.extremityTempC[i] <= 0.0) return FrostbiteGrade::Frostnip;
+  if (d >= 0.01 || state_.surfaceTempC[i] <= 0.0) return FrostbiteGrade::Frostnip;
   return FrostbiteGrade::None;
 }
 
@@ -223,7 +224,7 @@ void ThermalModel::Step(double dtSeconds, const ThermalInputs& in) {
       const ExtremitySpec& spec = kExtremities[i];
       const double te = s.extremityTempC[i];
       // Local cold constricts the vessels of the cold tissue itself.
-      const double local = 0.1 + 0.9 * SmoothStep(5.0, 30.0, te);
+      const double local = 0.1 + 0.9 * SmoothStep(10.0, 34.0, te);
       // Cold-induced vasodilation ("hunting reaction"), blunted by hypoxia and core cooling
       // (Daanen 2003; Felicijan et al. 2008, High Alt Med Biol 9:22).
       const double civd = 0.25 * SmoothStep(12.0, 4.0, te) * SmoothStep(36.5, 37.2, tc) * SmoothStep(0.7, 0.9, in.spo2);
@@ -239,9 +240,15 @@ void ThermalModel::Step(double dtSeconds, const ThermalInputs& in) {
       s.extremityTempC[i] = te + dT;
       toExtremities += in_;
       extremityLoss += out;
+      // The skin surface sits between the node and the environment: exposed skin freezes long
+      // before the deeper tissue does (Danielsson 1996; Osczevski & Bluestein 2005 wind chill model).
+      const double rOut = extR[i];
+      const double surface = operativeT + (s.extremityTempC[i] - operativeT) * rOut / (spec.tissueResistance + rOut);
+      s.surfaceTempC[i] = surface;
       // Freezing injury accumulates while tissue is below its freezing point; deeper cold, faster.
-      if (s.extremityTempC[i] < kTissueFreezingC) {
-        const double rate = 0.05 + 0.25 * (kTissueFreezingC - s.extremityTempC[i]);  // per hour
+      const double frozenT = 0.5 * (surface + s.extremityTempC[i]);  // mean of the outer tissue layer
+      if (frozenT < kTissueFreezingC) {
+        const double rate = 0.08 + 0.3 * (kTissueFreezingC - frozenT);  // per hour
         s.frostbiteDamage01[i] = Clamp01(s.frostbiteDamage01[i] + rate * dt / kSecondsPerHour);
       }
     }

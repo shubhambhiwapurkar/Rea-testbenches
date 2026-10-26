@@ -19,11 +19,11 @@ constexpr double kKcalPerKgTissue = 7700.0;
 // Glycogen is stored with ~3 g water per g; 1 kcal of glycogen ≈ 1 g of body mass.
 constexpr double kKgPerKcalGlycogen = 0.001;
 
-// Intake. Normal maximum voluntary intake ~4,000 kcal/day; above ~5,000 m appetite and absorption
+// Intake. Comfortable maximum voluntary intake ~3,500 kcal/day; above ~5,000 m appetite and absorption
 // fall (Westerterp et al. 1992 "Energy expenditure climbing Mt Everest"; Boyer & Blume 1984
 // "Weight loss and changes in body composition at high altitude", J Appl Physiol 57:1580;
 // Kayser 1992). Expeditions typically lose 5-10 kg over two months.
-constexpr double kMaxDailyIntakeKcal = 4000.0;
+constexpr double kMaxDailyIntakeKcal = 3500.0;
 constexpr double kStomachEmptyingTauS = 2.0 * kHour;
 constexpr double kMealCarbShare = 0.55;
 constexpr double kLipogenesisEfficiency = 0.75;
@@ -54,14 +54,27 @@ double PandolfMetabolicRateW(double bodyMassKg, double loadKg, double speedMS, d
   const double g = gradePercent;
   const double eta = std::fmax(terrainFactor, 0.5);
   const double standing = 1.5 * w + 2.0 * (w + l) * (l / w) * (l / w);
-  double m = standing + eta * (w + l) * (1.5 * v * v + 0.35 * v * g);
-  if (g < 0.0) {
-    // Santee et al. (2003) downhill correction, Aviat Space Environ Med 74:956:
-    //   CF = eta [ G (W+L) V / 3.5 - (W+L)(G+6)^2 / W + (25 - V^2) ],  M = Pandolf - CF.
-    const double cf = eta * (g * (w + l) * v / 3.5 - (w + l) * (g + 6.0) * (g + 6.0) / w + (25.0 - v * v));
-    m -= cf;
-  }
-  return std::fmax(m, standing);
+  if (g >= 0.0) return standing + eta * (w + l) * (1.5 * v * v + 0.35 * v * g);
+  // Santee et al. (2003) downhill correction (Santee, Blanchard, Speckman, Gonzalez & Wright,
+  // USARIEM TN03-3 / J Human-Environ Syst 6:69):
+  //   CF = eta [ G (W+L) V / 3.5 - (W+L)(G+6)^2 / W + (25 - V^2) ],  M = Pandolf - CF.
+  // The correction was fitted on moderate descents; its (G+6)^2 term explodes on steep ground.
+  // Below -15 % the -15 % value is used, rising gently with steepness for eccentric braking work
+  // (Minetti et al. 2002, J Appl Physiol 93:1039: cost per metre is lowest near -10 to -20 %).
+  // Santee's constant terms do not vanish at V = 0 (it was fitted at 0.9-1.5 m/s), so below
+  // kMinSanteeSpeed the cost is interpolated down to the standing cost.
+  constexpr double kMinSanteeSpeed = 0.6;
+  const double ge = std::fmax(g, -15.0);
+  const auto santee = [&](double speed) {
+    const double pandolf = standing + eta * (w + l) * (1.5 * speed * speed + 0.35 * speed * ge);
+    const double cf =
+        eta * (ge * (w + l) * speed / 3.5 - (w + l) * (ge + 6.0) * (ge + 6.0) / w + (25.0 - speed * speed));
+    double m = pandolf - cf;
+    if (g < -15.0) m *= 1.0 + 0.02 * (-15.0 - g);
+    return std::fmax(m, standing);
+  };
+  if (v >= kMinSanteeSpeed) return santee(v);
+  return standing + (santee(kMinSanteeSpeed) - standing) * (v / kMinSanteeSpeed);
 }
 
 double MetabolicRateToVO2MlKgMin(double metabolicW, double bodyMassKg) {

@@ -51,6 +51,7 @@ struct ThermalState {
   double heatProductionW = 0.0;                       // metabolic + shivering, last step
   double respiratoryHeatLossW = 0.0;                  // warming and humidifying inspired air
   double shiveringFatigue01 = 0.0;                    // hours of shivering exhaust its capacity
+  std::array<double, 3> surfaceTempC{28.0, 28.0, 30.0};  // skin surface of each extremity
 };
 
 struct ThermalInputs {

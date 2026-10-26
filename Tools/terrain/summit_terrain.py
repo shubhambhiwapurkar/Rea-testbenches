@@ -242,6 +242,8 @@ def make_zmap(args, h: np.ndarray) -> ue.ZMapping:
         lo = math.floor(lo * 10.0) / 10.0  # small headroom so no value clips
     if args.z_max is None:
         hi = math.ceil(hi * 10.0) / 10.0
+    if hi - lo < 1.0:  # flat area (e.g. all sea): keep a 1 m range so Scale.Z is non-zero
+        hi = lo + 1.0
     return ue.z_mapping(lo, hi, args.z_origin)
 
 
@@ -381,7 +383,9 @@ def cmd_build(args: argparse.Namespace) -> int:
             "mean_abs": round(float(np.abs(h - raw).mean()), 3),
             "p99_abs": round(float(np.percentile(np.abs(h - raw)[::7, ::7], 99)), 3),
             "max_abs": round(float(np.abs(h - raw).max()), 3),
-            "at_summit_pixel": round(float(h[anchor] - raw[anchor]), 3)}
+            "at_summit_pixel": round(float(h[anchor] - raw[anchor]), 3),
+            "peaks": detail.peak_shift_stats(raw, h, plan.pixel_m)}
+        log(f"  detail shift: {detail_meta['shift_vs_raw_m']}")
     summit["summit_pixel"] = {"row": anchor[0], "col": anchor[1],
                               "raw_m": round(float(raw[anchor]), 2),
                               "after_detail_m": round(float(h[anchor]), 2)}
