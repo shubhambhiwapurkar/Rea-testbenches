@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://summit.game/schema/route.schema.json",
+  "title": "SUMMIT route",
+  "description": "Data/Mountains/routes/<peak_id>__<route_slug>.json. Mirrors summit::sim::Route / Camp / RouteSegment / ItineraryDay (Source/SummitSim/Public/Sim/Expedition.h).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "peak_id", "name", "style", "season_best", "permit_cost_usd", "camps", "segments", "typical_itinerary", "sources"],
+  "properties": {
+    "$schema": {"type": "string"},
+    "id": {"type": "string", "pattern": "^[a-z0-9]+(_[a-z0-9]+)*__[a-z0-9]+(_[a-z0-9]+)*$"},
+    "peak_id": {"$ref": "#/$defs/id"},
+    "name": {"type": "string", "minLength": 1},
+    "style": {"type": "string", "enum": ["expedition", "alpine", "trek"]},
+    "grade": {"type": "string"},
+    "technical": {"type": "boolean"},
+    "season_best": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "integer", "minimum": 1, "maximum": 12}},
+    "permit_cost_usd": {"type": ["number", "null"], "minimum": 0, "description": "Approximate per-climber permit/royalty in USD for the year in permit_year; null when only sold as a package."},
+    "permit_year": {"type": "integer", "minimum": 1990, "maximum": 2100},
+    "permit_notes": {"type": "string"},
+    "camps": {"type": "array", "minItems": 2, "items": {"$ref": "#/$defs/camp"}},
+    "descent_camps": {"type": "array", "items": {"$ref": "#/$defs/camp"}, "description": "Camps used only on a different descent route (not part of the ascent chain)."},
+    "segments": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/segment"}},
+    "typical_itinerary": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/itinerary_day"}},
+    "sources": {"type": "array", "minItems": 1, "items": {"anyOf": [
+      {"type": "string", "minLength": 3},
+      {"type": "object", "required": ["title"], "additionalProperties": false,
+       "properties": {"title": {"type": "string"}, "url": {"type": "string"}, "year": {"type": "integer"}}}
+    ]}},
+    "confidence": {"type": "string", "enum": ["high", "medium", "low"]},
+    "notes": {"type": "string"}
+  },
+  "$defs": {
+    "id": {"type": "string", "pattern": "^[a-z0-9]+(_[a-z0-9]+)*$"},
+    "terrain": {
+      "description": "snake_case of summit::sim::TerrainType (Source/SummitSim/Public/Sim/Terrain.h).",
+      "type": "string",
+      "enum": ["trail", "grass", "scree", "boulder", "rock", "wet_rock", "verglas", "hard_snow", "soft_snow", "deep_snow", "glacier_ice"]
+    },
+    "hazard": {
+      "type": "string",
+      "enum": ["icefall", "serac", "crevasses", "avalanche", "cornice", "rockfall", "loose_rock", "verglas", "bergschrund", "exposure",
+               "altitude", "cold", "wind", "whiteout", "crowding", "route_finding", "sun_heat", "river_crossing", "landslide", "lightning", "volcanic"]
+    },
+    "camp": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "altitude_m", "lat", "lon", "tent_capacity"],
+      "properties": {
+        "id": {"$ref": "#/$defs/id"},
+        "name": {"type": "string", "minLength": 1},
+        "type": {"type": "string", "enum": ["trailhead", "village", "hut", "base_camp", "camp", "bivouac", "waypoint", "summit"]},
+        "altitude_m": {"type": "number", "minimum": -500, "maximum": 8900},
+        "lat": {"type": "number", "minimum": -90, "maximum": 90},
+        "lon": {"type": "number", "minimum": -180, "maximum": 180},
+        "tent_capacity": {"type": "integer", "minimum": 0, "description": "Approximate number of tents (or beds for huts/lodges) the site can hold; 0 for waypoints."},
+        "approach": {"type": "boolean", "description": "Approach/trek camp allowed to lie farther than 25 km from the summit."},
+        "confidence": {"type": "string", "enum": ["high", "medium", "low"]},
+        "notes": {"type": "string"}
+      }
+    },
+    "segment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["from", "to", "distance_m", "ascent_m", "descent_m", "terrain", "hours_up", "hours_down", "fixed_ropes", "hazards"],
+      "properties": {
+        "from": {"$ref": "#/$defs/id"},
+        "to": {"$ref": "#/$defs/id"},
+        "distance_m": {"type": "number", "exclusiveMinimum": 0},
+        "ascent_m": {"type": "number", "minimum": 0},
+        "descent_m": {"type": "number", "minimum": 0},
+        "terrain": {"$ref": "#/$defs/terrain"},
+        "hours_up": {"type": "number", "exclusiveMinimum": 0, "description": "Typical time from `from` to `to` for an acclimatized, fit climber."},
+        "hours_down": {"type": "number", "exclusiveMinimum": 0, "description": "Typical time from `to` back to `from`."},
+        "fixed_ropes": {"type": "boolean"},
+        "hazards": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/hazard"}},
+        "max_slope_deg": {"type": "number", "minimum": 0, "maximum": 90},
+        "notes": {"type": "string"}
+      }
+    },
+    "itinerary_day": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["day", "sleep_camp", "max_altitude_m"],
+      "properties": {
+        "day": {"type": "integer", "minimum": 1},
+        "sleep_camp": {"$ref": "#/$defs/id"},
+        "max_altitude_m": {"type": "number", "minimum": -500, "maximum": 8900},
+        "note": {"type": "string"}
+      }
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "$schema": "../schema/climate.schema.json",
+  "id": "western_himalaya",
+  "name": "Garhwal / Western Himalaya",
+  "region": "Indian Garhwal and Kumaon (Kamet, Nanda Devi, Gangotri peaks).",
+  "latitude_deg": 30.6,
+  "reference_elevation_m": 4500,
+  "reference_site": "Tapovan / Nanda Devi Sanctuary meadows",
+  "mean_temp_c": [-11.0, -10.0, -6.5, -2.5, 1.0, 3.5, 4.0, 3.8, 2.0, -2.0, -6.0, -9.0],
+  "diurnal_range_c": [11, 11, 11, 10, 9, 7, 6, 6, 7, 10, 11, 11],
+  "jet_stream_wind_ms": [48, 50, 45, 36, 26, 16, 10, 10, 15, 26, 36, 44],
+  "storms_per_week": [1.2, 1.4, 1.3, 1.0, 1.0, 2.2, 3.2, 3.2, 1.8, 0.6, 0.4, 0.8],
+  "precipitation_mm_per_day": [2.0, 2.4, 2.2, 1.4, 1.2, 3.5, 6.5, 6.5, 3.5, 0.8, 0.3, 1.0],
+  "lapse_rate_c_per_km": 6.2,
+  "prevailing_wind_from_deg": 270,
+  "summit_windows": [5, 6, 9, 10],
+  "sources": [
+    "Dimri, A. P. et al. (2015) Western Disturbances: a review. Reviews of Geophysics 53",
+    "Hersbach, H. et al. (2020) The ERA5 global reanalysis. QJRMS 146:1999-2049 (monthly climatology 1991-2020, 300 hPa winds)"
+  ],
+  "confidence": "low",
+  "notes": "Both winter westerly disturbances and the summer monsoon matter; profile is a coarse regional estimate."
+}

@@ -1,0 +1,280 @@
+{
+  "$schema": "../schema/route.schema.json",
+  "id": "ama_dablam__southwest_ridge",
+  "peak_id": "ama_dablam",
+  "name": "Southwest Ridge",
+  "style": "expedition",
+  "grade": "TD- / D+ ; UIAA IV-V rock (Yellow Tower), 50-55° snow/ice on the summit face",
+  "technical": true,
+  "season_best": [10, 11, 4, 5],
+  "permit_cost_usd": 400,
+  "permit_year": 2024,
+  "permit_notes": "Nepal royalty for Ama Dablam (autumn season, per climber); spring rates were similar before the 2025 revision. Low confidence.",
+  "camps": [
+    {
+      "id": "pangboche",
+      "name": "Pangboche",
+      "type": "village",
+      "altitude_m": 3985,
+      "lat": 27.8575,
+      "lon": 86.794,
+      "tent_capacity": 150,
+      "confidence": "medium",
+      "notes": "Sherpa village and monastery."
+    },
+    {
+      "id": "bc",
+      "name": "Ama Dablam Base Camp (Mingbo meadow)",
+      "type": "base_camp",
+      "altitude_m": 4570,
+      "lat": 27.84,
+      "lon": 86.833,
+      "tent_capacity": 120,
+      "confidence": "low",
+      "notes": "Grassy meadow with water; one of the most pleasant base camps in Nepal."
+    },
+    {
+      "id": "abc",
+      "name": "Advanced Base Camp (Yak Camp)",
+      "type": "camp",
+      "altitude_m": 5350,
+      "lat": 27.848,
+      "lon": 86.842,
+      "tent_capacity": 30,
+      "confidence": "low",
+      "notes": "Gear depot; optional camp."
+    },
+    {
+      "id": "c1",
+      "name": "Camp 1",
+      "type": "camp",
+      "altitude_m": 5700,
+      "lat": 27.8505,
+      "lon": 86.8475,
+      "tent_capacity": 40,
+      "confidence": "low",
+      "notes": "Tents perched on granite blocks and ledges."
+    },
+    {
+      "id": "c2",
+      "name": "Camp 2 (Yellow Tower)",
+      "type": "camp",
+      "altitude_m": 5900,
+      "lat": 27.854,
+      "lon": 86.852,
+      "tent_capacity": 8,
+      "confidence": "low",
+      "notes": "Tiny exposed platforms on top of the Yellow Tower; space limits team sizes."
+    },
+    {
+      "id": "c3",
+      "name": "Camp 3 (below the Dablam)",
+      "type": "camp",
+      "altitude_m": 6300,
+      "lat": 27.858,
+      "lon": 86.8565,
+      "tent_capacity": 10,
+      "confidence": "low",
+      "notes": "Used less since the 2006 serac collapse destroyed the camp and killed six climbers."
+    },
+    {
+      "id": "summit",
+      "name": "Summit of Ama Dablam",
+      "type": "summit",
+      "altitude_m": 6812,
+      "lat": 27.86139,
+      "lon": 86.86111,
+      "tent_capacity": 0,
+      "confidence": "high"
+    }
+  ],
+  "segments": [
+    {
+      "from": "pangboche",
+      "to": "bc",
+      "distance_m": 5000,
+      "ascent_m": 645,
+      "descent_m": 60,
+      "terrain": "trail",
+      "hours_up": 3,
+      "hours_down": 2,
+      "fixed_ropes": false,
+      "hazards": [],
+      "notes": "Cross the Imja Khola and climb to the Mingbo meadow."
+    },
+    {
+      "from": "bc",
+      "to": "abc",
+      "distance_m": 2000,
+      "ascent_m": 780,
+      "descent_m": 0,
+      "terrain": "boulder",
+      "hours_up": 2.5,
+      "hours_down": 1.5,
+      "fixed_ropes": false,
+      "hazards": ["loose_rock"],
+      "notes": "Moraine and grass ramps to the Yak Camp."
+    },
+    {
+      "from": "abc",
+      "to": "c1",
+      "distance_m": 1200,
+      "ascent_m": 350,
+      "descent_m": 0,
+      "terrain": "boulder",
+      "hours_up": 3,
+      "hours_down": 2,
+      "fixed_ropes": true,
+      "hazards": ["rockfall", "exposure"],
+      "max_slope_deg": 35,
+      "notes": "Boulder field then slabs with fixed lines."
+    },
+    {
+      "from": "c1",
+      "to": "c2",
+      "distance_m": 800,
+      "ascent_m": 200,
+      "descent_m": 0,
+      "terrain": "rock",
+      "hours_up": 4,
+      "hours_down": 2.5,
+      "fixed_ropes": true,
+      "hazards": ["exposure", "rockfall"],
+      "max_slope_deg": 60,
+      "notes": "Exposed granite ridge; the Yellow Tower (UIAA IV/5.6) is the crux pitch at ~5850 m."
+    },
+    {
+      "from": "c2",
+      "to": "c3",
+      "distance_m": 800,
+      "ascent_m": 400,
+      "descent_m": 0,
+      "terrain": "hard_snow",
+      "hours_up": 4,
+      "hours_down": 2.5,
+      "fixed_ropes": true,
+      "hazards": ["exposure", "cornice", "serac"],
+      "max_slope_deg": 50,
+      "notes": "Mixed Grey Tower and the corniced Mushroom Ridge."
+    },
+    {
+      "from": "c3",
+      "to": "summit",
+      "distance_m": 900,
+      "ascent_m": 512,
+      "descent_m": 0,
+      "terrain": "hard_snow",
+      "hours_up": 4.5,
+      "hours_down": 2.5,
+      "fixed_ropes": true,
+      "hazards": ["serac", "avalanche", "exposure"],
+      "max_slope_deg": 50,
+      "notes": "50-55° snow and ice flutings beside the Dablam serac to the summit; rappel descent."
+    }
+  ],
+  "typical_itinerary": [
+    {
+      "day": 1,
+      "sleep_camp": "pangboche",
+      "max_altitude_m": 3985,
+      "note": "Arrive after the Lukla-Namche-Tengboche trek."
+    },
+    {
+      "day": 2,
+      "sleep_camp": "bc",
+      "max_altitude_m": 4570,
+      "note": "To base camp."
+    },
+    {
+      "day": 3,
+      "sleep_camp": "bc",
+      "max_altitude_m": 4570,
+      "note": "Puja; rest."
+    },
+    {
+      "day": 4,
+      "sleep_camp": "bc",
+      "max_altitude_m": 5100,
+      "note": "Acclimatization hike; rope-skills refresher."
+    },
+    {
+      "day": 5,
+      "sleep_camp": "bc",
+      "max_altitude_m": 4570,
+      "note": "Rest."
+    },
+    {
+      "day": 6,
+      "sleep_camp": "abc",
+      "max_altitude_m": 5350,
+      "note": "Move to Yak Camp."
+    },
+    {
+      "day": 7,
+      "sleep_camp": "c1",
+      "max_altitude_m": 5900,
+      "note": "To C1, climb the first pitches toward the Yellow Tower, sleep C1."
+    },
+    {
+      "day": 8,
+      "sleep_camp": "bc",
+      "max_altitude_m": 5700,
+      "note": "Descend to base camp."
+    },
+    {
+      "day": 9,
+      "sleep_camp": "bc",
+      "max_altitude_m": 4570,
+      "note": "Rest."
+    },
+    {
+      "day": 10,
+      "sleep_camp": "bc",
+      "max_altitude_m": 4570,
+      "note": "Rest."
+    },
+    {
+      "day": 11,
+      "sleep_camp": "c1",
+      "max_altitude_m": 5700,
+      "note": "Summit push: base camp to C1."
+    },
+    {
+      "day": 12,
+      "sleep_camp": "c2",
+      "max_altitude_m": 5900,
+      "note": "Yellow Tower to C2."
+    },
+    {
+      "day": 13,
+      "sleep_camp": "c2",
+      "max_altitude_m": 6812,
+      "note": "Summit day (start ~02:00) past C3 to the summit; rappel to C2."
+    },
+    {
+      "day": 14,
+      "sleep_camp": "bc",
+      "max_altitude_m": 5900,
+      "note": "Descend to base camp."
+    },
+    {
+      "day": 15,
+      "sleep_camp": "bc",
+      "max_altitude_m": 4570,
+      "note": "Pack up."
+    },
+    {
+      "day": 16,
+      "sleep_camp": "pangboche",
+      "max_altitude_m": 4570,
+      "note": "Walk out."
+    }
+  ],
+  "sources": [
+    "Hawley, E. & Salisbury, R. The Himalayan Database",
+    "Nepal Department of Tourism royalty schedule",
+    "American Alpine Journal reports on the 2006 Ama Dablam serac collapse"
+  ],
+  "confidence": "low",
+  "notes": "Camp coordinates approximate. Many teams now go C2 to summit and back, skipping C3."
+}

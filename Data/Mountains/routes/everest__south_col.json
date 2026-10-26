@@ -1,0 +1,789 @@
+{
+  "$schema": "../schema/route.schema.json",
+  "id": "everest__south_col",
+  "peak_id": "everest",
+  "name": "South Col - Southeast Ridge (from Lukla)",
+  "style": "expedition",
+  "grade": "Non-technical by Himalayan standards; 50° ice on the Lhotse Face; bottled O2 customary",
+  "technical": false,
+  "season_best": [4, 5, 10],
+  "permit_cost_usd": 15000,
+  "permit_year": 2025,
+  "permit_notes": "Nepal royalty per foreign climber for the spring season (USD 15,000 from 1 Sept 2025; it was USD 11,000 from 2015 to Aug 2025). Autumn USD 7,500; winter and monsoon USD 3,750. On top: refundable garbage deposit (USD 4,000 per team), Khumbu Icefall route fee to SPCC (~USD 600 per climber), liaison officer, Sagarmatha NP and Khumbu Pasang Lhamu rural municipality fees.",
+  "camps": [
+    {
+      "id": "lukla",
+      "name": "Lukla (Tenzing-Hillary Airport)",
+      "type": "trailhead",
+      "altitude_m": 2860,
+      "lat": 27.6874,
+      "lon": 86.7317,
+      "tent_capacity": 0,
+      "approach": true,
+      "confidence": "high",
+      "notes": "Short, sloping runway; flights cancelled often in cloud. Expedition loads arrive by helicopter or porter."
+    },
+    {
+      "id": "phakding",
+      "name": "Phakding",
+      "type": "village",
+      "altitude_m": 2610,
+      "lat": 27.7396,
+      "lon": 86.7129,
+      "tent_capacity": 300,
+      "approach": true,
+      "confidence": "medium",
+      "notes": "Teahouse village on the Dudh Koshi."
+    },
+    {
+      "id": "namche",
+      "name": "Namche Bazaar",
+      "type": "village",
+      "altitude_m": 3440,
+      "lat": 27.805,
+      "lon": 86.714,
+      "tent_capacity": 600,
+      "approach": true,
+      "confidence": "high",
+      "notes": "Sherpa capital; acclimatization day; last ATMs and gear shops."
+    },
+    {
+      "id": "tengboche",
+      "name": "Tengboche Monastery",
+      "type": "waypoint",
+      "altitude_m": 3867,
+      "lat": 27.8361,
+      "lon": 86.7646,
+      "tent_capacity": 0,
+      "confidence": "high",
+      "notes": "Monastery on the ridge; many expeditions receive a blessing here."
+    },
+    {
+      "id": "deboche",
+      "name": "Deboche",
+      "type": "village",
+      "altitude_m": 3820,
+      "lat": 27.8325,
+      "lon": 86.7756,
+      "tent_capacity": 150,
+      "confidence": "medium",
+      "notes": "Quieter lodges 20 min past Tengboche."
+    },
+    {
+      "id": "dingboche",
+      "name": "Dingboche",
+      "type": "village",
+      "altitude_m": 4410,
+      "lat": 27.892,
+      "lon": 86.831,
+      "tent_capacity": 300,
+      "confidence": "medium",
+      "notes": "Acclimatization stop; Nangkartshang (5083 m) hike. Pheriche (4371 m, HRA clinic) is the alternative."
+    },
+    {
+      "id": "lobuche",
+      "name": "Lobuche",
+      "type": "village",
+      "altitude_m": 4940,
+      "lat": 27.948,
+      "lon": 86.8105,
+      "tent_capacity": 200,
+      "confidence": "medium",
+      "notes": "Last lodges before Gorak Shep."
+    },
+    {
+      "id": "gorak_shep",
+      "name": "Gorak Shep",
+      "type": "village",
+      "altitude_m": 5164,
+      "lat": 27.981,
+      "lon": 86.829,
+      "tent_capacity": 150,
+      "confidence": "medium",
+      "notes": "Last lodges; Kala Patthar (5644 m) above."
+    },
+    {
+      "id": "ebc",
+      "name": "Everest Base Camp",
+      "type": "base_camp",
+      "altitude_m": 5364,
+      "lat": 28.0072,
+      "lon": 86.8594,
+      "tent_capacity": 500,
+      "confidence": "medium",
+      "notes": "Tent city on the Khumbu Glacier moraine, ~1.5 km long; expedition season population can exceed 1,000."
+    },
+    {
+      "id": "c1",
+      "name": "Camp 1 (top of the Khumbu Icefall)",
+      "type": "camp",
+      "altitude_m": 6065,
+      "lat": 27.994,
+      "lon": 86.876,
+      "tent_capacity": 80,
+      "confidence": "low",
+      "notes": "Flat glacier at the mouth of the Western Cwm; often skipped by acclimatized climbers."
+    },
+    {
+      "id": "c2",
+      "name": "Camp 2 (Advanced Base Camp, Western Cwm)",
+      "type": "camp",
+      "altitude_m": 6400,
+      "lat": 27.9795,
+      "lon": 86.903,
+      "tent_capacity": 150,
+      "confidence": "low",
+      "notes": "On lateral moraine below the SW Face; cook tents and dining tents. Elevations 6400-6500 m cited."
+    },
+    {
+      "id": "c3",
+      "name": "Camp 3 (Lhotse Face)",
+      "type": "camp",
+      "altitude_m": 7162,
+      "lat": 27.974,
+      "lon": 86.918,
+      "tent_capacity": 60,
+      "confidence": "low",
+      "notes": "Platforms chopped into 40-45° ice; climbers stay clipped in even in camp."
+    },
+    {
+      "id": "c4",
+      "name": "Camp 4 (South Col)",
+      "type": "camp",
+      "altitude_m": 7906,
+      "lat": 27.9736,
+      "lon": 86.9306,
+      "tent_capacity": 120,
+      "confidence": "medium",
+      "notes": "Windswept saddle between Everest and Lhotse; the 'death zone' starts here."
+    },
+    {
+      "id": "balcony",
+      "name": "The Balcony",
+      "type": "waypoint",
+      "altitude_m": 8400,
+      "lat": 27.98,
+      "lon": 86.929,
+      "tent_capacity": 0,
+      "confidence": "low",
+      "notes": "Small platform on the SE Ridge; customary oxygen bottle change."
+    },
+    {
+      "id": "south_summit",
+      "name": "South Summit",
+      "type": "waypoint",
+      "altitude_m": 8749,
+      "lat": 27.9853,
+      "lon": 86.9265,
+      "tent_capacity": 0,
+      "confidence": "medium",
+      "notes": "Snow dome; first view of the final ridge and the Hillary Step."
+    },
+    {
+      "id": "hillary_step",
+      "name": "Hillary Step",
+      "type": "waypoint",
+      "altitude_m": 8790,
+      "lat": 27.987,
+      "lon": 86.9258,
+      "tent_capacity": 0,
+      "confidence": "medium",
+      "notes": "~12 m rock step until the 2015 earthquake altered it; now mostly a snow slope; queueing bottleneck."
+    },
+    {
+      "id": "summit",
+      "name": "Summit of Mount Everest",
+      "type": "summit",
+      "altitude_m": 8848.86,
+      "lat": 27.98806,
+      "lon": 86.92528,
+      "tent_capacity": 0,
+      "confidence": "high",
+      "notes": "2020 China-Nepal survey."
+    }
+  ],
+  "segments": [
+    {
+      "from": "lukla",
+      "to": "phakding",
+      "distance_m": 6200,
+      "ascent_m": 100,
+      "descent_m": 350,
+      "terrain": "trail",
+      "hours_up": 3.5,
+      "hours_down": 4,
+      "fixed_ropes": false,
+      "hazards": ["landslide"],
+      "notes": "Descends to the Dudh Koshi; suspension bridges; yak and dzo trains have right of way."
+    },
+    {
+      "from": "phakding",
+      "to": "namche",
+      "distance_m": 10500,
+      "ascent_m": 1080,
+      "descent_m": 250,
+      "terrain": "trail",
+      "hours_up": 6,
+      "hours_down": 4,
+      "fixed_ropes": false,
+      "hazards": ["landslide"],
+      "notes": "Sagarmatha NP entry at Monjo; Hillary Suspension Bridge; final 600 m climb to Namche."
+    },
+    {
+      "from": "namche",
+      "to": "tengboche",
+      "distance_m": 9500,
+      "ascent_m": 727,
+      "descent_m": 300,
+      "terrain": "trail",
+      "hours_up": 5.5,
+      "hours_down": 4,
+      "fixed_ropes": false,
+      "hazards": [],
+      "notes": "Contouring path with Everest views, drop to Phunki Tenga (3250 m), steep climb to Tengboche."
+    },
+    {
+      "from": "tengboche",
+      "to": "deboche",
+      "distance_m": 1200,
+      "ascent_m": 0,
+      "descent_m": 47,
+      "terrain": "trail",
+      "hours_up": 0.3,
+      "hours_down": 0.4,
+      "fixed_ropes": false,
+      "hazards": [],
+      "notes": "Short descent through rhododendron forest."
+    },
+    {
+      "from": "deboche",
+      "to": "dingboche",
+      "distance_m": 10000,
+      "ascent_m": 690,
+      "descent_m": 100,
+      "terrain": "trail",
+      "hours_up": 4.5,
+      "hours_down": 3.5,
+      "fixed_ropes": false,
+      "hazards": [],
+      "notes": "Via Pangboche and Somare; tree line ends."
+    },
+    {
+      "from": "dingboche",
+      "to": "lobuche",
+      "distance_m": 8500,
+      "ascent_m": 610,
+      "descent_m": 80,
+      "terrain": "trail",
+      "hours_up": 5,
+      "hours_down": 3.5,
+      "fixed_ropes": false,
+      "hazards": ["altitude"],
+      "notes": "Climb past Dughla (Thukla) and the climbers' memorials at Thukla Pass."
+    },
+    {
+      "from": "lobuche",
+      "to": "gorak_shep",
+      "distance_m": 4500,
+      "ascent_m": 344,
+      "descent_m": 120,
+      "terrain": "boulder",
+      "hours_up": 3,
+      "hours_down": 2.5,
+      "fixed_ropes": false,
+      "hazards": ["loose_rock", "altitude"],
+      "notes": "Rough lateral moraine of the Khumbu Glacier."
+    },
+    {
+      "from": "gorak_shep",
+      "to": "ebc",
+      "distance_m": 4800,
+      "ascent_m": 300,
+      "descent_m": 100,
+      "terrain": "boulder",
+      "hours_up": 2.5,
+      "hours_down": 2,
+      "fixed_ropes": false,
+      "hazards": ["loose_rock", "rockfall"],
+      "notes": "Moraine and glacier rubble; base camp sits on moving ice."
+    },
+    {
+      "from": "ebc",
+      "to": "c1",
+      "distance_m": 3000,
+      "ascent_m": 761,
+      "descent_m": 60,
+      "terrain": "glacier_ice",
+      "hours_up": 8,
+      "hours_down": 3.5,
+      "fixed_ropes": true,
+      "hazards": ["icefall", "serac", "crevasses", "avalanche"],
+      "max_slope_deg": 30,
+      "notes": "Khumbu Icefall: 600 m of moving seracs, aluminium ladders and fixed lines maintained by the SPCC 'Icefall Doctors'. 6-10 h on the first trip, 3-5 h when acclimatized. Cross before dawn while the ice is frozen. 2014 avalanche from the West Shoulder killed 16 Nepali workers."
+    },
+    {
+      "from": "c1",
+      "to": "c2",
+      "distance_m": 3600,
+      "ascent_m": 335,
+      "descent_m": 0,
+      "terrain": "hard_snow",
+      "hours_up": 3,
+      "hours_down": 1.5,
+      "fixed_ropes": true,
+      "hazards": ["crevasses", "avalanche", "sun_heat"],
+      "max_slope_deg": 10,
+      "notes": "Western Cwm ('Valley of Silence'): gentle glacier with ladder crossings; midday solar heat can exceed 30 °C in the tents while the air is below freezing."
+    },
+    {
+      "from": "c2",
+      "to": "c3",
+      "distance_m": 2200,
+      "ascent_m": 762,
+      "descent_m": 0,
+      "terrain": "glacier_ice",
+      "hours_up": 6,
+      "hours_down": 3,
+      "fixed_ropes": true,
+      "hazards": ["avalanche", "rockfall", "exposure", "bergschrund"],
+      "max_slope_deg": 45,
+      "notes": "Bergschrund then 40-50° blue ice of the Lhotse Face on fixed ropes (jumar up, arm-wrap or rappel down)."
+    },
+    {
+      "from": "c3",
+      "to": "c4",
+      "distance_m": 2600,
+      "ascent_m": 784,
+      "descent_m": 40,
+      "terrain": "hard_snow",
+      "hours_up": 6,
+      "hours_down": 3,
+      "fixed_ropes": true,
+      "hazards": ["rockfall", "exposure", "altitude", "crowding"],
+      "max_slope_deg": 35,
+      "notes": "Traverse the Lhotse Face, cross the Yellow Band (marble/phyllite) and the Geneva Spur to the South Col. Most climbers start bottled oxygen at 2-3 L/min on this leg."
+    },
+    {
+      "from": "c4",
+      "to": "balcony",
+      "distance_m": 1300,
+      "ascent_m": 494,
+      "descent_m": 0,
+      "terrain": "hard_snow",
+      "hours_up": 5.5,
+      "hours_down": 2.5,
+      "fixed_ropes": true,
+      "hazards": ["altitude", "cold", "wind", "crowding", "exposure"],
+      "max_slope_deg": 40,
+      "notes": "Depart 20:00-23:00 up the Triangular Face. Change oxygen bottle at the Balcony."
+    },
+    {
+      "from": "balcony",
+      "to": "south_summit",
+      "distance_m": 1000,
+      "ascent_m": 349,
+      "descent_m": 0,
+      "terrain": "hard_snow",
+      "hours_up": 3,
+      "hours_down": 1.5,
+      "fixed_ropes": true,
+      "hazards": ["cornice", "exposure", "altitude", "wind", "cold"],
+      "max_slope_deg": 40,
+      "notes": "Steep SE Ridge with rock steps; sunrise usually on this section."
+    },
+    {
+      "from": "south_summit",
+      "to": "hillary_step",
+      "distance_m": 300,
+      "ascent_m": 61,
+      "descent_m": 20,
+      "terrain": "rock",
+      "hours_up": 0.75,
+      "hours_down": 0.5,
+      "fixed_ropes": true,
+      "hazards": ["cornice", "exposure", "crowding"],
+      "max_slope_deg": 50,
+      "notes": "Knife-edge corniced ridge: the Kangshung Face drops on the right, the SW Face on the left."
+    },
+    {
+      "from": "hillary_step",
+      "to": "summit",
+      "distance_m": 250,
+      "ascent_m": 59,
+      "descent_m": 0,
+      "terrain": "hard_snow",
+      "hours_up": 0.75,
+      "hours_down": 0.4,
+      "fixed_ropes": true,
+      "hazards": ["cornice", "exposure", "altitude"],
+      "max_slope_deg": 25,
+      "notes": "Final rising snow ridge. Turnaround time 12:00-13:00; descent to the South Col 4-6 h."
+    }
+  ],
+  "typical_itinerary": [
+    {
+      "day": 1,
+      "sleep_camp": "phakding",
+      "max_altitude_m": 2860,
+      "note": "Fly Kathmandu-Lukla, walk down to Phakding."
+    },
+    {
+      "day": 2,
+      "sleep_camp": "namche",
+      "max_altitude_m": 3440,
+      "note": "Hillary Bridge and the long climb to Namche Bazaar."
+    },
+    {
+      "day": 3,
+      "sleep_camp": "namche",
+      "max_altitude_m": 3880,
+      "note": "Acclimatization: hike to the Everest View Hotel, sleep low."
+    },
+    {
+      "day": 4,
+      "sleep_camp": "deboche",
+      "max_altitude_m": 3867,
+      "note": "Via Tengboche Monastery."
+    },
+    {
+      "day": 5,
+      "sleep_camp": "dingboche",
+      "max_altitude_m": 4410,
+      "note": "Via Pangboche."
+    },
+    {
+      "day": 6,
+      "sleep_camp": "dingboche",
+      "max_altitude_m": 5083,
+      "note": "Acclimatization hike up Nangkartshang, sleep low."
+    },
+    {
+      "day": 7,
+      "sleep_camp": "lobuche",
+      "max_altitude_m": 4940,
+      "note": "Past the Thukla memorials."
+    },
+    {
+      "day": 8,
+      "sleep_camp": "gorak_shep",
+      "max_altitude_m": 5164,
+      "note": "Short day on the moraine."
+    },
+    {
+      "day": 9,
+      "sleep_camp": "ebc",
+      "max_altitude_m": 5364,
+      "note": "Move into base camp."
+    },
+    {
+      "day": 10,
+      "sleep_camp": "ebc",
+      "max_altitude_m": 5364,
+      "note": "Settle in; oxygen, mask and regulator checks."
+    },
+    {
+      "day": 11,
+      "sleep_camp": "ebc",
+      "max_altitude_m": 5364,
+      "note": "Puja: a lama blesses climbers and gear before anyone enters the icefall."
+    },
+    {
+      "day": 12,
+      "sleep_camp": "ebc",
+      "max_altitude_m": 5500,
+      "note": "Ladder and fixed-rope training at the foot of the icefall."
+    },
+    {
+      "day": 13,
+      "sleep_camp": "ebc",
+      "max_altitude_m": 5364,
+      "note": "Rest."
+    },
+    {
+      "day": 14,
+      "sleep_camp": "c1",
+      "max_altitude_m": 6065,
+      "note": "Rotation 1: first trip through the Khumbu Icefall (6-10 h)."
+    },
+    {
+      "day": 15,
+      "sleep_camp": "c1",
+      "max_altitude_m": 6400,
+      "note": "Walk up the Western Cwm to touch C2, back to C1."
+    },
+    {
+      "day": 16,
+      "sleep_camp": "c2",
+      "max_altitude_m": 6400,
+      "note": "Move to C2."
+    },
+    {
+      "day": 17,
+      "sleep_camp": "c2",
+      "max_altitude_m": 6750,
+      "note": "Walk to the bergschrund at the foot of the Lhotse Face, sleep C2."
+    },
+    {
+      "day": 18,
+      "sleep_camp": "ebc",
+      "max_altitude_m": 6400,
+      "note": "Descend through the icefall to base camp."
+    },
+    {
+      "day": 19,
+      "sleep_camp": "ebc",
+      "max_altitude_m": 5364,
+      "note": "Rest."
+    },
+    {
+      "day": 20,
+      "sleep_camp": "ebc",
+      "max_altitude_m": 5364,
+      "note": "Rest."
+    },
+    {
+      "day": 21,
+      "sleep_camp": "ebc",
+      "max_altitude_m": 5364,
+      "note": "Rest."
+    },
+    {
+      "day": 22,
+      "sleep_camp": "ebc",
+      "max_altitude_m": 5364,
+      "note": "Rest."
+    },
+    {
+      "day": 23,
+      "sleep_camp": "c2",
+      "max_altitude_m": 6400,
+      "note": "Rotation 2: base camp straight to C2 (icefall 4-6 h now)."
+    },
+    {
+      "day": 24,
+      "sleep_camp": "c2",
+      "max_altitude_m": 6400,
+      "note": "Rest at C2."
+    },
+    {
+      "day": 25,
+      "sleep_camp": "c3",
+      "max_altitude_m": 7162,
+      "note": "Up the Lhotse Face to C3; sleep without oxygen (some teams use sleeping O2)."
+    },
+    {
+      "day": 26,
+      "sleep_camp": "c2",
+      "max_altitude_m": 7300,
+      "note": "Climb toward the Yellow Band, then descend to C2."
+    },
+    {
+      "day": 27,
+      "sleep_camp": "ebc",
+      "max_altitude_m": 6400,
+      "note": "Descend to base camp."
+    },
+    {
+      "day": 28,
+      "sleep_camp": "dingboche",
+      "max_altitude_m": 5364,
+      "note": "Descend to Dingboche/Pheriche to recover in thicker air."
+    },
+    {
+      "day": 29,
+      "sleep_camp": "dingboche",
+      "max_altitude_m": 4410,
+      "note": "Rest."
+    },
+    {
+      "day": 30,
+      "sleep_camp": "dingboche",
+      "max_altitude_m": 4410,
+      "note": "Rest."
+    },
+    {
+      "day": 31,
+      "sleep_camp": "dingboche",
+      "max_altitude_m": 4410,
+      "note": "Rest."
+    },
+    {
+      "day": 32,
+      "sleep_camp": "lobuche",
+      "max_altitude_m": 4940,
+      "note": "Walk back up the valley."
+    },
+    {
+      "day": 33,
+      "sleep_camp": "ebc",
+      "max_altitude_m": 5364,
+      "note": "Return to base camp."
+    },
+    {
+      "day": 34,
+      "sleep_camp": "ebc",
+      "max_altitude_m": 5364,
+      "note": "Weather wait: forecasts watched for the jet stream lifting off the summit."
+    },
+    {
+      "day": 35,
+      "sleep_camp": "ebc",
+      "max_altitude_m": 5364,
+      "note": "Weather wait."
+    },
+    {
+      "day": 36,
+      "sleep_camp": "ebc",
+      "max_altitude_m": 5364,
+      "note": "Weather wait."
+    },
+    {
+      "day": 37,
+      "sleep_camp": "ebc",
+      "max_altitude_m": 5364,
+      "note": "Weather wait; Sherpa team stocks C4 with oxygen."
+    },
+    {
+      "day": 38,
+      "sleep_camp": "ebc",
+      "max_altitude_m": 5364,
+      "note": "Weather wait."
+    },
+    {
+      "day": 39,
+      "sleep_camp": "ebc",
+      "max_altitude_m": 5364,
+      "note": "Weather wait."
+    },
+    {
+      "day": 40,
+      "sleep_camp": "ebc",
+      "max_altitude_m": 5364,
+      "note": "Weather wait; summit rope fixed by the rope-fixing team."
+    },
+    {
+      "day": 41,
+      "sleep_camp": "ebc",
+      "max_altitude_m": 5364,
+      "note": "Weather wait."
+    },
+    {
+      "day": 42,
+      "sleep_camp": "ebc",
+      "max_altitude_m": 5364,
+      "note": "Weather wait."
+    },
+    {
+      "day": 43,
+      "sleep_camp": "ebc",
+      "max_altitude_m": 5364,
+      "note": "Weather wait."
+    },
+    {
+      "day": 44,
+      "sleep_camp": "ebc",
+      "max_altitude_m": 5364,
+      "note": "Weather wait."
+    },
+    {
+      "day": 45,
+      "sleep_camp": "ebc",
+      "max_altitude_m": 5364,
+      "note": "Weather wait."
+    },
+    {
+      "day": 46,
+      "sleep_camp": "ebc",
+      "max_altitude_m": 5364,
+      "note": "Window confirmed; final briefing."
+    },
+    {
+      "day": 47,
+      "sleep_camp": "c2",
+      "max_altitude_m": 6400,
+      "note": "Summit push: base camp to C2 in one push."
+    },
+    {
+      "day": 48,
+      "sleep_camp": "c2",
+      "max_altitude_m": 6400,
+      "note": "Rest at C2."
+    },
+    {
+      "day": 49,
+      "sleep_camp": "c3",
+      "max_altitude_m": 7162,
+      "note": "Climb to C3; sleep on oxygen (0.5-1 L/min)."
+    },
+    {
+      "day": 50,
+      "sleep_camp": "c4",
+      "max_altitude_m": 7906,
+      "note": "To the South Col on oxygen; rest, melt snow; depart 20:00-23:00."
+    },
+    {
+      "day": 51,
+      "sleep_camp": "c4",
+      "max_altitude_m": 8848.86,
+      "note": "Summit day: Balcony, South Summit, Hillary Step, summit after sunrise; back to the South Col."
+    },
+    {
+      "day": 52,
+      "sleep_camp": "c2",
+      "max_altitude_m": 7906,
+      "note": "Descend to C2."
+    },
+    {
+      "day": 53,
+      "sleep_camp": "ebc",
+      "max_altitude_m": 6400,
+      "note": "Last trip through the icefall."
+    },
+    {
+      "day": 54,
+      "sleep_camp": "ebc",
+      "max_altitude_m": 5364,
+      "note": "Pack up; Sherpa team strips the high camps."
+    },
+    {
+      "day": 55,
+      "sleep_camp": "ebc",
+      "max_altitude_m": 5364,
+      "note": "Pack up."
+    },
+    {
+      "day": 56,
+      "sleep_camp": "dingboche",
+      "max_altitude_m": 5364,
+      "note": "Trek out."
+    },
+    {
+      "day": 57,
+      "sleep_camp": "namche",
+      "max_altitude_m": 4410,
+      "note": "Trek out."
+    },
+    {
+      "day": 58,
+      "sleep_camp": "lukla",
+      "max_altitude_m": 3440,
+      "note": "Trek out to Lukla."
+    },
+    {
+      "day": 59,
+      "sleep_camp": "lukla",
+      "max_altitude_m": 2860,
+      "note": "Buffer for weather-delayed Lukla flights; fly to Kathmandu."
+    }
+  ],
+  "sources": [
+    "Survey Department of Nepal & National Administration of Surveying, Mapping and Geoinformation of China: joint announcement of Everest's height, 8848.86 m (8 Dec 2020)",
+    "Hawley, E. & Salisbury, R. The Himalayan Database (expedition records, camp altitudes, timings)",
+    "Nepal Department of Tourism, Mountaineering Expedition Regulation royalty schedule (amended 2025)",
+    "Sagarmatha Pollution Control Committee (SPCC): Khumbu Icefall route management",
+    "Matthews, T. et al. (2020) Going to Extremes: Installing the World's Highest Weather Stations on Mount Everest. BAMS 101(11)",
+    "Luks, A. et al. (2019) Wilderness Medical Society Clinical Practice Guidelines for the Prevention and Treatment of Acute Altitude Illness"
+  ],
+  "confidence": "medium",
+  "notes": "Coordinates of high camps are approximate (±300 m); altitudes follow commonly published expedition values."
+}

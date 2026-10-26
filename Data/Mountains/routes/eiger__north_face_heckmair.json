@@ -1,0 +1,225 @@
+{
+  "$schema": "../schema/route.schema.json",
+  "id": "eiger__north_face_heckmair",
+  "peak_id": "eiger",
+  "name": "North Face - 1938 Heckmair Route",
+  "style": "alpine",
+  "grade": "ED2 ; ~1800 m, rock to V, ice to 60°, mixed (M5) ; rockfall and stonefall",
+  "technical": true,
+  "season_best": [1, 2, 3, 9, 10],
+  "permit_cost_usd": 0,
+  "permit_year": 2024,
+  "permit_notes": "No permit. Climbed mostly in cold, frozen conditions (winter, spring, autumn) to reduce stonefall.",
+  "camps": [
+    {
+      "id": "kleine_scheidegg",
+      "name": "Kleine Scheidegg",
+      "type": "trailhead",
+      "altitude_m": 2061,
+      "lat": 46.5853,
+      "lon": 7.9612,
+      "tent_capacity": 0,
+      "confidence": "high"
+    },
+    {
+      "id": "face_base",
+      "name": "Foot of the North Face",
+      "type": "waypoint",
+      "altitude_m": 2250,
+      "lat": 46.585,
+      "lon": 7.995,
+      "tent_capacity": 0,
+      "confidence": "low",
+      "notes": "Scree cone below the First Pillar."
+    },
+    {
+      "id": "swallows_nest",
+      "name": "Swallow's Nest bivouac",
+      "type": "bivouac",
+      "altitude_m": 2800,
+      "lat": 46.583,
+      "lon": 7.999,
+      "tent_capacity": 2,
+      "confidence": "low",
+      "notes": "Ledge after the Hinterstoisser Traverse."
+    },
+    {
+      "id": "death_bivouac",
+      "name": "Death Bivouac",
+      "type": "bivouac",
+      "altitude_m": 3300,
+      "lat": 46.581,
+      "lon": 8.0025,
+      "tent_capacity": 2,
+      "confidence": "low",
+      "notes": "Where Sedlmayr and Mehringer died in 1935; the classic first bivouac."
+    },
+    {
+      "id": "ramp_bivouac",
+      "name": "Ramp bivouac",
+      "type": "bivouac",
+      "altitude_m": 3450,
+      "lat": 46.58,
+      "lon": 8,
+      "tent_capacity": 2,
+      "confidence": "low"
+    },
+    {
+      "id": "white_spider",
+      "name": "The White Spider",
+      "type": "waypoint",
+      "altitude_m": 3650,
+      "lat": 46.579,
+      "lon": 8.003,
+      "tent_capacity": 0,
+      "confidence": "low",
+      "notes": "Ice field that funnels avalanches and stonefall down the face."
+    },
+    {
+      "id": "exit_cracks",
+      "name": "Top of the Exit Cracks",
+      "type": "waypoint",
+      "altitude_m": 3850,
+      "lat": 46.579,
+      "lon": 8.004,
+      "tent_capacity": 0,
+      "confidence": "low"
+    },
+    {
+      "id": "summit",
+      "name": "Summit of the Eiger",
+      "type": "summit",
+      "altitude_m": 3967,
+      "lat": 46.5775,
+      "lon": 8.00528,
+      "tent_capacity": 0,
+      "confidence": "high"
+    }
+  ],
+  "segments": [
+    {
+      "from": "kleine_scheidegg",
+      "to": "face_base",
+      "distance_m": 2500,
+      "ascent_m": 189,
+      "descent_m": 0,
+      "terrain": "trail",
+      "hours_up": 1,
+      "hours_down": 0.75,
+      "fixed_ropes": false,
+      "hazards": [],
+      "notes": "Path then scree to the foot of the face."
+    },
+    {
+      "from": "face_base",
+      "to": "swallows_nest",
+      "distance_m": 1000,
+      "ascent_m": 550,
+      "descent_m": 0,
+      "terrain": "rock",
+      "hours_up": 5,
+      "hours_down": 3,
+      "fixed_ropes": true,
+      "hazards": ["rockfall", "verglas", "exposure"],
+      "max_slope_deg": 60,
+      "notes": "Difficult Crack (IV+), Rote Fluh, then the Hinterstoisser Traverse (fixed rope usually in place). hours_down are retreat (abseil) times."
+    },
+    {
+      "from": "swallows_nest",
+      "to": "death_bivouac",
+      "distance_m": 1000,
+      "ascent_m": 500,
+      "descent_m": 0,
+      "terrain": "glacier_ice",
+      "hours_up": 5,
+      "hours_down": 4,
+      "fixed_ropes": false,
+      "hazards": ["rockfall", "exposure", "verglas"],
+      "max_slope_deg": 55,
+      "notes": "First Icefield, Ice Hose (WI4), Second Icefield (~55°, the biggest on the face), Flatiron."
+    },
+    {
+      "from": "death_bivouac",
+      "to": "ramp_bivouac",
+      "distance_m": 600,
+      "ascent_m": 150,
+      "descent_m": 0,
+      "terrain": "verglas",
+      "hours_up": 4,
+      "hours_down": 3,
+      "fixed_ropes": false,
+      "hazards": ["rockfall", "verglas", "exposure"],
+      "max_slope_deg": 65,
+      "notes": "Third Icefield, the Ramp and the Waterfall Chimney (mixed)."
+    },
+    {
+      "from": "ramp_bivouac",
+      "to": "white_spider",
+      "distance_m": 500,
+      "ascent_m": 200,
+      "descent_m": 0,
+      "terrain": "rock",
+      "hours_up": 3,
+      "hours_down": 3,
+      "fixed_ropes": false,
+      "hazards": ["exposure", "loose_rock", "rockfall"],
+      "max_slope_deg": 60,
+      "notes": "Brittle Ledges, Brittle Crack and the exposed Traverse of the Gods."
+    },
+    {
+      "from": "white_spider",
+      "to": "exit_cracks",
+      "distance_m": 400,
+      "ascent_m": 200,
+      "descent_m": 0,
+      "terrain": "verglas",
+      "hours_up": 4,
+      "hours_down": 3,
+      "fixed_ropes": false,
+      "hazards": ["avalanche", "rockfall", "verglas", "exposure"],
+      "max_slope_deg": 65,
+      "notes": "The Spider ice field, then the Exit Cracks (Quartz Crack, V, mixed)."
+    },
+    {
+      "from": "exit_cracks",
+      "to": "summit",
+      "distance_m": 400,
+      "ascent_m": 117,
+      "descent_m": 0,
+      "terrain": "hard_snow",
+      "hours_up": 1.5,
+      "hours_down": 1,
+      "fixed_ropes": false,
+      "hazards": ["cornice", "exposure", "wind"],
+      "max_slope_deg": 45,
+      "notes": "Summit icefield and the top of the Mittellegi Ridge. Descend the West Flank."
+    }
+  ],
+  "typical_itinerary": [
+    {
+      "day": 1,
+      "sleep_camp": "kleine_scheidegg",
+      "max_altitude_m": 2061,
+      "note": "Arrive; check that the face is frozen and the forecast is stable for two days."
+    },
+    {
+      "day": 2,
+      "sleep_camp": "death_bivouac",
+      "max_altitude_m": 3300,
+      "note": "Start ~02:00 from the foot of the face; bivouac at Death Bivouac."
+    },
+    {
+      "day": 3,
+      "sleep_camp": "kleine_scheidegg",
+      "max_altitude_m": 3967,
+      "note": "Ramp, Traverse of the Gods, Spider, Exit Cracks, summit; descend the West Flank."
+    }
+  ],
+  "sources": [
+    "Harrer, H. (1959) The White Spider",
+    "Anker, D. (ed.) Eiger: The Vertical Arena",
+    "SAC guidebook grading"
+  ],
+  "confidence": "low",
+  "notes": "Fast modern parties climb it in a day; the solo speed record is under 2.5 h. Bivouac positions are approximate."
+}

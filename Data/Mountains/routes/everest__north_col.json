@@ -1,0 +1,583 @@
+{
+  "$schema": "../schema/route.schema.json",
+  "id": "everest__north_col",
+  "peak_id": "everest",
+  "name": "North Col - North Ridge - Northeast Ridge (Tibet)",
+  "style": "expedition",
+  "grade": "Non-technical except the Second Step (ladder, ~5.7-5.9 rock above 8600 m); bottled O2 customary",
+  "technical": false,
+  "season_best": [5],
+  "permit_cost_usd": null,
+  "permit_year": 2024,
+  "permit_notes": "Issued only through the China Tibet Mountaineering Association (CTMA) as part of a logistics package. Operator prices for the full package were roughly USD 15,000-20,000 per climber before outfitter costs (2024, low confidence). Route closed to foreigners 2020-2023; spring season only.",
+  "camps": [
+    {
+      "id": "tingri",
+      "name": "Tingri (Old Tingri / Gangga)",
+      "type": "village",
+      "altitude_m": 4300,
+      "lat": 28.559,
+      "lon": 86.629,
+      "tent_capacity": 200,
+      "approach": true,
+      "confidence": "low",
+      "notes": "Acclimatization stop after Lhasa (3650 m) and Shigatse (3840 m); New Tingri (Shegar) is the alternative."
+    },
+    {
+      "id": "bc",
+      "name": "Everest North Base Camp",
+      "type": "base_camp",
+      "altitude_m": 5150,
+      "lat": 28.14139,
+      "lon": 86.85139,
+      "tent_capacity": 400,
+      "confidence": "medium",
+      "notes": "Gravel plain below Rongbuk Monastery; reached by road."
+    },
+    {
+      "id": "interim",
+      "name": "Interim Camp",
+      "type": "camp",
+      "altitude_m": 5800,
+      "lat": 28.082,
+      "lon": 86.92,
+      "tent_capacity": 80,
+      "confidence": "low",
+      "notes": "Overnight stop on the East Rongbuk moraine; yak caravans."
+    },
+    {
+      "id": "abc",
+      "name": "Advanced Base Camp",
+      "type": "camp",
+      "altitude_m": 6400,
+      "lat": 28.027,
+      "lon": 86.947,
+      "tent_capacity": 200,
+      "confidence": "low",
+      "notes": "Moraine camp at the head of the East Rongbuk Glacier below the North Col; effective base for the climb."
+    },
+    {
+      "id": "north_col",
+      "name": "North Col (Camp 1)",
+      "type": "camp",
+      "altitude_m": 7066,
+      "lat": 28.014,
+      "lon": 86.927,
+      "tent_capacity": 100,
+      "confidence": "low",
+      "notes": "Snow saddle between Everest's North Ridge and Changtse; protected from the west by an ice wall."
+    },
+    {
+      "id": "c2",
+      "name": "Camp 2 (North Ridge)",
+      "type": "camp",
+      "altitude_m": 7790,
+      "lat": 28.004,
+      "lon": 86.927,
+      "tent_capacity": 80,
+      "confidence": "low",
+      "notes": "Platforms on the North Ridge between ~7500 and 7800 m; wind-scoured."
+    },
+    {
+      "id": "c3",
+      "name": "Camp 3 (High Camp)",
+      "type": "camp",
+      "altitude_m": 8300,
+      "lat": 27.996,
+      "lon": 86.931,
+      "tent_capacity": 60,
+      "confidence": "low",
+      "notes": "Sloping limestone ledges; among the highest regularly used camps in the world."
+    },
+    {
+      "id": "first_step",
+      "name": "First Step",
+      "type": "waypoint",
+      "altitude_m": 8501,
+      "lat": 27.9905,
+      "lon": 86.933,
+      "tent_capacity": 0,
+      "confidence": "low",
+      "notes": "Reached via the Exit Cracks onto the NE Ridge."
+    },
+    {
+      "id": "second_step",
+      "name": "Second Step",
+      "type": "waypoint",
+      "altitude_m": 8610,
+      "lat": 27.9897,
+      "lon": 86.9305,
+      "tent_capacity": 0,
+      "confidence": "low",
+      "notes": "~30 m rock step; 'Chinese Ladder' installed 1975, replaced 2008. Crux of the route."
+    },
+    {
+      "id": "third_step",
+      "name": "Third Step",
+      "type": "waypoint",
+      "altitude_m": 8690,
+      "lat": 27.989,
+      "lon": 86.9285,
+      "tent_capacity": 0,
+      "confidence": "low",
+      "notes": "Short rock step before the summit pyramid."
+    },
+    {
+      "id": "summit",
+      "name": "Summit of Mount Everest",
+      "type": "summit",
+      "altitude_m": 8848.86,
+      "lat": 27.98806,
+      "lon": 86.92528,
+      "tent_capacity": 0,
+      "confidence": "high"
+    }
+  ],
+  "segments": [
+    {
+      "from": "tingri",
+      "to": "bc",
+      "distance_m": 70000,
+      "ascent_m": 1050,
+      "descent_m": 200,
+      "terrain": "trail",
+      "hours_up": 4.5,
+      "hours_down": 4,
+      "fixed_ropes": false,
+      "hazards": [],
+      "notes": "By vehicle on the paved Everest road (~2.5-4.5 h)."
+    },
+    {
+      "from": "bc",
+      "to": "interim",
+      "distance_m": 13000,
+      "ascent_m": 800,
+      "descent_m": 150,
+      "terrain": "boulder",
+      "hours_up": 6,
+      "hours_down": 4,
+      "fixed_ropes": false,
+      "hazards": ["loose_rock", "river_crossing", "altitude"],
+      "notes": "Up the Rongbuk valley and into the East Rongbuk valley; yaks carry the loads."
+    },
+    {
+      "from": "interim",
+      "to": "abc",
+      "distance_m": 9000,
+      "ascent_m": 700,
+      "descent_m": 100,
+      "terrain": "boulder",
+      "hours_up": 6,
+      "hours_down": 3.5,
+      "fixed_ropes": false,
+      "hazards": ["loose_rock", "crevasses", "altitude"],
+      "notes": "The 'Magic Highway' medial moraine between ice pinnacles of the East Rongbuk Glacier."
+    },
+    {
+      "from": "abc",
+      "to": "north_col",
+      "distance_m": 2500,
+      "ascent_m": 666,
+      "descent_m": 0,
+      "terrain": "hard_snow",
+      "hours_up": 5,
+      "hours_down": 2.5,
+      "fixed_ropes": true,
+      "hazards": ["avalanche", "crevasses", "serac"],
+      "max_slope_deg": 45,
+      "notes": "Glacier to the crampon point, then ~400 m of 40-50° snow and ice on fixed ropes. Seven porters died in an avalanche here in 1922."
+    },
+    {
+      "from": "north_col",
+      "to": "c2",
+      "distance_m": 2500,
+      "ascent_m": 724,
+      "descent_m": 0,
+      "terrain": "hard_snow",
+      "hours_up": 6,
+      "hours_down": 2.5,
+      "fixed_ropes": true,
+      "hazards": ["wind", "exposure", "cold"],
+      "max_slope_deg": 30,
+      "notes": "Broad snow ridge turning to rock; fully exposed to the westerlies. Most climbers start oxygen here."
+    },
+    {
+      "from": "c2",
+      "to": "c3",
+      "distance_m": 1500,
+      "ascent_m": 510,
+      "descent_m": 0,
+      "terrain": "rock",
+      "hours_up": 6,
+      "hours_down": 2.5,
+      "fixed_ropes": true,
+      "hazards": ["rockfall", "wind", "altitude", "exposure"],
+      "max_slope_deg": 35,
+      "notes": "Down-sloping limestone slabs and snow of the North Face."
+    },
+    {
+      "from": "c3",
+      "to": "first_step",
+      "distance_m": 800,
+      "ascent_m": 201,
+      "descent_m": 0,
+      "terrain": "rock",
+      "hours_up": 3,
+      "hours_down": 1.5,
+      "fixed_ropes": true,
+      "hazards": ["exposure", "altitude", "cold"],
+      "max_slope_deg": 40,
+      "notes": "Depart around midnight; the Exit Cracks lead onto the NE Ridge."
+    },
+    {
+      "from": "first_step",
+      "to": "second_step",
+      "distance_m": 500,
+      "ascent_m": 109,
+      "descent_m": 0,
+      "terrain": "rock",
+      "hours_up": 2,
+      "hours_down": 1,
+      "fixed_ropes": true,
+      "hazards": ["exposure", "crowding", "altitude"],
+      "max_slope_deg": 45,
+      "notes": "Traverse along the ridge past Mushroom Rock. Mallory and Irvine were last seen near here in 1924."
+    },
+    {
+      "from": "second_step",
+      "to": "third_step",
+      "distance_m": 400,
+      "ascent_m": 80,
+      "descent_m": 0,
+      "terrain": "rock",
+      "hours_up": 1,
+      "hours_down": 0.6,
+      "fixed_ropes": true,
+      "hazards": ["exposure", "altitude"],
+      "max_slope_deg": 35
+    },
+    {
+      "from": "third_step",
+      "to": "summit",
+      "distance_m": 600,
+      "ascent_m": 159,
+      "descent_m": 0,
+      "terrain": "hard_snow",
+      "hours_up": 1.5,
+      "hours_down": 1,
+      "fixed_ropes": true,
+      "hazards": ["cornice", "exposure", "altitude"],
+      "max_slope_deg": 35,
+      "notes": "Snow slope of the summit pyramid, a rightward traverse on rock bands, then the final ridge."
+    }
+  ],
+  "typical_itinerary": [
+    {
+      "day": 1,
+      "sleep_camp": "tingri",
+      "max_altitude_m": 4300,
+      "note": "Arrive by road after acclimatizing in Lhasa and Shigatse."
+    },
+    {
+      "day": 2,
+      "sleep_camp": "tingri",
+      "max_altitude_m": 4600,
+      "note": "Acclimatization hike above Tingri."
+    },
+    {
+      "day": 3,
+      "sleep_camp": "bc",
+      "max_altitude_m": 5150,
+      "note": "Drive to North Base Camp."
+    },
+    {
+      "day": 4,
+      "sleep_camp": "bc",
+      "max_altitude_m": 5150,
+      "note": "Rest."
+    },
+    {
+      "day": 5,
+      "sleep_camp": "bc",
+      "max_altitude_m": 5400,
+      "note": "Acclimatization hike."
+    },
+    {
+      "day": 6,
+      "sleep_camp": "bc",
+      "max_altitude_m": 5150,
+      "note": "Puja."
+    },
+    {
+      "day": 7,
+      "sleep_camp": "interim",
+      "max_altitude_m": 5800,
+      "note": "Walk up the East Rongbuk valley."
+    },
+    {
+      "day": 8,
+      "sleep_camp": "abc",
+      "max_altitude_m": 6400,
+      "note": "Arrive at Advanced Base Camp."
+    },
+    {
+      "day": 9,
+      "sleep_camp": "abc",
+      "max_altitude_m": 6400,
+      "note": "Rest."
+    },
+    {
+      "day": 10,
+      "sleep_camp": "abc",
+      "max_altitude_m": 6400,
+      "note": "Rest."
+    },
+    {
+      "day": 11,
+      "sleep_camp": "abc",
+      "max_altitude_m": 7066,
+      "note": "Climb the North Col headwall, return to ABC."
+    },
+    {
+      "day": 12,
+      "sleep_camp": "abc",
+      "max_altitude_m": 6400,
+      "note": "Rest."
+    },
+    {
+      "day": 13,
+      "sleep_camp": "north_col",
+      "max_altitude_m": 7066,
+      "note": "Sleep on the North Col."
+    },
+    {
+      "day": 14,
+      "sleep_camp": "abc",
+      "max_altitude_m": 7300,
+      "note": "Climb the North Ridge to ~7300 m, descend to ABC."
+    },
+    {
+      "day": 15,
+      "sleep_camp": "bc",
+      "max_altitude_m": 6400,
+      "note": "Descend to base camp."
+    },
+    {
+      "day": 16,
+      "sleep_camp": "bc",
+      "max_altitude_m": 5150,
+      "note": "Rest."
+    },
+    {
+      "day": 17,
+      "sleep_camp": "bc",
+      "max_altitude_m": 5150,
+      "note": "Rest."
+    },
+    {
+      "day": 18,
+      "sleep_camp": "bc",
+      "max_altitude_m": 5150,
+      "note": "Rest."
+    },
+    {
+      "day": 19,
+      "sleep_camp": "bc",
+      "max_altitude_m": 5150,
+      "note": "Rest."
+    },
+    {
+      "day": 20,
+      "sleep_camp": "bc",
+      "max_altitude_m": 5150,
+      "note": "Rest."
+    },
+    {
+      "day": 21,
+      "sleep_camp": "interim",
+      "max_altitude_m": 5800,
+      "note": "Rotation 2."
+    },
+    {
+      "day": 22,
+      "sleep_camp": "abc",
+      "max_altitude_m": 6400,
+      "note": "Back at ABC."
+    },
+    {
+      "day": 23,
+      "sleep_camp": "abc",
+      "max_altitude_m": 6400,
+      "note": "Rest."
+    },
+    {
+      "day": 24,
+      "sleep_camp": "north_col",
+      "max_altitude_m": 7066,
+      "note": "Up to the North Col."
+    },
+    {
+      "day": 25,
+      "sleep_camp": "c2",
+      "max_altitude_m": 7790,
+      "note": "Sleep at C2."
+    },
+    {
+      "day": 26,
+      "sleep_camp": "abc",
+      "max_altitude_m": 7790,
+      "note": "Descend to ABC."
+    },
+    {
+      "day": 27,
+      "sleep_camp": "abc",
+      "max_altitude_m": 6400,
+      "note": "Rest."
+    },
+    {
+      "day": 28,
+      "sleep_camp": "bc",
+      "max_altitude_m": 6400,
+      "note": "Descend to base camp."
+    },
+    {
+      "day": 29,
+      "sleep_camp": "bc",
+      "max_altitude_m": 5150,
+      "note": "Weather wait."
+    },
+    {
+      "day": 30,
+      "sleep_camp": "bc",
+      "max_altitude_m": 5150,
+      "note": "Weather wait."
+    },
+    {
+      "day": 31,
+      "sleep_camp": "bc",
+      "max_altitude_m": 5150,
+      "note": "Weather wait."
+    },
+    {
+      "day": 32,
+      "sleep_camp": "bc",
+      "max_altitude_m": 5150,
+      "note": "Weather wait."
+    },
+    {
+      "day": 33,
+      "sleep_camp": "bc",
+      "max_altitude_m": 5150,
+      "note": "Weather wait."
+    },
+    {
+      "day": 34,
+      "sleep_camp": "bc",
+      "max_altitude_m": 5150,
+      "note": "Weather wait."
+    },
+    {
+      "day": 35,
+      "sleep_camp": "bc",
+      "max_altitude_m": 5150,
+      "note": "Weather wait."
+    },
+    {
+      "day": 36,
+      "sleep_camp": "bc",
+      "max_altitude_m": 5150,
+      "note": "Weather wait."
+    },
+    {
+      "day": 37,
+      "sleep_camp": "bc",
+      "max_altitude_m": 5150,
+      "note": "Weather wait."
+    },
+    {
+      "day": 38,
+      "sleep_camp": "bc",
+      "max_altitude_m": 5150,
+      "note": "Window confirmed."
+    },
+    {
+      "day": 39,
+      "sleep_camp": "interim",
+      "max_altitude_m": 5800,
+      "note": "Summit push begins."
+    },
+    {
+      "day": 40,
+      "sleep_camp": "abc",
+      "max_altitude_m": 6400,
+      "note": "To ABC."
+    },
+    {
+      "day": 41,
+      "sleep_camp": "abc",
+      "max_altitude_m": 6400,
+      "note": "Rest."
+    },
+    {
+      "day": 42,
+      "sleep_camp": "north_col",
+      "max_altitude_m": 7066,
+      "note": "To the North Col."
+    },
+    {
+      "day": 43,
+      "sleep_camp": "c2",
+      "max_altitude_m": 7790,
+      "note": "To C2 on oxygen."
+    },
+    {
+      "day": 44,
+      "sleep_camp": "c3",
+      "max_altitude_m": 8300,
+      "note": "To C3; rest a few hours, depart around midnight."
+    },
+    {
+      "day": 45,
+      "sleep_camp": "c2",
+      "max_altitude_m": 8848.86,
+      "note": "Summit via the Exit Cracks and the three Steps; descend to C2."
+    },
+    {
+      "day": 46,
+      "sleep_camp": "abc",
+      "max_altitude_m": 7790,
+      "note": "Descend to ABC."
+    },
+    {
+      "day": 47,
+      "sleep_camp": "abc",
+      "max_altitude_m": 6400,
+      "note": "Rest."
+    },
+    {
+      "day": 48,
+      "sleep_camp": "bc",
+      "max_altitude_m": 6400,
+      "note": "Descend to base camp."
+    },
+    {
+      "day": 49,
+      "sleep_camp": "bc",
+      "max_altitude_m": 5150,
+      "note": "Pack up."
+    },
+    {
+      "day": 50,
+      "sleep_camp": "tingri",
+      "max_altitude_m": 5150,
+      "note": "Drive out."
+    }
+  ],
+  "sources": [
+    "Hawley, E. & Salisbury, R. The Himalayan Database",
+    "Hemmleb, J., Johnson, L. & Simonson, E. (1999) Ghosts of Everest (North Ridge route features and altitudes)",
+    "China Tibet Mountaineering Association expedition regulations"
+  ],
+  "confidence": "low",
+  "notes": "Camp coordinates above ABC are approximate (±500 m). C2 is spread between ~7500 and 7800 m."
+}

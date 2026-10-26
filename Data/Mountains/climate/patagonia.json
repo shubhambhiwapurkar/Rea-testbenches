@@ -1,0 +1,24 @@
+{
+  "$schema": "../schema/climate.schema.json",
+  "id": "patagonia",
+  "name": "Southern Patagonia",
+  "region": "Chaltén massif (Fitz Roy, Cerro Torre) on the edge of the Southern Patagonian Icefield.",
+  "latitude_deg": -49.27,
+  "reference_elevation_m": 1500,
+  "reference_site": "Paso Superior / Niponino approx. 1500 m",
+  "mean_temp_c": [2.0, 2.0, 0.0, -2.5, -5.0, -7.0, -7.5, -6.5, -4.5, -2.0, 0.0, 1.5],
+  "diurnal_range_c": [6, 6, 6, 5, 4, 4, 4, 4, 5, 6, 6, 6],
+  "jet_stream_wind_ms": [35, 34, 33, 32, 32, 33, 34, 34, 35, 36, 36, 35],
+  "storms_per_week": [2.2, 2.1, 2.2, 2.3, 2.3, 2.2, 2.2, 2.2, 2.3, 2.4, 2.4, 2.3],
+  "precipitation_mm_per_day": [5.0, 5.0, 5.5, 5.5, 5.5, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0],
+  "lapse_rate_c_per_km": 6,
+  "prevailing_wind_from_deg": 280,
+  "summit_windows": [12, 1, 2],
+  "sources": [
+    "Garreaud, R. et al. (2013) Large-scale control on the Patagonian climate. Journal of Climate 26",
+    "Lenaerts, J. et al. (2014) Extreme precipitation and climate gradients in Patagonia revealed by high-resolution regional atmospheric climate modeling. Journal of Climate 27",
+    "Hersbach, H. et al. (2020) The ERA5 global reanalysis. QJRMS 146:1999-2049 (monthly climatology 1991-2020, 300 hPa winds)"
+  ],
+  "confidence": "low",
+  "notes": "Relentless westerlies; climbable windows are short (often 1-3 days) and come between frontal systems."
+}

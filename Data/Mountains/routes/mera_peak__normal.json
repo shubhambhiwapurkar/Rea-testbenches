@@ -1,0 +1,141 @@
+{
+  "$schema": "../schema/route.schema.json",
+  "id": "mera_peak__normal",
+  "peak_id": "mera_peak",
+  "name": "Normal Route via Mera La (from Khare)",
+  "style": "alpine",
+  "grade": "F / PD- ; glacier walk, final 20-30 m summit cone at ~45°",
+  "technical": false,
+  "season_best": [4, 5, 10, 11],
+  "permit_cost_usd": 250,
+  "permit_year": 2024,
+  "permit_notes": "NMA permit, spring rate (autumn USD 125). Low-medium confidence.",
+  "camps": [
+    {
+      "id": "khare",
+      "name": "Khare",
+      "type": "village",
+      "altitude_m": 5045,
+      "lat": 27.742,
+      "lon": 86.838,
+      "tent_capacity": 80,
+      "confidence": "low",
+      "notes": "Lodges at the head of the Hinku valley."
+    },
+    {
+      "id": "mera_la",
+      "name": "Mera La",
+      "type": "camp",
+      "altitude_m": 5415,
+      "lat": 27.729,
+      "lon": 86.858,
+      "tent_capacity": 30,
+      "confidence": "low",
+      "notes": "Glacier pass; some parties camp here."
+    },
+    {
+      "id": "high_camp",
+      "name": "Mera High Camp",
+      "type": "camp",
+      "altitude_m": 5780,
+      "lat": 27.721,
+      "lon": 86.867,
+      "tent_capacity": 40,
+      "confidence": "low",
+      "notes": "Below a rock band on the Mera Glacier; views of five 8000ers."
+    },
+    {
+      "id": "summit",
+      "name": "Summit of Mera Peak (Mera North)",
+      "type": "summit",
+      "altitude_m": 6476,
+      "lat": 27.7125,
+      "lon": 86.874,
+      "tent_capacity": 0,
+      "confidence": "low",
+      "notes": "Mera Central (6461 m) is the usual trekking summit."
+    }
+  ],
+  "segments": [
+    {
+      "from": "khare",
+      "to": "mera_la",
+      "distance_m": 3500,
+      "ascent_m": 420,
+      "descent_m": 50,
+      "terrain": "hard_snow",
+      "hours_up": 4,
+      "hours_down": 2.5,
+      "fixed_ropes": false,
+      "hazards": ["crevasses"],
+      "notes": "Moraine then the Mera Glacier."
+    },
+    {
+      "from": "mera_la",
+      "to": "high_camp",
+      "distance_m": 3000,
+      "ascent_m": 365,
+      "descent_m": 0,
+      "terrain": "hard_snow",
+      "hours_up": 3.5,
+      "hours_down": 2,
+      "fixed_ropes": false,
+      "hazards": ["crevasses", "wind"]
+    },
+    {
+      "from": "high_camp",
+      "to": "summit",
+      "distance_m": 3500,
+      "ascent_m": 696,
+      "descent_m": 0,
+      "terrain": "hard_snow",
+      "hours_up": 5,
+      "hours_down": 2.5,
+      "fixed_ropes": true,
+      "hazards": ["crevasses", "cold", "wind", "altitude"],
+      "max_slope_deg": 20,
+      "notes": "Long glacier plod; jumar on a fixed rope up the final summit cone."
+    }
+  ],
+  "typical_itinerary": [
+    {
+      "day": 1,
+      "sleep_camp": "khare",
+      "max_altitude_m": 5045,
+      "note": "Arrive from Thangnak after ~8 days from Lukla via the Zatrwa La."
+    },
+    {
+      "day": 2,
+      "sleep_camp": "khare",
+      "max_altitude_m": 5400,
+      "note": "Acclimatization and glacier training above Khare."
+    },
+    {
+      "day": 3,
+      "sleep_camp": "mera_la",
+      "max_altitude_m": 5415,
+      "note": "Up the glacier to Mera La."
+    },
+    {
+      "day": 4,
+      "sleep_camp": "high_camp",
+      "max_altitude_m": 5780,
+      "note": "To High Camp."
+    },
+    {
+      "day": 5,
+      "sleep_camp": "khare",
+      "max_altitude_m": 6476,
+      "note": "Summit (start ~02:00) and descend to Khare."
+    },
+    {
+      "day": 6,
+      "sleep_camp": "khare",
+      "max_altitude_m": 5045,
+      "note": "Reserve day."
+    }
+  ],
+  "sources": ["Nepal Mountaineering Association peak list", "Guiding-company route descriptions (cross-checked)"],
+  "confidence": "low",
+  "notes": "All coordinates are approximate."
+}

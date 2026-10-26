@@ -1,0 +1,114 @@
+{
+  "$schema": "../schema/route.schema.json",
+  "id": "eiger__west_flank",
+  "peak_id": "eiger",
+  "name": "West Flank (normal route)",
+  "style": "alpine",
+  "grade": "PD+ / AD- (SAC ZS-) ; loose rock ledges and snowfields, short abseils on descent",
+  "technical": false,
+  "season_best": [7, 8, 9],
+  "permit_cost_usd": 0,
+  "permit_year": 2024,
+  "permit_notes": "No permit.",
+  "camps": [
+    {
+      "id": "kleine_scheidegg",
+      "name": "Kleine Scheidegg",
+      "type": "trailhead",
+      "altitude_m": 2061,
+      "lat": 46.5853,
+      "lon": 7.9612,
+      "tent_capacity": 0,
+      "confidence": "high",
+      "notes": "Railway pass station."
+    },
+    {
+      "id": "eigergletscher",
+      "name": "Eigergletscher station",
+      "type": "trailhead",
+      "altitude_m": 2320,
+      "lat": 46.5752,
+      "lon": 7.9764,
+      "tent_capacity": 0,
+      "confidence": "high",
+      "notes": "Jungfrau Railway station."
+    },
+    {
+      "id": "rotstock",
+      "name": "Rotstock shoulder",
+      "type": "waypoint",
+      "altitude_m": 2663,
+      "lat": 46.5785,
+      "lon": 7.984,
+      "tent_capacity": 0,
+      "confidence": "low"
+    },
+    {
+      "id": "summit",
+      "name": "Summit of the Eiger",
+      "type": "summit",
+      "altitude_m": 3967,
+      "lat": 46.5775,
+      "lon": 8.00528,
+      "tent_capacity": 0,
+      "confidence": "high"
+    }
+  ],
+  "segments": [
+    {
+      "from": "kleine_scheidegg",
+      "to": "eigergletscher",
+      "distance_m": 2000,
+      "ascent_m": 259,
+      "descent_m": 0,
+      "terrain": "trail",
+      "hours_up": 0.75,
+      "hours_down": 0.5,
+      "fixed_ropes": false,
+      "hazards": [],
+      "notes": "Or by train in 10 minutes."
+    },
+    {
+      "from": "eigergletscher",
+      "to": "rotstock",
+      "distance_m": 1500,
+      "ascent_m": 343,
+      "descent_m": 0,
+      "terrain": "scree",
+      "hours_up": 1.5,
+      "hours_down": 1,
+      "fixed_ropes": false,
+      "hazards": ["loose_rock"]
+    },
+    {
+      "from": "rotstock",
+      "to": "summit",
+      "distance_m": 2500,
+      "ascent_m": 1304,
+      "descent_m": 0,
+      "terrain": "rock",
+      "hours_up": 4,
+      "hours_down": 3,
+      "fixed_ropes": false,
+      "hazards": ["rockfall", "loose_rock", "verglas", "route_finding", "exposure"],
+      "max_slope_deg": 35,
+      "notes": "Broken limestone ledges and snowfields; icy in late season; descend the same way."
+    }
+  ],
+  "typical_itinerary": [
+    {
+      "day": 1,
+      "sleep_camp": "kleine_scheidegg",
+      "max_altitude_m": 2061,
+      "note": "Arrive by train."
+    },
+    {
+      "day": 2,
+      "sleep_camp": "kleine_scheidegg",
+      "max_altitude_m": 3967,
+      "note": "Train to Eigergletscher, summit in 4-6 h, descend the same way (3-4 h)."
+    }
+  ],
+  "sources": ["Swiss Alpine Club (SAC) Berner Alpen guidebook grading", "swisstopo"],
+  "confidence": "medium"
+}

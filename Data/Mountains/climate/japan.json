@@ -1,0 +1,23 @@
+{
+  "$schema": "../schema/climate.schema.json",
+  "id": "japan",
+  "name": "Japan (Fuji)",
+  "region": "Mount Fuji and the Japanese Alps.",
+  "latitude_deg": 35.36,
+  "reference_elevation_m": 3775,
+  "reference_site": "Mt. Fuji summit (JMA station)",
+  "mean_temp_c": [-17.7, -17.1, -13.6, -8.6, -3.3, 0.9, 4.8, 6.0, 3.0, -2.7, -9.0, -14.6],
+  "diurnal_range_c": [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5],
+  "jet_stream_wind_ms": [60, 60, 55, 45, 35, 28, 20, 18, 25, 35, 48, 58],
+  "storms_per_week": [1.2, 1.3, 1.6, 1.6, 1.5, 2.2, 2.0, 1.5, 1.8, 1.5, 1.2, 1.1],
+  "precipitation_mm_per_day": [3.5, 4.0, 6.0, 7.0, 7.0, 9.0, 9.0, 7.5, 10.0, 8.0, 5.0, 3.5],
+  "lapse_rate_c_per_km": 6,
+  "prevailing_wind_from_deg": 280,
+  "summit_windows": [7, 8],
+  "sources": [
+    "Japan Meteorological Agency climate normals 1991-2020, Fujisan station",
+    "Hersbach, H. et al. (2020) The ERA5 global reanalysis. QJRMS 146:1999-2049 (monthly climatology 1991-2020, 300 hPa winds)"
+  ],
+  "confidence": "medium",
+  "notes": "The winter jet over Japan is among the strongest on Earth; official climbing season is July to early September. Summit precipitation is poorly measured."
+}

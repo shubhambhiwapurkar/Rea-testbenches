@@ -1,0 +1,23 @@
+{
+  "$schema": "../schema/climate.schema.json",
+  "id": "anatolia_iran",
+  "name": "Anatolian and Iranian highlands",
+  "region": "Ararat and Damavand; dry continental volcano climbs.",
+  "latitude_deg": 37.8,
+  "reference_elevation_m": 4200,
+  "reference_site": "Ararat high camp / Damavand Bargah-e Sevom hut",
+  "mean_temp_c": [-17.0, -16.0, -12.0, -7.0, -2.5, 2.0, 5.5, 5.5, 1.5, -4.0, -10.0, -14.5],
+  "diurnal_range_c": [10, 10, 11, 12, 12, 13, 13, 13, 13, 12, 11, 10],
+  "jet_stream_wind_ms": [42, 42, 40, 35, 30, 24, 22, 22, 24, 30, 36, 40],
+  "storms_per_week": [1.3, 1.4, 1.6, 1.6, 1.3, 0.7, 0.4, 0.4, 0.5, 0.9, 1.2, 1.3],
+  "precipitation_mm_per_day": [2.0, 2.2, 2.6, 2.6, 2.0, 0.8, 0.4, 0.4, 0.5, 1.2, 1.8, 2.0],
+  "lapse_rate_c_per_km": 6.8,
+  "prevailing_wind_from_deg": 270,
+  "summit_windows": [7, 8, 9],
+  "sources": [
+    "Hersbach, H. et al. (2020) The ERA5 global reanalysis. QJRMS 146:1999-2049 (monthly climatology 1991-2020, 300 hPa winds)",
+    "Turkish State Meteorological Service (Doğubayazıt) and IRIMO (Polour) station normals, extrapolated with the lapse rate"
+  ],
+  "confidence": "low",
+  "notes": "Mediterranean-type regime: wet winter/spring, dry stable summers."
+}

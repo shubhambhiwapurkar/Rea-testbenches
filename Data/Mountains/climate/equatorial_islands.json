@@ -1,0 +1,24 @@
+{
+  "$schema": "../schema/climate.schema.json",
+  "id": "equatorial_islands",
+  "name": "Equatorial island mountains",
+  "region": "New Guinea (Puncak Jaya) and Borneo (Kinabalu).",
+  "latitude_deg": -2,
+  "reference_elevation_m": 4000,
+  "reference_site": "Generic equatorial 4000 m (Carstensz base camp ~4300 m, Kinabalu summit plateau ~4000 m)",
+  "mean_temp_c": [4.5, 4.5, 4.5, 4.5, 4.4, 4.0, 3.8, 3.9, 4.1, 4.3, 4.5, 4.5],
+  "diurnal_range_c": [6, 6, 6, 6, 7, 7, 7, 7, 7, 6, 6, 6],
+  "jet_stream_wind_ms": [7, 7, 6, 6, 7, 8, 9, 9, 8, 7, 7, 7],
+  "storms_per_week": [3.5, 3.5, 3.5, 3.2, 3.0, 2.8, 2.8, 2.8, 3.0, 3.2, 3.5, 3.5],
+  "precipitation_mm_per_day": [9.0, 9.0, 9.5, 9.0, 8.5, 8.0, 7.5, 7.5, 8.0, 8.5, 9.0, 9.0],
+  "lapse_rate_c_per_km": 5.5,
+  "prevailing_wind_from_deg": 120,
+  "summit_windows": [6, 7, 8],
+  "sources": [
+    "Prentice, M. & Hope, G. (2006) Climate of Papua (Carstensz glaciers). In: The Ecology of Papua",
+    "Kincaid, J. & Klein, A. (2004) Retreat of the Irian Jaya glaciers from 2000 to 2002. Eastern Snow Conference",
+    "Hersbach, H. et al. (2020) The ERA5 global reanalysis. QJRMS 146:1999-2049 (monthly climatology 1991-2020, 300 hPa winds)"
+  ],
+  "confidence": "low",
+  "notes": "Rain or sleet almost daily, usually from late morning; climbs start before dawn. Kinabalu is warmer (lower)."
+}

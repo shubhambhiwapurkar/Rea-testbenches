@@ -1,0 +1,23 @@
+{
+  "$schema": "../schema/climate.schema.json",
+  "id": "trans_mexican",
+  "name": "Trans-Mexican Volcanic Belt",
+  "region": "Pico de Orizaba, Popocatépetl, Iztaccíhuatl.",
+  "latitude_deg": 19,
+  "reference_elevation_m": 4300,
+  "reference_site": "Piedra Grande hut (Orizaba north side)",
+  "mean_temp_c": [-2.5, -2.0, -1.0, 0.5, 1.5, 1.5, 1.0, 1.0, 0.8, -0.2, -1.5, -2.3],
+  "diurnal_range_c": [12, 12, 12, 11, 10, 8, 7, 7, 7, 9, 11, 12],
+  "jet_stream_wind_ms": [35, 35, 33, 28, 20, 12, 8, 8, 10, 18, 27, 33],
+  "storms_per_week": [0.6, 0.6, 0.6, 0.9, 1.6, 3.0, 3.2, 3.2, 3.0, 1.6, 0.8, 0.6],
+  "precipitation_mm_per_day": [0.6, 0.6, 0.7, 1.2, 2.8, 6.0, 6.5, 6.5, 6.0, 3.0, 1.0, 0.6],
+  "lapse_rate_c_per_km": 6,
+  "prevailing_wind_from_deg": 260,
+  "summit_windows": [11, 12, 1, 2],
+  "sources": [
+    "Servicio Meteorológico Nacional (Mexico) normals extrapolated with the lapse rate",
+    "Hersbach, H. et al. (2020) The ERA5 global reanalysis. QJRMS 146:1999-2049 (monthly climatology 1991-2020, 300 hPa winds)"
+  ],
+  "confidence": "low",
+  "notes": "Dry season (Nov-Mar) is the climbing season; the subtropical jet brings strong winter winds aloft."
+}

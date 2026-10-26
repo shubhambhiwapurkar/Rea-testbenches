@@ -1,0 +1,228 @@
+{
+  "$schema": "../schema/route.schema.json",
+  "id": "elbrus__south_route",
+  "peak_id": "elbrus",
+  "name": "South Route (from Azau)",
+  "style": "alpine",
+  "grade": "F / PD- ; glacier walk with crevasses off-route; whiteout navigation critical",
+  "technical": false,
+  "season_best": [6, 7, 8, 9],
+  "permit_cost_usd": 10,
+  "permit_year": 2024,
+  "permit_notes": "No climbing permit; border-zone registration and a small national park fee. Travel advisories may apply.",
+  "camps": [
+    {
+      "id": "azau",
+      "name": "Azau",
+      "type": "trailhead",
+      "altitude_m": 2350,
+      "lat": 43.2654,
+      "lon": 42.4794,
+      "tent_capacity": 0,
+      "confidence": "medium",
+      "notes": "Cable car base in the Baksan valley."
+    },
+    {
+      "id": "mir",
+      "name": "Mir station",
+      "type": "trailhead",
+      "altitude_m": 3500,
+      "lat": 43.284,
+      "lon": 42.468,
+      "tent_capacity": 0,
+      "confidence": "low",
+      "notes": "Cable car station."
+    },
+    {
+      "id": "garabashi",
+      "name": "Garabashi (Bochki huts)",
+      "type": "hut",
+      "altitude_m": 3800,
+      "lat": 43.2985,
+      "lon": 42.468,
+      "tent_capacity": 100,
+      "confidence": "low",
+      "notes": "Barrel huts near the top of the Garabashi lift (3847 m)."
+    },
+    {
+      "id": "priut_11",
+      "name": "Priut 11 / Diesel Hut",
+      "type": "hut",
+      "altitude_m": 4100,
+      "lat": 43.309,
+      "lon": 42.462,
+      "tent_capacity": 60,
+      "confidence": "low",
+      "notes": "Site of the Priut 11 hotel (burned 1998); the Diesel Hut stands nearby."
+    },
+    {
+      "id": "pastukhov_rocks",
+      "name": "Pastukhov Rocks",
+      "type": "waypoint",
+      "altitude_m": 4700,
+      "lat": 43.326,
+      "lon": 42.454,
+      "tent_capacity": 0,
+      "confidence": "low",
+      "notes": "Snowcats can drop climbers here."
+    },
+    {
+      "id": "saddle",
+      "name": "The Saddle",
+      "type": "waypoint",
+      "altitude_m": 5416,
+      "lat": 43.349,
+      "lon": 42.447,
+      "tent_capacity": 0,
+      "confidence": "low",
+      "notes": "Col between the East and West summits."
+    },
+    {
+      "id": "summit",
+      "name": "West Summit of Elbrus",
+      "type": "summit",
+      "altitude_m": 5642,
+      "lat": 43.355,
+      "lon": 42.43917,
+      "tent_capacity": 0,
+      "confidence": "high"
+    }
+  ],
+  "segments": [
+    {
+      "from": "azau",
+      "to": "mir",
+      "distance_m": 3500,
+      "ascent_m": 1150,
+      "descent_m": 0,
+      "terrain": "trail",
+      "hours_up": 4,
+      "hours_down": 2.5,
+      "fixed_ropes": false,
+      "hazards": [],
+      "notes": "Most climbers ride the cable cars (~15 min)."
+    },
+    {
+      "from": "mir",
+      "to": "garabashi",
+      "distance_m": 1500,
+      "ascent_m": 300,
+      "descent_m": 0,
+      "terrain": "hard_snow",
+      "hours_up": 1.5,
+      "hours_down": 1,
+      "fixed_ropes": false,
+      "hazards": [],
+      "notes": "Chairlift or hike."
+    },
+    {
+      "from": "garabashi",
+      "to": "priut_11",
+      "distance_m": 2000,
+      "ascent_m": 300,
+      "descent_m": 0,
+      "terrain": "hard_snow",
+      "hours_up": 1.5,
+      "hours_down": 0.75,
+      "fixed_ropes": false,
+      "hazards": ["crevasses", "whiteout"]
+    },
+    {
+      "from": "priut_11",
+      "to": "pastukhov_rocks",
+      "distance_m": 3000,
+      "ascent_m": 600,
+      "descent_m": 0,
+      "terrain": "hard_snow",
+      "hours_up": 3,
+      "hours_down": 1.5,
+      "fixed_ropes": false,
+      "hazards": ["whiteout", "crevasses", "wind"],
+      "notes": "Groomed snowcat track in season."
+    },
+    {
+      "from": "pastukhov_rocks",
+      "to": "saddle",
+      "distance_m": 3500,
+      "ascent_m": 716,
+      "descent_m": 0,
+      "terrain": "hard_snow",
+      "hours_up": 3.5,
+      "hours_down": 2,
+      "fixed_ropes": false,
+      "hazards": ["whiteout", "wind", "cold", "exposure"],
+      "max_slope_deg": 25,
+      "notes": "Long rising leftward 'Oblique Traverse' below the East summit; navigation errors in whiteout are the classic cause of fatalities."
+    },
+    {
+      "from": "saddle",
+      "to": "summit",
+      "distance_m": 1800,
+      "ascent_m": 226,
+      "descent_m": 0,
+      "terrain": "hard_snow",
+      "hours_up": 2,
+      "hours_down": 1,
+      "fixed_ropes": true,
+      "hazards": ["wind", "cold", "exposure", "altitude"],
+      "max_slope_deg": 35,
+      "notes": "Steep slope with a fixed rope, then the summit plateau."
+    }
+  ],
+  "typical_itinerary": [
+    {
+      "day": 1,
+      "sleep_camp": "azau",
+      "max_altitude_m": 2350,
+      "note": "Arrive in the Baksan valley."
+    },
+    {
+      "day": 2,
+      "sleep_camp": "azau",
+      "max_altitude_m": 3050,
+      "note": "Acclimatization hike on Cheget."
+    },
+    {
+      "day": 3,
+      "sleep_camp": "garabashi",
+      "max_altitude_m": 3800,
+      "note": "Cable cars up; move into the barrel huts."
+    },
+    {
+      "day": 4,
+      "sleep_camp": "garabashi",
+      "max_altitude_m": 4700,
+      "note": "Acclimatization climb to Pastukhov Rocks, return."
+    },
+    {
+      "day": 5,
+      "sleep_camp": "priut_11",
+      "max_altitude_m": 4100,
+      "note": "Rest, self-arrest practice, move to Priut 11."
+    },
+    {
+      "day": 6,
+      "sleep_camp": "priut_11",
+      "max_altitude_m": 5642,
+      "note": "Summit day (start 02:00; optional snowcat to Pastukhov Rocks), return to the hut."
+    },
+    {
+      "day": 7,
+      "sleep_camp": "azau",
+      "max_altitude_m": 4100,
+      "note": "Descend by cable car."
+    },
+    {
+      "day": 8,
+      "sleep_camp": "azau",
+      "max_altitude_m": 2350,
+      "note": "Reserve day."
+    }
+  ],
+  "sources": [
+    "Russian Federation mountaineering guidebooks (Elbrus South route)",
+    "Summitpost route description (cross-checked)"
+  ],
+  "confidence": "low",
+  "notes": "Camp coordinates approximate."
+}

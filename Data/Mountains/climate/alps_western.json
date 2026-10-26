@@ -1,0 +1,25 @@
+{
+  "$schema": "../schema/climate.schema.json",
+  "id": "alps_western",
+  "name": "Western Alps (high alpine)",
+  "region": "Pennine, Bernese and Mont Blanc massifs; approximate for the Eastern Alps.",
+  "latitude_deg": 46.5,
+  "reference_elevation_m": 3571,
+  "reference_site": "Jungfraujoch (MeteoSwiss station)",
+  "mean_temp_c": [-13.3, -13.5, -11.3, -8.4, -4.3, -0.7, 1.4, 1.3, -1.6, -4.4, -9.3, -12.2],
+  "diurnal_range_c": [5, 5, 6, 6, 6, 6, 7, 7, 6, 6, 5, 5],
+  "jet_stream_wind_ms": [30, 30, 28, 25, 20, 18, 16, 16, 18, 22, 26, 29],
+  "storms_per_week": [1.6, 1.5, 1.6, 1.6, 1.7, 1.7, 1.6, 1.6, 1.3, 1.4, 1.6, 1.6],
+  "precipitation_mm_per_day": [5.0, 4.8, 5.5, 5.8, 6.5, 7.0, 7.0, 7.0, 5.5, 5.8, 6.0, 5.5],
+  "lapse_rate_c_per_km": 5.8,
+  "prevailing_wind_from_deg": 260,
+  "summit_windows": [6, 7, 8, 9],
+  "sources": [
+    "MeteoSwiss climate normals 1991-2020, Jungfraujoch (JUN)",
+    "Rolland, C. (2003) Spatial and seasonal variations of air temperature lapse rates in Alpine regions. Journal of Climate 16",
+    "Frei, C. & Schär, C. (1998) A precipitation climatology of the Alps from high-resolution rain-gauge observations. IJC 18",
+    "Hersbach, H. et al. (2020) The ERA5 global reanalysis. QJRMS 146:1999-2049 (monthly climatology 1991-2020, 300 hPa winds)"
+  ],
+  "confidence": "high",
+  "notes": "Summer convective storms (afternoon thunderstorms) make early starts essential; föhn events bring strong southerly winds."
+}

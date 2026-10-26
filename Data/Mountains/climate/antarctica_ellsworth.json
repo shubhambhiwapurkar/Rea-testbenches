@@ -1,0 +1,24 @@
+{
+  "$schema": "../schema/climate.schema.json",
+  "id": "antarctica_ellsworth",
+  "name": "Ellsworth Mountains (Antarctica)",
+  "region": "Sentinel Range (Vinson).",
+  "latitude_deg": -78.53,
+  "reference_elevation_m": 2140,
+  "reference_site": "Vinson Base Camp (Branscomb Glacier)",
+  "mean_temp_c": [-20.0, -25.0, -30.0, -33.0, -34.0, -35.0, -36.0, -37.0, -35.0, -31.0, -25.0, -21.0],
+  "diurnal_range_c": [6, 5, 4, 3, 3, 3, 3, 3, 3, 4, 5, 6],
+  "jet_stream_wind_ms": [14, 15, 20, 24, 27, 30, 32, 32, 30, 27, 20, 15],
+  "storms_per_week": [0.8, 1.0, 1.2, 1.3, 1.4, 1.4, 1.4, 1.4, 1.4, 1.3, 1.0, 0.8],
+  "precipitation_mm_per_day": [0.4, 0.4, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.4, 0.4],
+  "lapse_rate_c_per_km": 7,
+  "prevailing_wind_from_deg": 230,
+  "summit_windows": [12, 1],
+  "sources": [
+    "Antarctic Logistics & Expeditions (ALE) Union Glacier and Vinson camp weather observations",
+    "Turner, J. et al. (2004) The SCAR READER project: toward a high-quality database of mean Antarctic meteorological observations. Journal of Climate 17",
+    "Hersbach, H. et al. (2020) The ERA5 global reanalysis. QJRMS 146:1999-2049 (monthly climatology 1991-2020, 300 hPa winds)"
+  ],
+  "confidence": "low",
+  "notes": "Only Dec-Jan is climbed (24 h daylight). Surface inversions are common, so the free-air lapse rate is an approximation; storms bring wind chill below -50 °C."
+}

@@ -1,0 +1,320 @@
+{
+  "$schema": "../schema/route.schema.json",
+  "id": "aconcagua__normal",
+  "peak_id": "aconcagua",
+  "name": "Normal Route (Northwest Ridge via Plaza de Mulas)",
+  "style": "expedition",
+  "grade": "Non-technical ; scree and snow, crampons often needed above 6000 m",
+  "technical": false,
+  "season_best": [12, 1, 2],
+  "permit_cost_usd": 800,
+  "permit_year": 2024,
+  "permit_notes": "Aconcagua Provincial Park ascent permit for foreigners, high season (mid-Dec to end Jan); priced in ARS and fluctuates with the exchange rate. Roughly USD 600-1,000 in 2023-25. Low confidence.",
+  "camps": [
+    {
+      "id": "horcones",
+      "name": "Horcones ranger station",
+      "type": "trailhead",
+      "altitude_m": 2950,
+      "lat": -32.816,
+      "lon": -69.945,
+      "tent_capacity": 0,
+      "confidence": "low",
+      "notes": "Park entrance off Ruta 7."
+    },
+    {
+      "id": "confluencia",
+      "name": "Confluencia",
+      "type": "camp",
+      "altitude_m": 3390,
+      "lat": -32.767,
+      "lon": -69.965,
+      "tent_capacity": 300,
+      "confidence": "low",
+      "notes": "Acclimatization camp; park medical check."
+    },
+    {
+      "id": "plaza_de_mulas",
+      "name": "Plaza de Mulas",
+      "type": "base_camp",
+      "altitude_m": 4300,
+      "lat": -32.645,
+      "lon": -70.05,
+      "tent_capacity": 600,
+      "confidence": "low",
+      "notes": "Base camp with park doctors, ranger post and outfitter domes."
+    },
+    {
+      "id": "plaza_canada",
+      "name": "Plaza Canadá",
+      "type": "camp",
+      "altitude_m": 4910,
+      "lat": -32.643,
+      "lon": -70.042,
+      "tent_capacity": 60,
+      "confidence": "low"
+    },
+    {
+      "id": "nido_de_condores",
+      "name": "Nido de Cóndores",
+      "type": "camp",
+      "altitude_m": 5560,
+      "lat": -32.641,
+      "lon": -70.033,
+      "tent_capacity": 150,
+      "confidence": "low",
+      "notes": "Broad plateau; ranger post."
+    },
+    {
+      "id": "colera",
+      "name": "Plaza Cólera",
+      "type": "camp",
+      "altitude_m": 5970,
+      "lat": -32.643,
+      "lon": -70.023,
+      "tent_capacity": 120,
+      "confidence": "low",
+      "notes": "High camp; Berlín (5930 m) is the alternative."
+    },
+    {
+      "id": "independencia",
+      "name": "Independencia refuge (ruin)",
+      "type": "waypoint",
+      "altitude_m": 6380,
+      "lat": -32.648,
+      "lon": -70.018,
+      "tent_capacity": 0,
+      "confidence": "low"
+    },
+    {
+      "id": "cueva",
+      "name": "La Cueva (foot of the Canaleta)",
+      "type": "waypoint",
+      "altitude_m": 6650,
+      "lat": -32.651,
+      "lon": -70.015,
+      "tent_capacity": 0,
+      "confidence": "low"
+    },
+    {
+      "id": "summit",
+      "name": "Summit of Aconcagua",
+      "type": "summit",
+      "altitude_m": 6961,
+      "lat": -32.65306,
+      "lon": -70.01167,
+      "tent_capacity": 0,
+      "confidence": "high"
+    }
+  ],
+  "segments": [
+    {
+      "from": "horcones",
+      "to": "confluencia",
+      "distance_m": 8000,
+      "ascent_m": 500,
+      "descent_m": 60,
+      "terrain": "trail",
+      "hours_up": 3.5,
+      "hours_down": 2.5,
+      "fixed_ropes": false,
+      "hazards": ["river_crossing"]
+    },
+    {
+      "from": "confluencia",
+      "to": "plaza_de_mulas",
+      "distance_m": 18000,
+      "ascent_m": 1060,
+      "descent_m": 150,
+      "terrain": "trail",
+      "hours_up": 8,
+      "hours_down": 5,
+      "fixed_ropes": false,
+      "hazards": ["river_crossing", "sun_heat", "wind"],
+      "notes": "Long Playa Ancha valley floor, then the steep Cuesta Brava."
+    },
+    {
+      "from": "plaza_de_mulas",
+      "to": "plaza_canada",
+      "distance_m": 2000,
+      "ascent_m": 610,
+      "descent_m": 0,
+      "terrain": "scree",
+      "hours_up": 3,
+      "hours_down": 1.5,
+      "fixed_ropes": false,
+      "hazards": ["loose_rock"]
+    },
+    {
+      "from": "plaza_canada",
+      "to": "nido_de_condores",
+      "distance_m": 2500,
+      "ascent_m": 650,
+      "descent_m": 0,
+      "terrain": "scree",
+      "hours_up": 3.5,
+      "hours_down": 1.5,
+      "fixed_ropes": false,
+      "hazards": ["wind", "cold"],
+      "notes": "Via the Cambio de Pendiente."
+    },
+    {
+      "from": "nido_de_condores",
+      "to": "colera",
+      "distance_m": 2500,
+      "ascent_m": 410,
+      "descent_m": 0,
+      "terrain": "scree",
+      "hours_up": 3.5,
+      "hours_down": 1.5,
+      "fixed_ropes": false,
+      "hazards": ["wind", "cold"]
+    },
+    {
+      "from": "colera",
+      "to": "independencia",
+      "distance_m": 1500,
+      "ascent_m": 410,
+      "descent_m": 0,
+      "terrain": "scree",
+      "hours_up": 2.5,
+      "hours_down": 1,
+      "fixed_ropes": false,
+      "hazards": ["cold", "wind", "altitude"],
+      "notes": "Start 04:00-05:00."
+    },
+    {
+      "from": "independencia",
+      "to": "cueva",
+      "distance_m": 2000,
+      "ascent_m": 270,
+      "descent_m": 0,
+      "terrain": "hard_snow",
+      "hours_up": 2.5,
+      "hours_down": 1.25,
+      "fixed_ropes": false,
+      "hazards": ["wind", "cold", "exposure", "whiteout"],
+      "max_slope_deg": 25,
+      "notes": "Portezuelo del Viento and the Gran Travesía, fully exposed to the 'viento blanco'."
+    },
+    {
+      "from": "cueva",
+      "to": "summit",
+      "distance_m": 600,
+      "ascent_m": 311,
+      "descent_m": 0,
+      "terrain": "scree",
+      "hours_up": 2.5,
+      "hours_down": 1.25,
+      "fixed_ropes": false,
+      "hazards": ["loose_rock", "altitude", "cold"],
+      "max_slope_deg": 33,
+      "notes": "La Canaleta: ~300 m of loose scree and boulders at ~33°."
+    }
+  ],
+  "typical_itinerary": [
+    {
+      "day": 1,
+      "sleep_camp": "confluencia",
+      "max_altitude_m": 3390,
+      "note": "Register at Horcones, walk to Confluencia."
+    },
+    {
+      "day": 2,
+      "sleep_camp": "confluencia",
+      "max_altitude_m": 4100,
+      "note": "Acclimatization hike to Plaza Francia (south face viewpoint)."
+    },
+    {
+      "day": 3,
+      "sleep_camp": "plaza_de_mulas",
+      "max_altitude_m": 4300,
+      "note": "Long walk to Plaza de Mulas; medical check."
+    },
+    {
+      "day": 4,
+      "sleep_camp": "plaza_de_mulas",
+      "max_altitude_m": 4300,
+      "note": "Rest."
+    },
+    {
+      "day": 5,
+      "sleep_camp": "plaza_de_mulas",
+      "max_altitude_m": 4600,
+      "note": "Acclimatization hike."
+    },
+    {
+      "day": 6,
+      "sleep_camp": "plaza_de_mulas",
+      "max_altitude_m": 4910,
+      "note": "Carry to Plaza Canadá, return."
+    },
+    {
+      "day": 7,
+      "sleep_camp": "plaza_canada",
+      "max_altitude_m": 4910,
+      "note": "Move to Canadá."
+    },
+    {
+      "day": 8,
+      "sleep_camp": "plaza_canada",
+      "max_altitude_m": 5560,
+      "note": "Carry to Nido de Cóndores, return."
+    },
+    {
+      "day": 9,
+      "sleep_camp": "nido_de_condores",
+      "max_altitude_m": 5560,
+      "note": "Move to Nido."
+    },
+    {
+      "day": 10,
+      "sleep_camp": "nido_de_condores",
+      "max_altitude_m": 5560,
+      "note": "Rest."
+    },
+    {
+      "day": 11,
+      "sleep_camp": "nido_de_condores",
+      "max_altitude_m": 5970,
+      "note": "Carry to Cólera, return."
+    },
+    {
+      "day": 12,
+      "sleep_camp": "colera",
+      "max_altitude_m": 5970,
+      "note": "Move to Cólera."
+    },
+    {
+      "day": 13,
+      "sleep_camp": "colera",
+      "max_altitude_m": 5970,
+      "note": "Weather reserve (viento blanco)."
+    },
+    {
+      "day": 14,
+      "sleep_camp": "colera",
+      "max_altitude_m": 6961,
+      "note": "Summit day, 10-12 h round trip."
+    },
+    {
+      "day": 15,
+      "sleep_camp": "plaza_de_mulas",
+      "max_altitude_m": 5970,
+      "note": "Descend to Plaza de Mulas."
+    },
+    {
+      "day": 16,
+      "sleep_camp": "horcones",
+      "max_altitude_m": 4300,
+      "note": "Walk out to Horcones."
+    }
+  ],
+  "sources": [
+    "Aconcagua Provincial Park (Mendoza) regulations and fee schedule",
+    "Secor, R. Aconcagua: A Climbing Guide",
+    "Instituto Geográfico Nacional (Argentina) / 2012 summit survey"
+  ],
+  "confidence": "low",
+  "notes": "Camp coordinates are approximate (±500 m)."
+}

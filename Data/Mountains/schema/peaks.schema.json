@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://summit.game/schema/peaks.schema.json",
+  "title": "SUMMIT curated peak list",
+  "description": "Data/Mountains/peaks.json. Elevations in metres above mean sea level from the most authoritative current survey; coordinates WGS84 decimal degrees.",
+  "type": "object",
+  "required": ["version", "peaks"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {"type": "string"},
+    "version": {"type": "integer", "minimum": 1},
+    "elevation_datum": {"type": "string"},
+    "coordinate_system": {"type": "string"},
+    "country_codes": {"type": "string"},
+    "peaks": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/peak"}}
+  },
+  "$defs": {
+    "id": {"type": "string", "pattern": "^[a-z0-9]+(_[a-z0-9]+)*$"},
+    "confidence": {"type": "string", "enum": ["high", "medium", "low"]},
+    "difficulty": {
+      "type": "string",
+      "description": "Difficulty of the easiest normal route. alpine_* use the IFAS/French alpine grades; expedition = remote, high or polar but non-technical; station = reached by lift.",
+      "enum": ["trekking", "scramble", "trekking_peak", "alpine_F", "alpine_PD", "alpine_AD", "alpine_D", "alpine_TD", "alpine_ED",
+               "big_wall", "expedition", "expedition_7000", "expedition_8000", "station"]
+    },
+    "tag": {
+      "type": "string",
+      "enum": ["eight_thousander", "seven_summits", "seven_summits_bass", "seven_summits_messner", "seven_summits_alt",
+               "volcanic_seven_summits", "alps_4000er", "volcano", "active_volcano", "nma_trekking_peak", "technical", "big_wall",
+               "unclimbed", "sacred", "closed", "viewpoint", "station", "cable_car", "polar", "glaciated", "snow_leopard",
+               "north_face_trilogy", "farthest_from_earth_center"]
+    },
+    "first_ascent": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["year", "climbers"],
+      "properties": {
+        "year": {"type": ["integer", "null"], "minimum": 0, "maximum": 2100},
+        "climbers": {"type": "array", "items": {"type": "string", "minLength": 1}}
+      }
+    },
+    "peak": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "alt_names", "elevation_m", "prominence_m", "lat", "lon", "range", "subrange", "country",
+                   "first_ascent", "difficulty", "tags", "climate_id", "routes", "confidence"],
+      "properties": {
+        "id": {"$ref": "#/$defs/id"},
+        "name": {"type": "string", "minLength": 1},
+        "alt_names": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+        "elevation_m": {"type": "number", "minimum": 0, "maximum": 8900},
+        "prominence_m": {"type": ["number", "null"], "minimum": 0, "maximum": 8900},
+        "lat": {"type": "number", "minimum": -90, "maximum": 90},
+        "lon": {"type": "number", "minimum": -180, "maximum": 180},
+        "range": {"type": "string", "minLength": 1},
+        "subrange": {"type": ["string", "null"]},
+        "country": {"type": "array", "minItems": 1, "items": {"type": "string", "pattern": "^[A-Z]{2}$"}, "uniqueItems": true, "description": "ISO 3166-1 alpha-2 codes (AQ for Antarctica)."},
+        "first_ascent": {"$ref": "#/$defs/first_ascent"},
+        "difficulty": {"$ref": "#/$defs/difficulty"},
+        "tags": {"type": "array", "items": {"$ref": "#/$defs/tag"}, "uniqueItems": true},
+        "climate_id": {"anyOf": [{"$ref": "#/$defs/id"}, {"type": "null"}]},
+        "routes": {"type": "array", "items": {"type": "string", "pattern": "^[a-z0-9_]+__[a-z0-9_]+$"}, "uniqueItems": true},
+        "confidence": {"$ref": "#/$defs/confidence"},
+        "uncertain_fields": {
+          "description": "Fields whose values are less certain than the overall confidence suggests.",
+          "type": "array", "uniqueItems": true,
+          "items": {"type": "string", "enum": ["elevation_m", "prominence_m", "lat", "lon", "first_ascent", "first_ascent.climbers", "first_ascent.year"]}
+        },
+        "notes": {"type": "string"}
+      }
+    }
+  }
+}

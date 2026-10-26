@@ -1,0 +1,342 @@
+{
+  "$schema": "../schema/route.schema.json",
+  "id": "denali__west_buttress",
+  "peak_id": "denali",
+  "name": "West Buttress",
+  "style": "expedition",
+  "grade": "Alaska Grade 2 ; 40-45° fixed-line headwall, glacier travel, extreme cold",
+  "technical": false,
+  "season_best": [5, 6, 7],
+  "permit_cost_usd": 430,
+  "permit_year": 2024,
+  "permit_notes": "NPS mountaineering special-use fee (about USD 430 in 2024; a reduced youth rate exists) plus park entrance fee. 60-day advance registration required.",
+  "camps": [
+    {
+      "id": "kbc",
+      "name": "Kahiltna Base Camp",
+      "type": "base_camp",
+      "altitude_m": 2200,
+      "lat": 62.9693,
+      "lon": -151.171,
+      "tent_capacity": 200,
+      "confidence": "medium",
+      "notes": "Air-taxi landing strip on the Southeast Fork of the Kahiltna Glacier (7200 ft). NPS ranger camp."
+    },
+    {
+      "id": "c1",
+      "name": "7800 Camp (Camp 1)",
+      "type": "camp",
+      "altitude_m": 2377,
+      "lat": 63.005,
+      "lon": -151.215,
+      "tent_capacity": 80,
+      "confidence": "low",
+      "notes": "At the base of Ski Hill."
+    },
+    {
+      "id": "c2",
+      "name": "11,000 ft Camp (Camp 2)",
+      "type": "camp",
+      "altitude_m": 3353,
+      "lat": 63.04,
+      "lon": -151.145,
+      "tent_capacity": 80,
+      "confidence": "low",
+      "notes": "Below Motorcycle Hill."
+    },
+    {
+      "id": "windy_corner",
+      "name": "Windy Corner",
+      "type": "waypoint",
+      "altitude_m": 4054,
+      "lat": 63.052,
+      "lon": -151.115,
+      "tent_capacity": 0,
+      "confidence": "low",
+      "notes": "13,300 ft; exposed traverse."
+    },
+    {
+      "id": "c3",
+      "name": "14,000 ft Camp (Genet Basin)",
+      "type": "camp",
+      "altitude_m": 4328,
+      "lat": 63.059,
+      "lon": -151.086,
+      "tent_capacity": 150,
+      "confidence": "medium",
+      "notes": "Main acclimatization camp; NPS ranger and medical camp (14,200 ft)."
+    },
+    {
+      "id": "c4",
+      "name": "17,000 ft High Camp",
+      "type": "camp",
+      "altitude_m": 5243,
+      "lat": 63.066,
+      "lon": -151.047,
+      "tent_capacity": 60,
+      "confidence": "low",
+      "notes": "Exposed shelf on the West Buttress crest (17,200 ft); igloo walls essential."
+    },
+    {
+      "id": "denali_pass",
+      "name": "Denali Pass",
+      "type": "waypoint",
+      "altitude_m": 5547,
+      "lat": 63.077,
+      "lon": -151.033,
+      "tent_capacity": 0,
+      "confidence": "low",
+      "notes": "18,200 ft."
+    },
+    {
+      "id": "football_field",
+      "name": "Football Field",
+      "type": "waypoint",
+      "altitude_m": 5944,
+      "lat": 63.073,
+      "lon": -151.018,
+      "tent_capacity": 0,
+      "confidence": "low",
+      "notes": "19,500 ft plateau below Pig Hill."
+    },
+    {
+      "id": "summit",
+      "name": "Summit of Denali",
+      "type": "summit",
+      "altitude_m": 6190,
+      "lat": 63.06944,
+      "lon": -151.0075,
+      "tent_capacity": 0,
+      "confidence": "high",
+      "notes": "20,310 ft (2015 survey)."
+    }
+  ],
+  "segments": [
+    {
+      "from": "kbc",
+      "to": "c1",
+      "distance_m": 9000,
+      "ascent_m": 327,
+      "descent_m": 150,
+      "terrain": "soft_snow",
+      "hours_up": 5,
+      "hours_down": 3.5,
+      "fixed_ropes": false,
+      "hazards": ["crevasses", "whiteout", "sun_heat"],
+      "notes": "Descend Heartbreak Hill to the main Kahiltna, then up-glacier on skis or snowshoes hauling sleds. Travel at night when snow bridges are frozen."
+    },
+    {
+      "from": "c1",
+      "to": "c2",
+      "distance_m": 8000,
+      "ascent_m": 976,
+      "descent_m": 0,
+      "terrain": "soft_snow",
+      "hours_up": 6,
+      "hours_down": 3,
+      "fixed_ropes": false,
+      "hazards": ["crevasses", "whiteout", "avalanche"],
+      "max_slope_deg": 15,
+      "notes": "Ski Hill and Kahiltna Pass; most teams double-carry (cache then move)."
+    },
+    {
+      "from": "c2",
+      "to": "windy_corner",
+      "distance_m": 3500,
+      "ascent_m": 701,
+      "descent_m": 0,
+      "terrain": "hard_snow",
+      "hours_up": 4,
+      "hours_down": 2,
+      "fixed_ropes": false,
+      "hazards": ["avalanche", "crevasses", "wind", "exposure"],
+      "max_slope_deg": 30,
+      "notes": "Motorcycle Hill, Squirrel Hill, the Polo Field and the traverse to Windy Corner."
+    },
+    {
+      "from": "windy_corner",
+      "to": "c3",
+      "distance_m": 2500,
+      "ascent_m": 274,
+      "descent_m": 0,
+      "terrain": "hard_snow",
+      "hours_up": 2,
+      "hours_down": 1.5,
+      "fixed_ropes": false,
+      "hazards": ["crevasses", "rockfall", "serac"],
+      "notes": "Crevassed bowl below the corner, then the gentle rise into Genet Basin."
+    },
+    {
+      "from": "c3",
+      "to": "c4",
+      "distance_m": 3500,
+      "ascent_m": 915,
+      "descent_m": 0,
+      "terrain": "hard_snow",
+      "hours_up": 6,
+      "hours_down": 3,
+      "fixed_ropes": true,
+      "hazards": ["exposure", "wind", "cold", "crowding"],
+      "max_slope_deg": 45,
+      "notes": "Headwall fixed lines (~250 m at 40-45°) to the ridge at 16,200 ft, then the narrow crest past Washburn's Thumb with running protection."
+    },
+    {
+      "from": "c4",
+      "to": "denali_pass",
+      "distance_m": 1500,
+      "ascent_m": 304,
+      "descent_m": 0,
+      "terrain": "hard_snow",
+      "hours_up": 3,
+      "hours_down": 1.5,
+      "fixed_ropes": false,
+      "hazards": ["exposure", "wind", "cold"],
+      "max_slope_deg": 35,
+      "notes": "The Autobahn: a rising traverse on hard snow protected by pickets; the site of most fatal falls on the route."
+    },
+    {
+      "from": "denali_pass",
+      "to": "football_field",
+      "distance_m": 2500,
+      "ascent_m": 437,
+      "descent_m": 40,
+      "terrain": "hard_snow",
+      "hours_up": 3,
+      "hours_down": 1.5,
+      "fixed_ropes": false,
+      "hazards": ["cold", "wind", "whiteout", "altitude"],
+      "notes": "Past Archdeacon's Tower."
+    },
+    {
+      "from": "football_field",
+      "to": "summit",
+      "distance_m": 1000,
+      "ascent_m": 246,
+      "descent_m": 0,
+      "terrain": "hard_snow",
+      "hours_up": 2,
+      "hours_down": 1,
+      "fixed_ropes": false,
+      "hazards": ["cornice", "exposure", "wind", "cold"],
+      "max_slope_deg": 35,
+      "notes": "Pig Hill then the corniced summit ridge."
+    }
+  ],
+  "typical_itinerary": [
+    {
+      "day": 1,
+      "sleep_camp": "kbc",
+      "max_altitude_m": 2200,
+      "note": "Fly from Talkeetna to Kahiltna Base Camp; ranger check-in."
+    },
+    {
+      "day": 2,
+      "sleep_camp": "c1",
+      "max_altitude_m": 2377,
+      "note": "To 7800 Camp, traveling at night."
+    },
+    {
+      "day": 3,
+      "sleep_camp": "c1",
+      "max_altitude_m": 2900,
+      "note": "Carry to ~9500 ft, cache, return."
+    },
+    {
+      "day": 4,
+      "sleep_camp": "c2",
+      "max_altitude_m": 3353,
+      "note": "Move to 11,000 ft Camp."
+    },
+    {
+      "day": 5,
+      "sleep_camp": "c2",
+      "max_altitude_m": 3353,
+      "note": "Back-carry the cache."
+    },
+    {
+      "day": 6,
+      "sleep_camp": "c2",
+      "max_altitude_m": 4054,
+      "note": "Carry around Windy Corner, cache at ~13,500 ft."
+    },
+    {
+      "day": 7,
+      "sleep_camp": "c3",
+      "max_altitude_m": 4328,
+      "note": "Move to 14,000 ft Camp."
+    },
+    {
+      "day": 8,
+      "sleep_camp": "c3",
+      "max_altitude_m": 4328,
+      "note": "Back-carry the Windy Corner cache."
+    },
+    {
+      "day": 9,
+      "sleep_camp": "c3",
+      "max_altitude_m": 4328,
+      "note": "Rest."
+    },
+    {
+      "day": 10,
+      "sleep_camp": "c3",
+      "max_altitude_m": 4940,
+      "note": "Carry up the headwall fixed lines, cache at 16,200 ft."
+    },
+    {
+      "day": 11,
+      "sleep_camp": "c3",
+      "max_altitude_m": 4328,
+      "note": "Rest."
+    },
+    {
+      "day": 12,
+      "sleep_camp": "c3",
+      "max_altitude_m": 4328,
+      "note": "Weather day."
+    },
+    {
+      "day": 13,
+      "sleep_camp": "c4",
+      "max_altitude_m": 5243,
+      "note": "Move to 17,000 ft High Camp along the ridge."
+    },
+    {
+      "day": 14,
+      "sleep_camp": "c4",
+      "max_altitude_m": 5243,
+      "note": "Rest / weather."
+    },
+    {
+      "day": 15,
+      "sleep_camp": "c4",
+      "max_altitude_m": 6190,
+      "note": "Summit day, 8-12 h round trip."
+    },
+    {
+      "day": 16,
+      "sleep_camp": "c3",
+      "max_altitude_m": 5243,
+      "note": "Descend to 14,000 ft Camp."
+    },
+    {
+      "day": 17,
+      "sleep_camp": "kbc",
+      "max_altitude_m": 4328,
+      "note": "Long descent to base camp, traveling at night."
+    },
+    {
+      "day": 18,
+      "sleep_camp": "kbc",
+      "max_altitude_m": 2200,
+      "note": "Fly out (weather permitting; waits of several days are common)."
+    }
+  ],
+  "sources": [
+    "National Park Service, Denali Mountaineering (https://www.nps.gov/dena/planyourvisit/mountaineering.htm)",
+    "Secor, R. Denali Climbing Guide",
+    "NPS Denali Mountaineering Summary annual reports"
+  ],
+  "confidence": "medium",
+  "notes": "Camp altitudes follow the NPS foot values (7800, 11,000, 14,200, 17,200 ft). Coordinates approximate (±500 m)."
+}

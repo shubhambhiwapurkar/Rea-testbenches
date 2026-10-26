@@ -1,0 +1,181 @@
+{
+  "$schema": "../schema/route.schema.json",
+  "id": "lobuche_east__southeast_ridge",
+  "peak_id": "lobuche_east",
+  "name": "Southeast Ridge",
+  "style": "alpine",
+  "grade": "PD+ / AD- ; 45° snow on fixed rope, corniced summit ridge",
+  "technical": false,
+  "season_best": [4, 5, 10, 11],
+  "permit_cost_usd": 250,
+  "permit_year": 2024,
+  "permit_notes": "NMA permit, spring rate (autumn USD 125). Low-medium confidence.",
+  "camps": [
+    {
+      "id": "lobuche",
+      "name": "Lobuche",
+      "type": "village",
+      "altitude_m": 4940,
+      "lat": 27.948,
+      "lon": 86.8105,
+      "tent_capacity": 200,
+      "confidence": "medium"
+    },
+    {
+      "id": "bc",
+      "name": "Lobuche East Base Camp",
+      "type": "base_camp",
+      "altitude_m": 4950,
+      "lat": 27.943,
+      "lon": 86.796,
+      "tent_capacity": 60,
+      "confidence": "low",
+      "notes": "By small lakes south-west of Lobuche."
+    },
+    {
+      "id": "high_camp",
+      "name": "High Camp",
+      "type": "camp",
+      "altitude_m": 5400,
+      "lat": 27.952,
+      "lon": 86.789,
+      "tent_capacity": 30,
+      "confidence": "low",
+      "notes": "On rock slabs."
+    },
+    {
+      "id": "crampon_point",
+      "name": "Crampon Point",
+      "type": "waypoint",
+      "altitude_m": 5600,
+      "lat": 27.956,
+      "lon": 86.786,
+      "tent_capacity": 0,
+      "confidence": "low"
+    },
+    {
+      "id": "false_summit",
+      "name": "False Summit",
+      "type": "waypoint",
+      "altitude_m": 6090,
+      "lat": 27.9605,
+      "lon": 86.7865,
+      "tent_capacity": 0,
+      "confidence": "low",
+      "notes": "Where most commercial parties stop."
+    },
+    {
+      "id": "summit",
+      "name": "Summit of Lobuche East",
+      "type": "summit",
+      "altitude_m": 6119,
+      "lat": 27.9625,
+      "lon": 86.788,
+      "tent_capacity": 0,
+      "confidence": "low"
+    }
+  ],
+  "segments": [
+    {
+      "from": "lobuche",
+      "to": "bc",
+      "distance_m": 2000,
+      "ascent_m": 70,
+      "descent_m": 60,
+      "terrain": "boulder",
+      "hours_up": 1,
+      "hours_down": 1,
+      "fixed_ropes": false,
+      "hazards": []
+    },
+    {
+      "from": "bc",
+      "to": "high_camp",
+      "distance_m": 1500,
+      "ascent_m": 450,
+      "descent_m": 0,
+      "terrain": "boulder",
+      "hours_up": 3,
+      "hours_down": 2,
+      "fixed_ropes": false,
+      "hazards": ["loose_rock"],
+      "notes": "Moraine and slabs."
+    },
+    {
+      "from": "high_camp",
+      "to": "crampon_point",
+      "distance_m": 800,
+      "ascent_m": 200,
+      "descent_m": 0,
+      "terrain": "rock",
+      "hours_up": 2,
+      "hours_down": 1.5,
+      "fixed_ropes": false,
+      "hazards": ["rockfall", "verglas"],
+      "notes": "Rock slabs, icy in the morning."
+    },
+    {
+      "from": "crampon_point",
+      "to": "false_summit",
+      "distance_m": 1000,
+      "ascent_m": 490,
+      "descent_m": 0,
+      "terrain": "hard_snow",
+      "hours_up": 4,
+      "hours_down": 2,
+      "fixed_ropes": true,
+      "hazards": ["exposure", "crevasses"],
+      "max_slope_deg": 45,
+      "notes": "Snow slope up to 45° on fixed lines."
+    },
+    {
+      "from": "false_summit",
+      "to": "summit",
+      "distance_m": 400,
+      "ascent_m": 69,
+      "descent_m": 40,
+      "terrain": "hard_snow",
+      "hours_up": 1,
+      "hours_down": 0.75,
+      "fixed_ropes": true,
+      "hazards": ["cornice", "exposure"],
+      "max_slope_deg": 40,
+      "notes": "Drop into a notch and climb the corniced ridge to the true summit."
+    }
+  ],
+  "typical_itinerary": [
+    {
+      "day": 1,
+      "sleep_camp": "lobuche",
+      "max_altitude_m": 4940,
+      "note": "Arrive after acclimatizing in Dingboche."
+    },
+    {
+      "day": 2,
+      "sleep_camp": "bc",
+      "max_altitude_m": 4950,
+      "note": "Move to base camp; skills training."
+    },
+    {
+      "day": 3,
+      "sleep_camp": "high_camp",
+      "max_altitude_m": 5400,
+      "note": "To high camp."
+    },
+    {
+      "day": 4,
+      "sleep_camp": "bc",
+      "max_altitude_m": 6119,
+      "note": "Summit day (start 01:00-02:00), descend to base camp."
+    },
+    {
+      "day": 5,
+      "sleep_camp": "lobuche",
+      "max_altitude_m": 4950,
+      "note": "Return to Lobuche."
+    }
+  ],
+  "sources": ["Nepal Mountaineering Association peak list", "Guiding-company route descriptions (cross-checked)"],
+  "confidence": "low",
+  "notes": "All coordinates are approximate."
+}

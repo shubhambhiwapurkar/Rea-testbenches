@@ -1,0 +1,153 @@
+{
+  "$schema": "../schema/route.schema.json",
+  "id": "rainier__disappointment_cleaver",
+  "peak_id": "rainier",
+  "name": "Disappointment Cleaver",
+  "style": "alpine",
+  "grade": "Grade II ; glacier travel, 35° snow, rockfall on the Cleaver",
+  "technical": false,
+  "season_best": [5, 6, 7, 8],
+  "permit_cost_usd": 65,
+  "permit_year": 2024,
+  "permit_notes": "Mount Rainier NP Climbing Cost Recovery Fee (about USD 65 per adult in 2024; a reduced youth rate exists) plus park entrance. Climbing permit required above 10,000 ft.",
+  "camps": [
+    {
+      "id": "paradise",
+      "name": "Paradise",
+      "type": "trailhead",
+      "altitude_m": 1646,
+      "lat": 46.786,
+      "lon": -121.7355,
+      "tent_capacity": 0,
+      "confidence": "high",
+      "notes": "Jackson Visitor Center and Guide House."
+    },
+    {
+      "id": "camp_muir",
+      "name": "Camp Muir",
+      "type": "camp",
+      "altitude_m": 3072,
+      "lat": 46.8355,
+      "lon": -121.7323,
+      "tent_capacity": 110,
+      "confidence": "medium",
+      "notes": "Stone shelters and tent sites (10,080 ft)."
+    },
+    {
+      "id": "ingraham_flats",
+      "name": "Ingraham Flats",
+      "type": "camp",
+      "altitude_m": 3383,
+      "lat": 46.8445,
+      "lon": -121.729,
+      "tent_capacity": 40,
+      "confidence": "low",
+      "notes": "Glacier camp (11,100 ft)."
+    },
+    {
+      "id": "dc_top",
+      "name": "Top of Disappointment Cleaver",
+      "type": "waypoint",
+      "altitude_m": 3780,
+      "lat": 46.848,
+      "lon": -121.739,
+      "tent_capacity": 0,
+      "confidence": "low",
+      "notes": "~12,300 ft rest stop."
+    },
+    {
+      "id": "summit",
+      "name": "Columbia Crest",
+      "type": "summit",
+      "altitude_m": 4392,
+      "lat": 46.85278,
+      "lon": -121.76056,
+      "tent_capacity": 0,
+      "confidence": "high",
+      "notes": "14,411 ft."
+    }
+  ],
+  "segments": [
+    {
+      "from": "paradise",
+      "to": "camp_muir",
+      "distance_m": 7000,
+      "ascent_m": 1426,
+      "descent_m": 0,
+      "terrain": "hard_snow",
+      "hours_up": 5,
+      "hours_down": 2.5,
+      "fixed_ropes": false,
+      "hazards": ["whiteout"],
+      "max_slope_deg": 20,
+      "notes": "Skyline Trail then the Muir Snowfield; many disorientation accidents in whiteout."
+    },
+    {
+      "from": "camp_muir",
+      "to": "ingraham_flats",
+      "distance_m": 1800,
+      "ascent_m": 311,
+      "descent_m": 0,
+      "terrain": "hard_snow",
+      "hours_up": 1.5,
+      "hours_down": 1,
+      "fixed_ropes": false,
+      "hazards": ["rockfall", "crevasses", "serac"],
+      "notes": "Cowlitz Glacier, Cathedral Gap (scree), Ingraham Glacier below its icefall."
+    },
+    {
+      "from": "ingraham_flats",
+      "to": "dc_top",
+      "distance_m": 1200,
+      "ascent_m": 397,
+      "descent_m": 0,
+      "terrain": "scree",
+      "hours_up": 2,
+      "hours_down": 1.5,
+      "fixed_ropes": false,
+      "hazards": ["rockfall", "loose_rock", "crevasses", "exposure"],
+      "max_slope_deg": 30,
+      "notes": "Traverse the 'bowling alley' then climb the loose rock and snow of the Cleaver."
+    },
+    {
+      "from": "dc_top",
+      "to": "summit",
+      "distance_m": 2500,
+      "ascent_m": 612,
+      "descent_m": 0,
+      "terrain": "hard_snow",
+      "hours_up": 3,
+      "hours_down": 2,
+      "fixed_ropes": false,
+      "hazards": ["crevasses", "wind", "cold", "altitude"],
+      "max_slope_deg": 30,
+      "notes": "Switchbacks on the upper Ingraham/Emmons glaciers to the crater rim; Columbia Crest across the crater."
+    }
+  ],
+  "typical_itinerary": [
+    {
+      "day": 1,
+      "sleep_camp": "camp_muir",
+      "max_altitude_m": 3072,
+      "note": "Climb the Muir Snowfield (4-6 h)."
+    },
+    {
+      "day": 2,
+      "sleep_camp": "camp_muir",
+      "max_altitude_m": 4392,
+      "note": "Rope up ~01:00; summit and return to Muir (10-12 h)."
+    },
+    {
+      "day": 3,
+      "sleep_camp": "paradise",
+      "max_altitude_m": 3072,
+      "note": "Descend to Paradise."
+    }
+  ],
+  "sources": [
+    "Mount Rainier National Park climbing information (https://www.nps.gov/mora/planyourvisit/climbing.htm)",
+    "Gauthier, M. Mount Rainier: A Climbing Guide"
+  ],
+  "confidence": "medium",
+  "notes": "Guided parties often camp at Ingraham Flats instead of Muir on a 4-day program."
+}

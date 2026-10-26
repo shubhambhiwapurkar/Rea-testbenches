@@ -1,0 +1,24 @@
+{
+  "$schema": "../schema/climate.schema.json",
+  "id": "cascades",
+  "name": "Cascade Range volcanoes",
+  "region": "Rainier, Hood, Baker, Shasta (Shasta is drier).",
+  "latitude_deg": 46.85,
+  "reference_elevation_m": 3072,
+  "reference_site": "Camp Muir, Mount Rainier (NWAC station)",
+  "mean_temp_c": [-8.0, -8.0, -7.5, -5.5, -2.5, 0.5, 4.5, 4.5, 2.0, -2.0, -6.0, -8.5],
+  "diurnal_range_c": [5, 5, 6, 6, 7, 7, 8, 8, 7, 6, 5, 5],
+  "jet_stream_wind_ms": [35, 33, 30, 27, 22, 20, 17, 17, 20, 25, 32, 35],
+  "storms_per_week": [2.2, 2.0, 2.0, 1.6, 1.2, 0.9, 0.4, 0.5, 0.9, 1.6, 2.4, 2.4],
+  "precipitation_mm_per_day": [11.0, 9.0, 8.5, 6.0, 4.0, 3.0, 1.2, 1.5, 3.5, 7.5, 13.0, 12.0],
+  "lapse_rate_c_per_km": 6,
+  "prevailing_wind_from_deg": 240,
+  "summit_windows": [6, 7, 8],
+  "sources": [
+    "Northwest Avalanche Center (NWAC) Camp Muir and Paradise weather stations",
+    "NOAA NCEI 1991-2020 normals, Paradise Ranger Station",
+    "Hersbach, H. et al. (2020) The ERA5 global reanalysis. QJRMS 146:1999-2049 (monthly climatology 1991-2020, 300 hPa winds)"
+  ],
+  "confidence": "medium",
+  "notes": "Wet maritime winters (Paradise averages ~16 m of snowfall); dry, stable July-August."
+}

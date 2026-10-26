@@ -1,0 +1,169 @@
+{
+  "$schema": "../schema/route.schema.json",
+  "id": "vinson__normal",
+  "peak_id": "vinson",
+  "name": "Normal Route (Branscomb Glacier)",
+  "style": "expedition",
+  "grade": "Non-technical ; ~1000 m fixed-line headwall to 45°, polar cold",
+  "technical": false,
+  "season_best": [12, 1],
+  "permit_cost_usd": 0,
+  "permit_year": 2024,
+  "permit_notes": "No fee, but an Antarctic Treaty environmental authorization from the operator's national authority is required. Logistics via Antarctic Logistics & Expeditions (ALE) cost roughly USD 50,000-70,000 per climber (2024).",
+  "camps": [
+    {
+      "id": "vbc",
+      "name": "Vinson Base Camp",
+      "type": "base_camp",
+      "altitude_m": 2140,
+      "lat": -78.535,
+      "lon": -85.21,
+      "tent_capacity": 60,
+      "confidence": "low",
+      "notes": "On the Branscomb Glacier; Twin Otter landing strip from Union Glacier."
+    },
+    {
+      "id": "low_camp",
+      "name": "Low Camp (Camp 1)",
+      "type": "camp",
+      "altitude_m": 2750,
+      "lat": -78.515,
+      "lon": -85.46,
+      "tent_capacity": 40,
+      "confidence": "low"
+    },
+    {
+      "id": "high_camp",
+      "name": "High Camp",
+      "type": "camp",
+      "altitude_m": 3780,
+      "lat": -78.495,
+      "lon": -85.55,
+      "tent_capacity": 40,
+      "confidence": "low",
+      "notes": "Exposed plateau; snow walls essential."
+    },
+    {
+      "id": "summit",
+      "name": "Summit of Mount Vinson",
+      "type": "summit",
+      "altitude_m": 4892,
+      "lat": -78.52528,
+      "lon": -85.61722,
+      "tent_capacity": 0,
+      "confidence": "high"
+    }
+  ],
+  "segments": [
+    {
+      "from": "vbc",
+      "to": "low_camp",
+      "distance_m": 7000,
+      "ascent_m": 610,
+      "descent_m": 0,
+      "terrain": "soft_snow",
+      "hours_up": 5,
+      "hours_down": 3,
+      "fixed_ropes": false,
+      "hazards": ["crevasses", "cold", "whiteout"],
+      "notes": "Hauling sleds up the Branscomb Glacier, roped for crevasses."
+    },
+    {
+      "from": "low_camp",
+      "to": "high_camp",
+      "distance_m": 3500,
+      "ascent_m": 1030,
+      "descent_m": 0,
+      "terrain": "hard_snow",
+      "hours_up": 7,
+      "hours_down": 3.5,
+      "fixed_ropes": true,
+      "hazards": ["exposure", "cold", "wind", "avalanche"],
+      "max_slope_deg": 45,
+      "notes": "Fixed lines up a ~1000 m headwall, slopes to 45°."
+    },
+    {
+      "from": "high_camp",
+      "to": "summit",
+      "distance_m": 6000,
+      "ascent_m": 1112,
+      "descent_m": 0,
+      "terrain": "hard_snow",
+      "hours_up": 6,
+      "hours_down": 3.5,
+      "fixed_ropes": false,
+      "hazards": ["cold", "wind", "exposure", "crevasses"],
+      "max_slope_deg": 30,
+      "notes": "Long glacier valley then a short exposed summit ridge scramble."
+    }
+  ],
+  "typical_itinerary": [
+    {
+      "day": 1,
+      "sleep_camp": "vbc",
+      "max_altitude_m": 2140,
+      "note": "Twin Otter flight from Union Glacier to Vinson Base Camp."
+    },
+    {
+      "day": 2,
+      "sleep_camp": "vbc",
+      "max_altitude_m": 2140,
+      "note": "Rest; crevasse-rescue refresher."
+    },
+    {
+      "day": 3,
+      "sleep_camp": "low_camp",
+      "max_altitude_m": 2750,
+      "note": "Haul sleds to Low Camp."
+    },
+    {
+      "day": 4,
+      "sleep_camp": "low_camp",
+      "max_altitude_m": 3300,
+      "note": "Carry up the fixed lines, cache, return."
+    },
+    {
+      "day": 5,
+      "sleep_camp": "low_camp",
+      "max_altitude_m": 2750,
+      "note": "Rest / weather."
+    },
+    {
+      "day": 6,
+      "sleep_camp": "high_camp",
+      "max_altitude_m": 3780,
+      "note": "Climb the fixed lines to High Camp."
+    },
+    {
+      "day": 7,
+      "sleep_camp": "high_camp",
+      "max_altitude_m": 3780,
+      "note": "Rest / weather."
+    },
+    {
+      "day": 8,
+      "sleep_camp": "high_camp",
+      "max_altitude_m": 4892,
+      "note": "Summit day (9-12 h round trip) in 24 h daylight."
+    },
+    {
+      "day": 9,
+      "sleep_camp": "low_camp",
+      "max_altitude_m": 3780,
+      "note": "Descend to Low Camp."
+    },
+    {
+      "day": 10,
+      "sleep_camp": "vbc",
+      "max_altitude_m": 2750,
+      "note": "Descend to base camp; fly out when the weather allows."
+    }
+  ],
+  "sources": [
+    "Antarctic Logistics & Expeditions (ALE) Vinson expedition notes",
+    "American Alpine Journal (1967) First ascent of Vinson",
+    "Omega Foundation 2004 & 2007 GPS surveys of the Sentinel Range"
+  ],
+  "confidence": "low",
+  "notes": "Camp coordinates are approximate (±1 km)."
+}

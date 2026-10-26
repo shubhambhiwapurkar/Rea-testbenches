@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://summit.game/schema/climate.schema.json",
+  "title": "SUMMIT regional climatology",
+  "description": "Data/Mountains/climate/<id>.json. Mirrors summit::sim::ClimateProfile (Source/SummitSim/Public/Sim/Weather.h). Monthly arrays run January..December; values are monthly means at reference_elevation_m.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "name", "latitude_deg", "reference_elevation_m", "mean_temp_c", "diurnal_range_c", "jet_stream_wind_ms",
+               "storms_per_week", "precipitation_mm_per_day", "lapse_rate_c_per_km", "prevailing_wind_from_deg", "sources"],
+  "properties": {
+    "$schema": {"type": "string"},
+    "id": {"type": "string", "pattern": "^[a-z0-9]+(_[a-z0-9]+)*$"},
+    "name": {"type": "string"},
+    "region": {"type": "string"},
+    "latitude_deg": {"type": "number", "minimum": -90, "maximum": 90},
+    "reference_elevation_m": {"type": "number", "minimum": 0, "maximum": 8900},
+    "reference_site": {"type": "string"},
+    "mean_temp_c": {"$ref": "#/$defs/monthly", "description": "Daily mean air temperature (°C) at the reference elevation."},
+    "diurnal_range_c": {"$ref": "#/$defs/monthly_nonneg", "description": "Mean daily max minus min (°C)."},
+    "jet_stream_wind_ms": {"$ref": "#/$defs/monthly_nonneg", "description": "Mean wind speed near 300 hPa (~9 km), m/s."},
+    "storms_per_week": {"$ref": "#/$defs/monthly_nonneg", "description": "Synoptic disturbance frequency."},
+    "precipitation_mm_per_day": {"$ref": "#/$defs/monthly_nonneg", "description": "Water-equivalent precipitation at the reference elevation."},
+    "lapse_rate_c_per_km": {"type": "number", "minimum": 3, "maximum": 10},
+    "prevailing_wind_from_deg": {"type": "number", "minimum": 0, "maximum": 360},
+    "summit_windows": {"type": "array", "items": {"type": "integer", "minimum": 1, "maximum": 12}, "uniqueItems": true,
+                       "description": "Months in which summit attempts usually happen (gameplay hint, not part of ClimateProfile)."},
+    "sources": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 3}},
+    "confidence": {"type": "string", "enum": ["high", "medium", "low"]},
+    "notes": {"type": "string"}
+  },
+  "$defs": {
+    "monthly": {"type": "array", "minItems": 12, "maxItems": 12, "items": {"type": "number", "minimum": -60, "maximum": 40}},
+    "monthly_nonneg": {"type": "array", "minItems": 12, "maxItems": 12, "items": {"type": "number", "minimum": 0, "maximum": 100}}
+  }
+}

@@ -1,0 +1,182 @@
+{
+  "$schema": "../schema/route.schema.json",
+  "id": "matterhorn__hornli_ridge",
+  "peak_id": "matterhorn",
+  "name": "Hörnli Ridge (Northeast Ridge)",
+  "style": "alpine",
+  "grade": "AD ; UIAA III, 1200 m of ridge from the hut, fixed ropes on the upper part",
+  "technical": true,
+  "season_best": [7, 8, 9],
+  "permit_cost_usd": 0,
+  "permit_year": 2024,
+  "permit_notes": "No permit. Hörnli Hut reservation required (half board ~CHF 150, 2024). Guided ascent ~CHF 1,800+.",
+  "camps": [
+    {
+      "id": "zermatt",
+      "name": "Zermatt",
+      "type": "trailhead",
+      "altitude_m": 1608,
+      "lat": 46.0207,
+      "lon": 7.7491,
+      "tent_capacity": 0,
+      "confidence": "high",
+      "notes": "Car-free village; lifts to Schwarzsee."
+    },
+    {
+      "id": "schwarzsee",
+      "name": "Schwarzsee",
+      "type": "trailhead",
+      "altitude_m": 2583,
+      "lat": 45.991,
+      "lon": 7.7095,
+      "tent_capacity": 0,
+      "confidence": "medium",
+      "notes": "Gondola top station and chapel."
+    },
+    {
+      "id": "hornli_hut",
+      "name": "Hörnli Hut (Hörnlihütte)",
+      "type": "hut",
+      "altitude_m": 3260,
+      "lat": 45.9819,
+      "lon": 7.6739,
+      "tent_capacity": 130,
+      "confidence": "medium",
+      "notes": "Rebuilt 2015; ~130 beds. Breakfast ~03:50 so parties start in the dark."
+    },
+    {
+      "id": "solvay_hut",
+      "name": "Solvay Hut (emergency bivouac)",
+      "type": "bivouac",
+      "altitude_m": 4003,
+      "lat": 45.9783,
+      "lon": 7.6664,
+      "tent_capacity": 10,
+      "confidence": "medium",
+      "notes": "Emergency shelter only."
+    },
+    {
+      "id": "shoulder",
+      "name": "The Shoulder",
+      "type": "waypoint",
+      "altitude_m": 4200,
+      "lat": 45.9775,
+      "lon": 7.6625,
+      "tent_capacity": 0,
+      "confidence": "low"
+    },
+    {
+      "id": "summit",
+      "name": "Summit of the Matterhorn (Swiss summit)",
+      "type": "summit",
+      "altitude_m": 4478,
+      "lat": 45.97639,
+      "lon": 7.65861,
+      "tent_capacity": 0,
+      "confidence": "high",
+      "notes": "Italian summit (4476 m) 100 m west along the ridge."
+    }
+  ],
+  "segments": [
+    {
+      "from": "zermatt",
+      "to": "schwarzsee",
+      "distance_m": 5500,
+      "ascent_m": 975,
+      "descent_m": 0,
+      "terrain": "trail",
+      "hours_up": 3,
+      "hours_down": 2,
+      "fixed_ropes": false,
+      "hazards": [],
+      "notes": "Most climbers take the gondola (~20 min)."
+    },
+    {
+      "from": "schwarzsee",
+      "to": "hornli_hut",
+      "distance_m": 3200,
+      "ascent_m": 727,
+      "descent_m": 50,
+      "terrain": "trail",
+      "hours_up": 2,
+      "hours_down": 1.5,
+      "fixed_ropes": false,
+      "hazards": ["exposure"],
+      "notes": "Path ends in metal stairways bolted to the rock below the hut."
+    },
+    {
+      "from": "hornli_hut",
+      "to": "solvay_hut",
+      "distance_m": 1300,
+      "ascent_m": 743,
+      "descent_m": 0,
+      "terrain": "rock",
+      "hours_up": 3,
+      "hours_down": 2.5,
+      "fixed_ropes": true,
+      "hazards": ["rockfall", "route_finding", "exposure", "crowding"],
+      "max_slope_deg": 40,
+      "notes": "Fixed rope at the base, then UIAA II-III scrambling on the east face flank; route-finding in the dark."
+    },
+    {
+      "from": "solvay_hut",
+      "to": "shoulder",
+      "distance_m": 400,
+      "ascent_m": 197,
+      "descent_m": 0,
+      "terrain": "rock",
+      "hours_up": 1,
+      "hours_down": 1,
+      "fixed_ropes": false,
+      "hazards": ["exposure", "verglas"],
+      "max_slope_deg": 45,
+      "notes": "Steeper climbing on the ridge crest."
+    },
+    {
+      "from": "shoulder",
+      "to": "summit",
+      "distance_m": 600,
+      "ascent_m": 278,
+      "descent_m": 0,
+      "terrain": "rock",
+      "hours_up": 1.5,
+      "hours_down": 1.5,
+      "fixed_ropes": true,
+      "hazards": ["exposure", "verglas", "wind", "cornice"],
+      "max_slope_deg": 45,
+      "notes": "Thick fixed ropes on the Moseley Slab and the final snow ridge."
+    }
+  ],
+  "typical_itinerary": [
+    {
+      "day": 1,
+      "sleep_camp": "zermatt",
+      "max_altitude_m": 1608,
+      "note": "Arrive. Acclimatize first, e.g. a night at 3000+ m and a 4000er such as the Breithorn."
+    },
+    {
+      "day": 2,
+      "sleep_camp": "hornli_hut",
+      "max_altitude_m": 3260,
+      "note": "Gondola to Schwarzsee, hike to the Hörnli Hut."
+    },
+    {
+      "day": 3,
+      "sleep_camp": "hornli_hut",
+      "max_altitude_m": 4478,
+      "note": "Start ~04:00; summit in 4-6 h; down-climb and abseil back to the hut (8-12 h round trip)."
+    },
+    {
+      "day": 4,
+      "sleep_camp": "zermatt",
+      "max_altitude_m": 3260,
+      "note": "Descend to Zermatt."
+    }
+  ],
+  "sources": [
+    "Swiss Alpine Club (SAC) Hochtouren guidebook grading",
+    "swisstopo summit elevation (4477.5 m)",
+    "Zermatt Mountain Guides route information"
+  ],
+  "confidence": "medium"
+}

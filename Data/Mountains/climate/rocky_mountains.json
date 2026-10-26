@@ -1,0 +1,24 @@
+{
+  "$schema": "../schema/climate.schema.json",
+  "id": "rocky_mountains",
+  "name": "Interior western North America",
+  "region": "Rockies (Teton, Front Range, Canadian Rockies) and approximately the Sierra Nevada.",
+  "latitude_deg": 43.7,
+  "reference_elevation_m": 3500,
+  "reference_site": "Generic high alpine 3500 m (Teton/Front Range SNOTEL and ridge stations)",
+  "mean_temp_c": [-13.0, -12.0, -9.0, -5.5, -1.0, 4.0, 8.0, 7.5, 3.0, -2.5, -8.5, -12.5],
+  "diurnal_range_c": [9, 9, 10, 10, 11, 12, 12, 12, 12, 11, 9, 9],
+  "jet_stream_wind_ms": [38, 36, 34, 31, 26, 22, 18, 18, 22, 27, 33, 37],
+  "storms_per_week": [1.5, 1.5, 1.6, 1.6, 1.4, 1.0, 1.2, 1.2, 0.9, 1.0, 1.4, 1.5],
+  "precipitation_mm_per_day": [3.0, 3.0, 3.2, 3.0, 2.8, 2.0, 1.6, 1.6, 1.6, 1.8, 2.6, 3.0],
+  "lapse_rate_c_per_km": 6.5,
+  "prevailing_wind_from_deg": 260,
+  "summit_windows": [7, 8, 9],
+  "sources": [
+    "USDA NRCS SNOTEL network climatology",
+    "Niwot Ridge LTER D1 station (3743 m)",
+    "Hersbach, H. et al. (2020) The ERA5 global reanalysis. QJRMS 146:1999-2049 (monthly climatology 1991-2020, 300 hPa winds)"
+  ],
+  "confidence": "low",
+  "notes": "Summer afternoon thunderstorms (North American monsoon) are the main hazard; Sierra Nevada is drier and warmer in summer."
+}

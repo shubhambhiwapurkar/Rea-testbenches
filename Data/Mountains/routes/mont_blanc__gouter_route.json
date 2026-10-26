@@ -1,0 +1,211 @@
+{
+  "$schema": "../schema/route.schema.json",
+  "id": "mont_blanc__gouter_route",
+  "peak_id": "mont_blanc",
+  "name": "Goûter Route (Voie Royale)",
+  "style": "alpine",
+  "grade": "PD ; rock ridge II-III with cables, snow ridges, 2500 m of ascent",
+  "technical": false,
+  "season_best": [6, 7, 8, 9],
+  "permit_cost_usd": 0,
+  "permit_year": 2024,
+  "permit_notes": "No permit, but a prefectoral order (Haute-Savoie) requires a hut reservation (Tête Rousse or Goûter) for this route in season.",
+  "camps": [
+    {
+      "id": "les_houches",
+      "name": "Les Houches",
+      "type": "trailhead",
+      "altitude_m": 1008,
+      "lat": 45.8913,
+      "lon": 6.798,
+      "tent_capacity": 0,
+      "confidence": "medium",
+      "notes": "Bellevue cable car to the Mont Blanc Tramway."
+    },
+    {
+      "id": "nid_daigle",
+      "name": "Nid d'Aigle",
+      "type": "trailhead",
+      "altitude_m": 2372,
+      "lat": 45.8658,
+      "lon": 6.8069,
+      "tent_capacity": 0,
+      "confidence": "medium",
+      "notes": "Top station of the Tramway du Mont Blanc."
+    },
+    {
+      "id": "tete_rousse",
+      "name": "Refuge de Tête Rousse",
+      "type": "hut",
+      "altitude_m": 3167,
+      "lat": 45.858,
+      "lon": 6.8206,
+      "tent_capacity": 74,
+      "confidence": "medium"
+    },
+    {
+      "id": "gouter",
+      "name": "Refuge du Goûter",
+      "type": "hut",
+      "altitude_m": 3835,
+      "lat": 45.8514,
+      "lon": 6.8317,
+      "tent_capacity": 120,
+      "confidence": "medium",
+      "notes": "Built 2013, futuristic shell on the ridge crest."
+    },
+    {
+      "id": "dome_gouter",
+      "name": "Dôme du Goûter",
+      "type": "waypoint",
+      "altitude_m": 4304,
+      "lat": 45.8418,
+      "lon": 6.845,
+      "tent_capacity": 0,
+      "confidence": "low"
+    },
+    {
+      "id": "vallot",
+      "name": "Abri Vallot (emergency shelter)",
+      "type": "bivouac",
+      "altitude_m": 4362,
+      "lat": 45.8369,
+      "lon": 6.8514,
+      "tent_capacity": 15,
+      "confidence": "medium",
+      "notes": "Emergency use only."
+    },
+    {
+      "id": "summit",
+      "name": "Summit of Mont Blanc",
+      "type": "summit",
+      "altitude_m": 4805.59,
+      "lat": 45.83278,
+      "lon": 6.865,
+      "tent_capacity": 0,
+      "confidence": "high",
+      "notes": "2023 survey; height of the snow cap varies."
+    }
+  ],
+  "segments": [
+    {
+      "from": "les_houches",
+      "to": "nid_daigle",
+      "distance_m": 6000,
+      "ascent_m": 1364,
+      "descent_m": 0,
+      "terrain": "trail",
+      "hours_up": 1,
+      "hours_down": 1,
+      "fixed_ropes": false,
+      "hazards": [],
+      "notes": "Bellevue cable car then the Tramway du Mont Blanc."
+    },
+    {
+      "from": "nid_daigle",
+      "to": "tete_rousse",
+      "distance_m": 3000,
+      "ascent_m": 795,
+      "descent_m": 0,
+      "terrain": "scree",
+      "hours_up": 2.5,
+      "hours_down": 1.5,
+      "fixed_ropes": false,
+      "hazards": ["rockfall"],
+      "notes": "Path over moraine and scree."
+    },
+    {
+      "from": "tete_rousse",
+      "to": "gouter",
+      "distance_m": 1500,
+      "ascent_m": 668,
+      "descent_m": 0,
+      "terrain": "rock",
+      "hours_up": 3,
+      "hours_down": 2.5,
+      "fixed_ropes": true,
+      "hazards": ["rockfall", "exposure", "crowding"],
+      "max_slope_deg": 40,
+      "notes": "Cross the Grand Couloir (Couloir du Goûter), the deadliest spot on the route: cross early before the sun loosens rocks. Then ~600 m of II-III rock ridge with steel cables."
+    },
+    {
+      "from": "gouter",
+      "to": "dome_gouter",
+      "distance_m": 2500,
+      "ascent_m": 469,
+      "descent_m": 0,
+      "terrain": "hard_snow",
+      "hours_up": 2.5,
+      "hours_down": 1.5,
+      "fixed_ropes": false,
+      "hazards": ["crevasses", "wind", "whiteout"],
+      "max_slope_deg": 25,
+      "notes": "Depart 02:00-03:00 up broad snow slopes."
+    },
+    {
+      "from": "dome_gouter",
+      "to": "vallot",
+      "distance_m": 1000,
+      "ascent_m": 118,
+      "descent_m": 60,
+      "terrain": "hard_snow",
+      "hours_up": 0.5,
+      "hours_down": 0.5,
+      "fixed_ropes": false,
+      "hazards": ["crevasses", "whiteout"],
+      "notes": "Dip to the Col du Dôme then up to the Vallot."
+    },
+    {
+      "from": "vallot",
+      "to": "summit",
+      "distance_m": 1600,
+      "ascent_m": 444,
+      "descent_m": 0,
+      "terrain": "hard_snow",
+      "hours_up": 1.75,
+      "hours_down": 1,
+      "fixed_ropes": false,
+      "hazards": ["cornice", "exposure", "wind", "altitude"],
+      "max_slope_deg": 30,
+      "notes": "Narrow Arête des Bosses; turn back if wind is strong."
+    }
+  ],
+  "typical_itinerary": [
+    {
+      "day": 1,
+      "sleep_camp": "les_houches",
+      "max_altitude_m": 1008,
+      "note": "Arrive acclimatized (e.g. two nights above 3000 m)."
+    },
+    {
+      "day": 2,
+      "sleep_camp": "tete_rousse",
+      "max_altitude_m": 3167,
+      "note": "Lift and tramway to the Nid d'Aigle, hike to Tête Rousse."
+    },
+    {
+      "day": 3,
+      "sleep_camp": "gouter",
+      "max_altitude_m": 3835,
+      "note": "Cross the Grand Couloir early, climb to the Goûter hut."
+    },
+    {
+      "day": 4,
+      "sleep_camp": "gouter",
+      "max_altitude_m": 4805.59,
+      "note": "Summit (start 02:00-03:00) via the Dôme and the Bosses ridge; back to the hut."
+    },
+    {
+      "day": 5,
+      "sleep_camp": "les_houches",
+      "max_altitude_m": 3835,
+      "note": "Descend early, before the sun hits the Grand Couloir."
+    }
+  ],
+  "sources": [
+    "Haute-Savoie departmental survey of Mont Blanc (2023)",
+    "FFCAM refuge information",
+    "PGHM Chamonix safety guidance on the Couloir du Goûter"
+  ],
+  "confidence": "medium"
+}

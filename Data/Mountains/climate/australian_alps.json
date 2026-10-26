@@ -1,0 +1,23 @@
+{
+  "$schema": "../schema/climate.schema.json",
+  "id": "australian_alps",
+  "name": "Australian Alps",
+  "region": "Snowy Mountains Main Range (Kosciuszko).",
+  "latitude_deg": -36.45,
+  "reference_elevation_m": 1957,
+  "reference_site": "Thredbo Top Station (BoM)",
+  "mean_temp_c": [9.5, 9.5, 7.0, 3.5, 0.5, -2.0, -3.0, -2.5, -0.5, 2.5, 5.0, 7.5],
+  "diurnal_range_c": [8, 8, 7, 7, 6, 5, 5, 5, 6, 7, 7, 8],
+  "jet_stream_wind_ms": [25, 24, 27, 32, 38, 42, 45, 44, 40, 35, 30, 27],
+  "storms_per_week": [1.2, 1.1, 1.2, 1.3, 1.5, 1.7, 1.8, 1.8, 1.7, 1.6, 1.4, 1.3],
+  "precipitation_mm_per_day": [3.5, 3.5, 3.8, 4.5, 5.5, 6.5, 6.5, 7.0, 6.5, 6.0, 5.0, 4.0],
+  "lapse_rate_c_per_km": 6,
+  "prevailing_wind_from_deg": 280,
+  "summit_windows": [12, 1, 2, 3],
+  "sources": [
+    "Bureau of Meteorology climate statistics, Thredbo Top Station",
+    "Hersbach, H. et al. (2020) The ERA5 global reanalysis. QJRMS 146:1999-2049 (monthly climatology 1991-2020, 300 hPa winds)"
+  ],
+  "confidence": "medium",
+  "notes": "Summit walk from Thredbo or Charlotte Pass; winter brings snow and blizzards."
+}

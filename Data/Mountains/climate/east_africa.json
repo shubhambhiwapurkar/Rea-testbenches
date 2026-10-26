@@ -1,0 +1,25 @@
+{
+  "$schema": "../schema/climate.schema.json",
+  "id": "east_africa",
+  "name": "East African volcanoes",
+  "region": "Kilimanjaro and Mount Kenya (Rwenzori is far wetter).",
+  "latitude_deg": -3.07,
+  "reference_elevation_m": 4600,
+  "reference_site": "Barafu Camp area, Kilimanjaro",
+  "mean_temp_c": [0.5, 0.8, 0.8, 0.5, 0.0, -0.8, -1.2, -1.0, -0.4, 0.2, 0.3, 0.4],
+  "diurnal_range_c": [12, 12, 11, 8, 8, 11, 12, 12, 13, 12, 9, 10],
+  "jet_stream_wind_ms": [8, 8, 7, 6, 7, 9, 10, 10, 9, 8, 7, 7],
+  "storms_per_week": [1.0, 1.0, 2.0, 3.0, 2.5, 0.8, 0.6, 0.6, 0.6, 1.0, 2.0, 1.5],
+  "precipitation_mm_per_day": [0.5, 0.6, 1.2, 2.0, 1.5, 0.3, 0.2, 0.2, 0.2, 0.4, 1.0, 0.8],
+  "lapse_rate_c_per_km": 5.8,
+  "prevailing_wind_from_deg": 90,
+  "summit_windows": [1, 2, 7, 8, 9, 10],
+  "sources": [
+    "Mölg, T. et al. (2009) Quantifying climate change in the tropical midtroposphere over East Africa from glacier shrinkage on Kilimanjaro. Journal of Climate 22",
+    "Hemp, A. (2006) Continuum or zonation? Altitudinal gradients in the forest vegetation of Mt. Kilimanjaro (rainfall gradient). Plant Ecology 184",
+    "Hardy, D. R. Kilimanjaro summit automatic weather station records (University of Massachusetts Climate System Research Center)",
+    "Hersbach, H. et al. (2020) The ERA5 global reanalysis. QJRMS 146:1999-2049 (monthly climatology 1991-2020, 300 hPa winds)"
+  ],
+  "confidence": "medium",
+  "notes": "Long rains Mar-May and short rains Nov-Dec. Upper slopes are an alpine desert receiving <300 mm/yr."
+}

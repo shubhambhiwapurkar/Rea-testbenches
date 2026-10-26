@@ -1,0 +1,24 @@
+{
+  "$schema": "../schema/climate.schema.json",
+  "id": "southern_alps_nz",
+  "name": "Southern Alps of New Zealand",
+  "region": "Aoraki/Mount Cook and Mount Aspiring.",
+  "latitude_deg": -43.6,
+  "reference_elevation_m": 2200,
+  "reference_site": "Plateau Hut area, Aoraki/Mount Cook NP",
+  "mean_temp_c": [3.0, 3.5, 1.5, -1.0, -3.5, -5.5, -6.5, -5.5, -4.0, -2.0, 0.0, 1.5],
+  "diurnal_range_c": [6, 6, 6, 5, 5, 5, 5, 5, 5, 6, 6, 6],
+  "jet_stream_wind_ms": [30, 28, 28, 30, 33, 35, 36, 36, 35, 34, 32, 31],
+  "storms_per_week": [2.0, 1.9, 2.0, 2.0, 2.0, 1.9, 1.9, 2.0, 2.2, 2.3, 2.2, 2.1],
+  "precipitation_mm_per_day": [10.0, 9.0, 10.0, 10.0, 10.0, 9.0, 8.5, 9.0, 10.0, 11.0, 11.0, 11.0],
+  "lapse_rate_c_per_km": 6,
+  "prevailing_wind_from_deg": 290,
+  "summit_windows": [11, 12, 1, 2],
+  "sources": [
+    "NIWA climate normals (Mount Cook Village, Tasman Glacier stations)",
+    "Henderson, R. & Thompson, S. (1999) Extreme rainfalls in the Southern Alps of New Zealand. Journal of Hydrology (NZ) 38",
+    "Hersbach, H. et al. (2020) The ERA5 global reanalysis. QJRMS 146:1999-2049 (monthly climatology 1991-2020, 300 hPa winds)"
+  ],
+  "confidence": "low",
+  "notes": "Main Divide receives >10 m/yr of precipitation; nor'west storms arrive quickly with a characteristic arch cloud."
+}

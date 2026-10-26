@@ -1,0 +1,25 @@
+{
+  "$schema": "../schema/climate.schema.json",
+  "id": "karakoram",
+  "name": "Karakoram (Baltoro)",
+  "region": "Central Karakoram, Nanga Parbat and Hindu Kush (approximate for the latter two).",
+  "latitude_deg": 35.88,
+  "reference_elevation_m": 5000,
+  "reference_site": "K2 Base Camp (Godwin-Austen Glacier)",
+  "mean_temp_c": [-17.0, -15.0, -10.0, -6.0, -2.0, 1.5, 3.5, 3.0, 0.0, -5.0, -11.0, -15.0],
+  "diurnal_range_c": [11, 11, 11, 11, 10, 9, 8, 8, 9, 11, 11, 11],
+  "jet_stream_wind_ms": [50, 52, 48, 40, 32, 25, 18, 18, 22, 32, 42, 48],
+  "storms_per_week": [1.5, 1.8, 1.8, 1.6, 1.3, 1.0, 1.2, 1.2, 0.9, 0.8, 1.0, 1.3],
+  "precipitation_mm_per_day": [2.0, 2.5, 3.0, 2.8, 2.2, 1.5, 2.0, 2.0, 1.2, 0.8, 1.0, 1.5],
+  "lapse_rate_c_per_km": 6.5,
+  "prevailing_wind_from_deg": 260,
+  "summit_windows": [7, 8],
+  "sources": [
+    "Mayer, C. et al. (2006) Glaciological characteristics of the ablation zone of Baltoro glacier. Annals of Glaciology 43",
+    "Winiger, M., Gumpert, M. & Yamout, H. (2005) Karakorum-Hindukush-western Himalaya: assessing high-altitude water resources. Hydrological Processes 19",
+    "Bocchiola, D. & Diolaiuti, G. (2013) Recent (1980-2009) evidence of climate change in the upper Karakoram. Theoretical and Applied Climatology 113",
+    "Hersbach, H. et al. (2020) The ERA5 global reanalysis. QJRMS 146:1999-2049 (monthly climatology 1991-2020, 300 hPa winds)"
+  ],
+  "confidence": "medium",
+  "notes": "Westerly disturbances deliver most snow in winter and spring; the monsoon reaches the Baltoro only weakly. July-August is the climbing season."
+}

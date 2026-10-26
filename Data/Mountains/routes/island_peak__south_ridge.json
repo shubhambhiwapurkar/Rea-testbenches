@@ -1,0 +1,190 @@
+{
+  "$schema": "../schema/route.schema.json",
+  "id": "island_peak__south_ridge",
+  "peak_id": "island_peak",
+  "name": "South Ridge (from Chhukung)",
+  "style": "alpine",
+  "grade": "PD+ ; 100-150 m headwall at 40-50° on fixed rope",
+  "technical": false,
+  "season_best": [4, 5, 10, 11],
+  "permit_cost_usd": 250,
+  "permit_year": 2024,
+  "permit_notes": "Nepal Mountaineering Association (NMA) permit, spring rate; autumn USD 125. Low-medium confidence (NMA revised fees in 2025).",
+  "camps": [
+    {
+      "id": "chhukung",
+      "name": "Chhukung",
+      "type": "village",
+      "altitude_m": 4730,
+      "lat": 27.905,
+      "lon": 86.872,
+      "tent_capacity": 100,
+      "confidence": "medium",
+      "notes": "Last lodges in the Imja valley."
+    },
+    {
+      "id": "bc",
+      "name": "Island Peak Base Camp (Pareshaya Gyab)",
+      "type": "base_camp",
+      "altitude_m": 5087,
+      "lat": 27.915,
+      "lon": 86.922,
+      "tent_capacity": 80,
+      "confidence": "low"
+    },
+    {
+      "id": "high_camp",
+      "name": "High Camp",
+      "type": "camp",
+      "altitude_m": 5600,
+      "lat": 27.919,
+      "lon": 86.929,
+      "tent_capacity": 20,
+      "confidence": "low",
+      "notes": "Cramped; little water."
+    },
+    {
+      "id": "crampon_point",
+      "name": "Crampon Point",
+      "type": "waypoint",
+      "altitude_m": 5800,
+      "lat": 27.921,
+      "lon": 86.932,
+      "tent_capacity": 0,
+      "confidence": "low",
+      "notes": "End of the rock gully; rope up."
+    },
+    {
+      "id": "headwall_top",
+      "name": "Top of the headwall",
+      "type": "waypoint",
+      "altitude_m": 6050,
+      "lat": 27.9195,
+      "lon": 86.9355,
+      "tent_capacity": 0,
+      "confidence": "low"
+    },
+    {
+      "id": "summit",
+      "name": "Summit of Island Peak",
+      "type": "summit",
+      "altitude_m": 6165,
+      "lat": 27.91861,
+      "lon": 86.93694,
+      "tent_capacity": 0,
+      "confidence": "medium"
+    }
+  ],
+  "segments": [
+    {
+      "from": "chhukung",
+      "to": "bc",
+      "distance_m": 5000,
+      "ascent_m": 407,
+      "descent_m": 50,
+      "terrain": "trail",
+      "hours_up": 2.5,
+      "hours_down": 2,
+      "fixed_ropes": false,
+      "hazards": ["loose_rock"],
+      "notes": "Moraine path along the Lhotse Glacier."
+    },
+    {
+      "from": "bc",
+      "to": "high_camp",
+      "distance_m": 1500,
+      "ascent_m": 513,
+      "descent_m": 0,
+      "terrain": "scree",
+      "hours_up": 2.5,
+      "hours_down": 1.5,
+      "fixed_ropes": false,
+      "hazards": ["loose_rock"]
+    },
+    {
+      "from": "high_camp",
+      "to": "crampon_point",
+      "distance_m": 1000,
+      "ascent_m": 200,
+      "descent_m": 0,
+      "terrain": "rock",
+      "hours_up": 2,
+      "hours_down": 1.5,
+      "fixed_ropes": false,
+      "hazards": ["rockfall", "exposure"],
+      "notes": "Scrambling up a rocky gully."
+    },
+    {
+      "from": "crampon_point",
+      "to": "headwall_top",
+      "distance_m": 1000,
+      "ascent_m": 250,
+      "descent_m": 0,
+      "terrain": "hard_snow",
+      "hours_up": 3,
+      "hours_down": 1.5,
+      "fixed_ropes": true,
+      "hazards": ["crevasses", "exposure", "crowding"],
+      "max_slope_deg": 45,
+      "notes": "Crevassed glacier (ladders some years), then the 40-50° headwall on fixed rope; rappel on descent."
+    },
+    {
+      "from": "headwall_top",
+      "to": "summit",
+      "distance_m": 200,
+      "ascent_m": 115,
+      "descent_m": 0,
+      "terrain": "hard_snow",
+      "hours_up": 0.75,
+      "hours_down": 0.5,
+      "fixed_ropes": true,
+      "hazards": ["cornice", "exposure"],
+      "max_slope_deg": 30,
+      "notes": "Narrow summit ridge."
+    }
+  ],
+  "typical_itinerary": [
+    {
+      "day": 1,
+      "sleep_camp": "chhukung",
+      "max_altitude_m": 4730,
+      "note": "Arrive after acclimatizing in Dingboche (4410 m)."
+    },
+    {
+      "day": 2,
+      "sleep_camp": "chhukung",
+      "max_altitude_m": 5546,
+      "note": "Acclimatization hike up Chhukung Ri."
+    },
+    {
+      "day": 3,
+      "sleep_camp": "bc",
+      "max_altitude_m": 5087,
+      "note": "To base camp; fixed-rope and ladder training."
+    },
+    {
+      "day": 4,
+      "sleep_camp": "high_camp",
+      "max_altitude_m": 5600,
+      "note": "Move to high camp (optional; many parties go from base camp)."
+    },
+    {
+      "day": 5,
+      "sleep_camp": "bc",
+      "max_altitude_m": 6165,
+      "note": "Summit (start 01:00-02:00) and descend to base camp."
+    },
+    {
+      "day": 6,
+      "sleep_camp": "chhukung",
+      "max_altitude_m": 5087,
+      "note": "Return to Chhukung."
+    }
+  ],
+  "sources": [
+    "Nepal Mountaineering Association peak list and fee schedule",
+    "Summitpost and guiding-company route descriptions (cross-checked)"
+  ],
+  "confidence": "low",
+  "notes": "Elevations of the summit are quoted 6160-6189 m. Coordinates approximate."
+}

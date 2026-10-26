@@ -1,0 +1,522 @@
+{
+  "$schema": "../schema/route.schema.json",
+  "id": "k2__abruzzi_spur",
+  "peak_id": "k2",
+  "name": "Abruzzi Spur (Southeast Ridge)",
+  "style": "expedition",
+  "grade": "Sustained mixed climbing (House's Chimney, Black Pyramid) to ~7200 m; Bottleneck 50-60°",
+  "technical": true,
+  "season_best": [7, 8],
+  "permit_cost_usd": 12000,
+  "permit_year": 2024,
+  "permit_notes": "Gilgit-Baltistan royalty for K2 per team of up to 7 climbers, plus a per-member surcharge for larger teams (low confidence; Pakistan revised fees several times and offered promotional discounts). Liaison officer, Central Karakoram NP fee and porter insurance are extra.",
+  "camps": [
+    {
+      "id": "concordia",
+      "name": "Concordia",
+      "type": "camp",
+      "altitude_m": 4600,
+      "lat": 35.744,
+      "lon": 76.514,
+      "tent_capacity": 300,
+      "confidence": "medium",
+      "notes": "Confluence of the Baltoro and Godwin-Austen glaciers, ~6 days' walk from Askole."
+    },
+    {
+      "id": "k2_bc",
+      "name": "K2 Base Camp",
+      "type": "base_camp",
+      "altitude_m": 5000,
+      "lat": 35.838,
+      "lon": 76.515,
+      "tent_capacity": 200,
+      "confidence": "low",
+      "notes": "On the Godwin-Austen Glacier; the Gilkey Memorial is nearby."
+    },
+    {
+      "id": "abc",
+      "name": "Advanced Base Camp (foot of the Abruzzi Spur)",
+      "type": "camp",
+      "altitude_m": 5300,
+      "lat": 35.853,
+      "lon": 76.539,
+      "tent_capacity": 40,
+      "confidence": "low",
+      "notes": "Gear depot at the start of the fixed lines."
+    },
+    {
+      "id": "c1",
+      "name": "Camp 1",
+      "type": "camp",
+      "altitude_m": 6050,
+      "lat": 35.859,
+      "lon": 76.534,
+      "tent_capacity": 25,
+      "confidence": "low",
+      "notes": "Exposed ledges on the spur."
+    },
+    {
+      "id": "c2",
+      "name": "Camp 2",
+      "type": "camp",
+      "altitude_m": 6700,
+      "lat": 35.865,
+      "lon": 76.527,
+      "tent_capacity": 25,
+      "confidence": "low",
+      "notes": "Just above House's Chimney."
+    },
+    {
+      "id": "c3",
+      "name": "Camp 3",
+      "type": "camp",
+      "altitude_m": 7200,
+      "lat": 35.871,
+      "lon": 76.522,
+      "tent_capacity": 20,
+      "confidence": "low",
+      "notes": "Above the Black Pyramid; avalanche-exposed."
+    },
+    {
+      "id": "c4",
+      "name": "Camp 4 (the Shoulder)",
+      "type": "camp",
+      "altitude_m": 7900,
+      "lat": 35.876,
+      "lon": 76.518,
+      "tent_capacity": 30,
+      "confidence": "low"
+    },
+    {
+      "id": "bottleneck",
+      "name": "The Bottleneck",
+      "type": "waypoint",
+      "altitude_m": 8200,
+      "lat": 35.879,
+      "lon": 76.516,
+      "tent_capacity": 0,
+      "confidence": "low",
+      "notes": "Narrow couloir beneath the hanging serac."
+    },
+    {
+      "id": "summit",
+      "name": "Summit of K2",
+      "type": "summit",
+      "altitude_m": 8611,
+      "lat": 35.8825,
+      "lon": 76.51333,
+      "tent_capacity": 0,
+      "confidence": "high"
+    }
+  ],
+  "segments": [
+    {
+      "from": "concordia",
+      "to": "k2_bc",
+      "distance_m": 12000,
+      "ascent_m": 500,
+      "descent_m": 100,
+      "terrain": "boulder",
+      "hours_up": 5,
+      "hours_down": 4,
+      "fixed_ropes": false,
+      "hazards": ["crevasses", "loose_rock"],
+      "notes": "Rubble-covered Godwin-Austen Glacier."
+    },
+    {
+      "from": "k2_bc",
+      "to": "abc",
+      "distance_m": 3000,
+      "ascent_m": 300,
+      "descent_m": 0,
+      "terrain": "glacier_ice",
+      "hours_up": 2,
+      "hours_down": 1.5,
+      "fixed_ropes": false,
+      "hazards": ["crevasses", "icefall"],
+      "notes": "Glacier with ice towers."
+    },
+    {
+      "from": "abc",
+      "to": "c1",
+      "distance_m": 2000,
+      "ascent_m": 750,
+      "descent_m": 0,
+      "terrain": "hard_snow",
+      "hours_up": 6,
+      "hours_down": 3,
+      "fixed_ropes": true,
+      "hazards": ["rockfall", "avalanche"],
+      "max_slope_deg": 40,
+      "notes": "Snow and ice gullies, then mixed ground; fixed lines from ~5400 m."
+    },
+    {
+      "from": "c1",
+      "to": "c2",
+      "distance_m": 1500,
+      "ascent_m": 650,
+      "descent_m": 0,
+      "terrain": "rock",
+      "hours_up": 6,
+      "hours_down": 3,
+      "fixed_ropes": true,
+      "hazards": ["rockfall", "exposure", "wind"],
+      "max_slope_deg": 50,
+      "notes": "Mixed rock; House's Chimney (~30 m, climbed by Bill House in 1938) just below C2."
+    },
+    {
+      "from": "c2",
+      "to": "c3",
+      "distance_m": 1300,
+      "ascent_m": 500,
+      "descent_m": 0,
+      "terrain": "rock",
+      "hours_up": 6,
+      "hours_down": 3,
+      "fixed_ropes": true,
+      "hazards": ["rockfall", "exposure", "wind"],
+      "max_slope_deg": 50,
+      "notes": "The Black Pyramid: the most sustained technical climbing on the route."
+    },
+    {
+      "from": "c3",
+      "to": "c4",
+      "distance_m": 1500,
+      "ascent_m": 700,
+      "descent_m": 0,
+      "terrain": "hard_snow",
+      "hours_up": 5,
+      "hours_down": 2.5,
+      "fixed_ropes": true,
+      "hazards": ["avalanche", "crevasses", "whiteout"],
+      "max_slope_deg": 35,
+      "notes": "Snow slopes to the Shoulder; route-finding in poor visibility."
+    },
+    {
+      "from": "c4",
+      "to": "bottleneck",
+      "distance_m": 800,
+      "ascent_m": 300,
+      "descent_m": 0,
+      "terrain": "hard_snow",
+      "hours_up": 5,
+      "hours_down": 2.5,
+      "fixed_ropes": true,
+      "hazards": ["serac", "avalanche", "exposure", "crowding", "altitude"],
+      "max_slope_deg": 55,
+      "notes": "Depart 22:00-01:00. Couloir of 50-60° snow and ice beneath the serac barrier."
+    },
+    {
+      "from": "bottleneck",
+      "to": "summit",
+      "distance_m": 1000,
+      "ascent_m": 411,
+      "descent_m": 0,
+      "terrain": "hard_snow",
+      "hours_up": 5,
+      "hours_down": 3,
+      "fixed_ropes": true,
+      "hazards": ["serac", "exposure", "altitude", "cold", "whiteout"],
+      "max_slope_deg": 45,
+      "notes": "Leftward traverse under the ~100 m serac (collapse in 2008 killed 11), then summit snow slopes."
+    }
+  ],
+  "typical_itinerary": [
+    {
+      "day": 1,
+      "sleep_camp": "concordia",
+      "max_altitude_m": 4600,
+      "note": "Arrive at Concordia after the Askole-Baltoro trek."
+    },
+    {
+      "day": 2,
+      "sleep_camp": "k2_bc",
+      "max_altitude_m": 5000,
+      "note": "To K2 Base Camp."
+    },
+    {
+      "day": 3,
+      "sleep_camp": "k2_bc",
+      "max_altitude_m": 5000,
+      "note": "Rest."
+    },
+    {
+      "day": 4,
+      "sleep_camp": "k2_bc",
+      "max_altitude_m": 5000,
+      "note": "Puja and camp setup."
+    },
+    {
+      "day": 5,
+      "sleep_camp": "k2_bc",
+      "max_altitude_m": 5300,
+      "note": "Carry to ABC."
+    },
+    {
+      "day": 6,
+      "sleep_camp": "k2_bc",
+      "max_altitude_m": 5000,
+      "note": "Rest."
+    },
+    {
+      "day": 7,
+      "sleep_camp": "abc",
+      "max_altitude_m": 5300,
+      "note": "Rotation 1: sleep at ABC."
+    },
+    {
+      "day": 8,
+      "sleep_camp": "c1",
+      "max_altitude_m": 6050,
+      "note": "To C1."
+    },
+    {
+      "day": 9,
+      "sleep_camp": "c1",
+      "max_altitude_m": 6400,
+      "note": "Climb toward House's Chimney, back to C1."
+    },
+    {
+      "day": 10,
+      "sleep_camp": "k2_bc",
+      "max_altitude_m": 6050,
+      "note": "Descend to base camp."
+    },
+    {
+      "day": 11,
+      "sleep_camp": "k2_bc",
+      "max_altitude_m": 5000,
+      "note": "Rest."
+    },
+    {
+      "day": 12,
+      "sleep_camp": "k2_bc",
+      "max_altitude_m": 5000,
+      "note": "Rest."
+    },
+    {
+      "day": 13,
+      "sleep_camp": "k2_bc",
+      "max_altitude_m": 5000,
+      "note": "Rest."
+    },
+    {
+      "day": 14,
+      "sleep_camp": "abc",
+      "max_altitude_m": 5300,
+      "note": "Rotation 2."
+    },
+    {
+      "day": 15,
+      "sleep_camp": "c1",
+      "max_altitude_m": 6050,
+      "note": "To C1."
+    },
+    {
+      "day": 16,
+      "sleep_camp": "c2",
+      "max_altitude_m": 6700,
+      "note": "Through House's Chimney to C2."
+    },
+    {
+      "day": 17,
+      "sleep_camp": "c2",
+      "max_altitude_m": 6900,
+      "note": "Climb into the Black Pyramid, back to C2."
+    },
+    {
+      "day": 18,
+      "sleep_camp": "k2_bc",
+      "max_altitude_m": 6700,
+      "note": "Descend to base camp."
+    },
+    {
+      "day": 19,
+      "sleep_camp": "k2_bc",
+      "max_altitude_m": 5000,
+      "note": "Rest."
+    },
+    {
+      "day": 20,
+      "sleep_camp": "k2_bc",
+      "max_altitude_m": 5000,
+      "note": "Rest."
+    },
+    {
+      "day": 21,
+      "sleep_camp": "k2_bc",
+      "max_altitude_m": 5000,
+      "note": "Rest."
+    },
+    {
+      "day": 22,
+      "sleep_camp": "k2_bc",
+      "max_altitude_m": 5000,
+      "note": "Rest."
+    },
+    {
+      "day": 23,
+      "sleep_camp": "abc",
+      "max_altitude_m": 5300,
+      "note": "Rotation 3."
+    },
+    {
+      "day": 24,
+      "sleep_camp": "c1",
+      "max_altitude_m": 6050,
+      "note": "To C1."
+    },
+    {
+      "day": 25,
+      "sleep_camp": "c2",
+      "max_altitude_m": 6700,
+      "note": "To C2."
+    },
+    {
+      "day": 26,
+      "sleep_camp": "c3",
+      "max_altitude_m": 7200,
+      "note": "Through the Black Pyramid to C3."
+    },
+    {
+      "day": 27,
+      "sleep_camp": "c1",
+      "max_altitude_m": 7200,
+      "note": "Descend to C1."
+    },
+    {
+      "day": 28,
+      "sleep_camp": "k2_bc",
+      "max_altitude_m": 6050,
+      "note": "Descend to base camp."
+    },
+    {
+      "day": 29,
+      "sleep_camp": "k2_bc",
+      "max_altitude_m": 5000,
+      "note": "Weather wait."
+    },
+    {
+      "day": 30,
+      "sleep_camp": "k2_bc",
+      "max_altitude_m": 5000,
+      "note": "Weather wait."
+    },
+    {
+      "day": 31,
+      "sleep_camp": "k2_bc",
+      "max_altitude_m": 5000,
+      "note": "Weather wait."
+    },
+    {
+      "day": 32,
+      "sleep_camp": "k2_bc",
+      "max_altitude_m": 5000,
+      "note": "Weather wait."
+    },
+    {
+      "day": 33,
+      "sleep_camp": "k2_bc",
+      "max_altitude_m": 5000,
+      "note": "Weather wait."
+    },
+    {
+      "day": 34,
+      "sleep_camp": "k2_bc",
+      "max_altitude_m": 5000,
+      "note": "Weather wait."
+    },
+    {
+      "day": 35,
+      "sleep_camp": "k2_bc",
+      "max_altitude_m": 5000,
+      "note": "Weather wait."
+    },
+    {
+      "day": 36,
+      "sleep_camp": "k2_bc",
+      "max_altitude_m": 5000,
+      "note": "Weather wait."
+    },
+    {
+      "day": 37,
+      "sleep_camp": "k2_bc",
+      "max_altitude_m": 5000,
+      "note": "Weather wait."
+    },
+    {
+      "day": 38,
+      "sleep_camp": "k2_bc",
+      "max_altitude_m": 5000,
+      "note": "Window confirmed."
+    },
+    {
+      "day": 39,
+      "sleep_camp": "abc",
+      "max_altitude_m": 5300,
+      "note": "Summit push."
+    },
+    {
+      "day": 40,
+      "sleep_camp": "c1",
+      "max_altitude_m": 6050,
+      "note": "To C1."
+    },
+    {
+      "day": 41,
+      "sleep_camp": "c2",
+      "max_altitude_m": 6700,
+      "note": "To C2."
+    },
+    {
+      "day": 42,
+      "sleep_camp": "c3",
+      "max_altitude_m": 7200,
+      "note": "To C3; oxygen from here for most climbers."
+    },
+    {
+      "day": 43,
+      "sleep_camp": "c4",
+      "max_altitude_m": 7900,
+      "note": "To the Shoulder; depart late evening."
+    },
+    {
+      "day": 44,
+      "sleep_camp": "c4",
+      "max_altitude_m": 8611,
+      "note": "Summit via the Bottleneck and the Traverse; back to C4."
+    },
+    {
+      "day": 45,
+      "sleep_camp": "c2",
+      "max_altitude_m": 7900,
+      "note": "Descend to C2."
+    },
+    {
+      "day": 46,
+      "sleep_camp": "k2_bc",
+      "max_altitude_m": 6700,
+      "note": "Descend to base camp."
+    },
+    {
+      "day": 47,
+      "sleep_camp": "k2_bc",
+      "max_altitude_m": 5000,
+      "note": "Pack up."
+    },
+    {
+      "day": 48,
+      "sleep_camp": "concordia",
+      "max_altitude_m": 5000,
+      "note": "Walk out down the Baltoro (or over the Gondogoro La)."
+    }
+  ],
+  "sources": [
+    "Houston, C. & Bates, R. (1954) K2: The Savage Mountain",
+    "Curran, J. (1987) K2: Triumph and Tragedy",
+    "Hawley, E. & Salisbury, R. The Himalayan Database (K2 camp altitudes reported by expeditions)",
+    "Gilgit-Baltistan Tourism Department, peak royalty schedule"
+  ],
+  "confidence": "low",
+  "notes": "Coordinates of camps are approximate (±500 m). Most modern expeditions fix ropes from ABC to near the summit."
+}

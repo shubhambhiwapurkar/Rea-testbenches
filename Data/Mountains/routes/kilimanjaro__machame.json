@@ -1,0 +1,289 @@
+{
+  "$schema": "../schema/route.schema.json",
+  "id": "kilimanjaro__machame",
+  "peak_id": "kilimanjaro",
+  "name": "Machame Route ('Whiskey Route'), 7 days",
+  "style": "trek",
+  "grade": "Non-technical ; one scramble (Barranco Wall)",
+  "technical": false,
+  "season_best": [1, 2, 6, 7, 8, 9, 10],
+  "permit_cost_usd": 850,
+  "permit_year": 2024,
+  "permit_notes": "Approximate KINAPA park fees for 7 days (conservation USD 70/day + camping USD 50-60/night + rescue fee, VAT included). Climbing with a licensed operator is mandatory. Low-medium confidence.",
+  "camps": [
+    {
+      "id": "machame_gate",
+      "name": "Machame Gate",
+      "type": "trailhead",
+      "altitude_m": 1800,
+      "lat": -3.1736,
+      "lon": 37.2425,
+      "tent_capacity": 0,
+      "confidence": "low",
+      "notes": "Park gate; registration."
+    },
+    {
+      "id": "machame_camp",
+      "name": "Machame Camp",
+      "type": "camp",
+      "altitude_m": 2835,
+      "lat": -3.115,
+      "lon": 37.257,
+      "tent_capacity": 200,
+      "confidence": "low",
+      "notes": "At the edge of the rainforest."
+    },
+    {
+      "id": "shira_camp",
+      "name": "Shira 2 Camp",
+      "type": "camp",
+      "altitude_m": 3850,
+      "lat": -3.087,
+      "lon": 37.278,
+      "tent_capacity": 200,
+      "confidence": "low",
+      "notes": "On the Shira Plateau."
+    },
+    {
+      "id": "lava_tower",
+      "name": "Lava Tower",
+      "type": "waypoint",
+      "altitude_m": 4630,
+      "lat": -3.075,
+      "lon": 37.31,
+      "tent_capacity": 0,
+      "confidence": "low",
+      "notes": "Climb high, sleep low."
+    },
+    {
+      "id": "barranco",
+      "name": "Barranco Camp",
+      "type": "camp",
+      "altitude_m": 3960,
+      "lat": -3.095,
+      "lon": 37.322,
+      "tent_capacity": 200,
+      "confidence": "low"
+    },
+    {
+      "id": "karanga",
+      "name": "Karanga Camp",
+      "type": "camp",
+      "altitude_m": 4035,
+      "lat": -3.102,
+      "lon": 37.34,
+      "tent_capacity": 200,
+      "confidence": "low",
+      "notes": "Last water point."
+    },
+    {
+      "id": "barafu",
+      "name": "Barafu Camp",
+      "type": "camp",
+      "altitude_m": 4673,
+      "lat": -3.099,
+      "lon": 37.364,
+      "tent_capacity": 200,
+      "confidence": "low",
+      "notes": "High camp on a rocky ridge."
+    },
+    {
+      "id": "stella_point",
+      "name": "Stella Point",
+      "type": "waypoint",
+      "altitude_m": 5756,
+      "lat": -3.077,
+      "lon": 37.36,
+      "tent_capacity": 0,
+      "confidence": "medium",
+      "notes": "Crater rim."
+    },
+    {
+      "id": "summit",
+      "name": "Uhuru Peak",
+      "type": "summit",
+      "altitude_m": 5895,
+      "lat": -3.07583,
+      "lon": 37.35333,
+      "tent_capacity": 0,
+      "confidence": "high"
+    }
+  ],
+  "descent_camps": [
+    {
+      "id": "mweka_camp",
+      "name": "Mweka Camp",
+      "type": "camp",
+      "altitude_m": 3090,
+      "lat": -3.135,
+      "lon": 37.355,
+      "tent_capacity": 200,
+      "confidence": "low",
+      "notes": "Descent route only."
+    },
+    {
+      "id": "mweka_gate",
+      "name": "Mweka Gate",
+      "type": "trailhead",
+      "altitude_m": 1640,
+      "lat": -3.218,
+      "lon": 37.348,
+      "tent_capacity": 0,
+      "confidence": "low",
+      "notes": "Descent route only."
+    }
+  ],
+  "segments": [
+    {
+      "from": "machame_gate",
+      "to": "machame_camp",
+      "distance_m": 11000,
+      "ascent_m": 1035,
+      "descent_m": 0,
+      "terrain": "trail",
+      "hours_up": 6,
+      "hours_down": 4,
+      "fixed_ropes": false,
+      "hazards": [],
+      "notes": "Montane rainforest; muddy in the rainy season."
+    },
+    {
+      "from": "machame_camp",
+      "to": "shira_camp",
+      "distance_m": 5000,
+      "ascent_m": 1065,
+      "descent_m": 50,
+      "terrain": "trail",
+      "hours_up": 6,
+      "hours_down": 3,
+      "fixed_ropes": false,
+      "hazards": [],
+      "notes": "Heath and rocky ridges onto the Shira Plateau."
+    },
+    {
+      "from": "shira_camp",
+      "to": "lava_tower",
+      "distance_m": 7000,
+      "ascent_m": 880,
+      "descent_m": 100,
+      "terrain": "scree",
+      "hours_up": 4.5,
+      "hours_down": 2.5,
+      "fixed_ropes": false,
+      "hazards": ["altitude"],
+      "notes": "Alpine desert."
+    },
+    {
+      "from": "lava_tower",
+      "to": "barranco",
+      "distance_m": 3500,
+      "ascent_m": 50,
+      "descent_m": 720,
+      "terrain": "scree",
+      "hours_up": 2.5,
+      "hours_down": 3.5,
+      "fixed_ropes": false,
+      "hazards": [],
+      "notes": "Descent through giant groundsels."
+    },
+    {
+      "from": "barranco",
+      "to": "karanga",
+      "distance_m": 5000,
+      "ascent_m": 325,
+      "descent_m": 250,
+      "terrain": "rock",
+      "hours_up": 4,
+      "hours_down": 3,
+      "fixed_ropes": false,
+      "hazards": ["exposure", "crowding"],
+      "notes": "Barranco Wall scramble (~250 m, hands needed), then down and up into the Karanga valley."
+    },
+    {
+      "from": "karanga",
+      "to": "barafu",
+      "distance_m": 4000,
+      "ascent_m": 688,
+      "descent_m": 50,
+      "terrain": "scree",
+      "hours_up": 3.5,
+      "hours_down": 2.5,
+      "fixed_ropes": false,
+      "hazards": ["wind"]
+    },
+    {
+      "from": "barafu",
+      "to": "stella_point",
+      "distance_m": 4500,
+      "ascent_m": 1083,
+      "descent_m": 0,
+      "terrain": "scree",
+      "hours_up": 6,
+      "hours_down": 2.5,
+      "fixed_ropes": false,
+      "hazards": ["cold", "wind", "altitude"],
+      "max_slope_deg": 30,
+      "notes": "Depart ~midnight; endless switchbacks on scree to the crater rim at dawn."
+    },
+    {
+      "from": "stella_point",
+      "to": "summit",
+      "distance_m": 1500,
+      "ascent_m": 159,
+      "descent_m": 20,
+      "terrain": "scree",
+      "hours_up": 1,
+      "hours_down": 0.75,
+      "fixed_ropes": false,
+      "hazards": ["cold", "wind", "altitude"],
+      "notes": "Along the crater rim past the southern icefields."
+    }
+  ],
+  "typical_itinerary": [
+    {
+      "day": 1,
+      "sleep_camp": "machame_camp",
+      "max_altitude_m": 2835,
+      "note": "Through the rainforest."
+    },
+    {
+      "day": 2,
+      "sleep_camp": "shira_camp",
+      "max_altitude_m": 3850,
+      "note": "Onto the Shira Plateau."
+    },
+    {
+      "day": 3,
+      "sleep_camp": "barranco",
+      "max_altitude_m": 4630,
+      "note": "Lunch at Lava Tower, descend to Barranco."
+    },
+    {
+      "day": 4,
+      "sleep_camp": "karanga",
+      "max_altitude_m": 4035,
+      "note": "Barranco Wall, then to Karanga."
+    },
+    {
+      "day": 5,
+      "sleep_camp": "barafu",
+      "max_altitude_m": 4673,
+      "note": "To Barafu; early dinner, sleep 18:00-23:00."
+    },
+    {
+      "day": 6,
+      "sleep_camp": "mweka_camp",
+      "max_altitude_m": 5895,
+      "note": "Summit at sunrise, descend to Barafu and on to Mweka Camp."
+    },
+    {
+      "day": 7,
+      "sleep_camp": "mweka_gate",
+      "max_altitude_m": 3090,
+      "note": "Descend through the forest to Mweka Gate and drive to Moshi."
+    }
+  ],
+  "sources": ["Kilimanjaro National Park (TANAPA/KINAPA) fee schedule", "Tanzania National Parks camp altitude signage"],
+  "confidence": "low",
+  "notes": "Camp coordinates are approximate. Descent is via the Mweka route (descent_camps)."
+}
