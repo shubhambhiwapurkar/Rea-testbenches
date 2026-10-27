@@ -28,3 +28,7 @@ __pycache__/
 # Terrain pipeline caches (raw DEM downloads are large and re-fetchable)
 Tools/terrain/cache/
 Tools/terrain/output/
+
+# ruflo local state
+.claude-flow/
+.swarm/
