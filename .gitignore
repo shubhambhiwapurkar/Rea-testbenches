@@ -32,3 +32,4 @@ Tools/terrain/output/
 # ruflo local state
 .claude-flow/
 .swarm/
+*.slnx

@@ -61,7 +61,7 @@ headers stay in `.cpp` files.
 
 ## First run on your machine
 
-1. **Prerequisites.** Unreal Engine 5.6 (5.5 to 5.7 work; change `EngineAssociation` in `Summit.uproject`),
+1. **Prerequisites.** Unreal Engine 5.8 (compiled and tested with 5.8.4 and MSVC 14.44; other 5.x versions need `EngineAssociation` changed in `Summit.uproject`),
    and Visual Studio 2022 with the "Game development with C++" workload, or Rider. On Linux, use the
    engine's bundled clang toolchain.
 2. **Generate project files.** Right-click `Summit.uproject` → *Generate Visual Studio project files*, or

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Sim/Export.h"
+
 #include <string>
 #include <vector>
 
@@ -21,7 +23,7 @@ enum class Activity : std::uint8_t {
   BreakingTrail, // deep snow
 };
 
-struct ClimberProfile {
+struct SUMMITSIM_API ClimberProfile {
   std::string name = "Climber";
   PhysiologyParams physiology;
   EnergyParams energy;
@@ -30,7 +32,7 @@ struct ClimberProfile {
   double skillRope01 = 0.5;
 };
 
-struct ClimberGear {
+struct SUMMITSIM_API ClimberGear {
   ClothingSystem clothing;
   OxygenSupply oxygen;
   Medications meds;
@@ -40,7 +42,7 @@ struct ClimberGear {
   double footwearMassKg = 1.6;  // pair. Trail shoe ~0.8, mountaineering boot ~2.0, 8000 m boot ~2.8
 };
 
-struct ClimberEnvironment {
+struct SUMMITSIM_API ClimberEnvironment {
   double altitudeM = 0.0;
   double latitudeDeg = 28.0;
   int dayOfYear = 140;
@@ -53,7 +55,7 @@ struct ClimberEnvironment {
   double sleepingBagComfortC = -20.0;
 };
 
-struct ClimberAction {
+struct SUMMITSIM_API ClimberAction {
   Activity activity = Activity::Resting;
   double speedMS = 0.0;          // along-ground speed
   double gradePercent = 0.0;     // rise/run * 100 (vertical climbing: use Climbing activity)
@@ -66,13 +68,13 @@ enum class Condition : std::uint8_t {
 
 enum class CauseOfDeath : std::uint8_t { None, Hypothermia, HAPE, HACE, Exhaustion, Fall, Avalanche, Other };
 
-struct ConditionReport {
+struct SUMMITSIM_API ConditionReport {
   Condition condition;
   double severity01;
 };
 
 // Aggregates the per-system models into one climber that the UE layer ticks.
-class Climber {
+class SUMMITSIM_API Climber {
  public:
   explicit Climber(const ClimberProfile& profile = {});
 

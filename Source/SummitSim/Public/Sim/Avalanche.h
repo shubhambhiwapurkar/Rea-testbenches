@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Sim/Export.h"
+
 #include <cstdint>
 
 namespace summit::sim {
@@ -9,7 +11,7 @@ struct WeatherSample;
 // European Avalanche Danger Scale (EAWS).
 enum class DangerLevel : std::uint8_t { Low = 1, Moderate = 2, Considerable = 3, High = 4, VeryHigh = 5 };
 
-struct SnowpackState {
+struct SUMMITSIM_API SnowpackState {
   double newSnow24hCm = 0.0;
   double newSnow72hCm = 0.0;
   double windLoading01 = 0.0;     // wind-transported snow deposited on lee slopes
@@ -23,7 +25,7 @@ struct SnowpackState {
   double surfaceHoar01 = 0.0;          // surface hoar on the snow surface; becomes a weak layer when buried
 };
 
-struct SlopeInfo {
+struct SUMMITSIM_API SlopeInfo {
   double angleDeg = 30.0;
   double aspectDeg = 0.0;         // direction the slope faces (0 = N)
   double elevationM = 6000.0;
@@ -34,24 +36,24 @@ struct SlopeInfo {
 
 // Release-angle dependence: slab avalanches cluster at 30-45° with a peak around 38-40°
 // (Schweizer & Jamieson 2001; McClung & Schaerer, The Avalanche Handbook).
-double SlopeAngleFactor(double angleDeg);
+SUMMITSIM_API double SlopeAngleFactor(double angleDeg);
 
-DangerLevel RegionalDanger(const SnowpackState& snow);
+SUMMITSIM_API DangerLevel RegionalDanger(const SnowpackState& snow);
 
 // Continuous danger index on the EAWS scale (1.0 .. 5.0). RegionalDanger() rounds it.
-double DangerIndex(const SnowpackState& snow);
+SUMMITSIM_API double DangerIndex(const SnowpackState& snow);
 
 // Natural release probability per hour for a slope.
-double NaturalReleaseProbabilityPerHour(const SnowpackState& snow, const SlopeInfo& slope);
+SUMMITSIM_API double NaturalReleaseProbabilityPerHour(const SnowpackState& snow, const SlopeInfo& slope);
 
 // Probability that a party crossing the slope triggers it. `partySize` climbers crossing together,
 // `spacedOut` = crossing one at a time (reduces load and exposure).
-double HumanTriggerProbability(const SnowpackState& snow, const SlopeInfo& slope, int partySize,
+SUMMITSIM_API double HumanTriggerProbability(const SnowpackState& snow, const SlopeInfo& slope, int partySize,
                                bool spacedOut);
 
 // Evolves the snowpack from weather. Weak layers heal slowly; new-snow instability settles over
 // ~2-3 days at cold temperatures and faster when warm.
-class SnowpackModel {
+class SUMMITSIM_API SnowpackModel {
  public:
   SnowpackModel() = default;
   explicit SnowpackModel(const SnowpackState& initial) : state_(initial) {}

@@ -31,7 +31,7 @@ public:
 	float EmptyPackMassKg = 2.5f;
 
 	// Pack capacity. Expedition packs are 65-90 L; anything beyond is lashed outside (unstrapped-ish).
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Summit|Cargo", meta = (ClampMin = "0", Units = "Liters"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Summit|Cargo", meta = (ClampMin = "0"))
 	float MaxVolumeL = 75.f;
 
 	UPROPERTY(BlueprintAssignable, Category = "Summit|Cargo")

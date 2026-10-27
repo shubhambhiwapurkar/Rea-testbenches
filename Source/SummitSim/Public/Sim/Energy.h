@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Sim/Export.h"
+
 #include "Sim/Terrain.h"
 
 namespace summit::sim {
@@ -8,20 +10,20 @@ namespace summit::sim {
 //   M = 1.5 W + 2.0 (W+L)(L/W)^2 + eta (W+L)(1.5 V^2 + 0.35 V G)
 // W body mass kg, L load kg, V speed m/s, G grade %, eta terrain factor.
 // Negative grades use the Santee et al. (2003) downhill correction.
-double PandolfMetabolicRateW(double bodyMassKg, double loadKg, double speedMS, double gradePercent,
+SUMMITSIM_API double PandolfMetabolicRateW(double bodyMassKg, double loadKg, double speedMS, double gradePercent,
                              double terrainFactor);
 
 // Approximate oxygen cost of a metabolic rate: 1 L O2 ≈ 20.1 kJ (≈4.8 kcal).
-double MetabolicRateToVO2MlKgMin(double metabolicW, double bodyMassKg);
+SUMMITSIM_API double MetabolicRateToVO2MlKgMin(double metabolicW, double bodyMassKg);
 
-struct EnergyParams {
+struct SUMMITSIM_API EnergyParams {
   double bodyMassKg = 75.0;
   double glycogenCapacityKcal = 2000.0;   // muscle + liver
   double fatReserveKcal = 90000.0;        // ~12 kg fat-store equivalent; usable over expedition
   double totalBodyWaterL = 42.0;
 };
 
-struct EnergyState {
+struct SUMMITSIM_API EnergyState {
   double glycogenKcal = 2000.0;
   double fatReserveKcal = 90000.0;
   double hydrationDeficitL = 0.0;        // >0 means dehydrated; 4% body mass ≈ severe performance loss
@@ -38,7 +40,7 @@ struct EnergyState {
   double lastSleepQuality01 = 1.0;       // periodic breathing at altitude fragments sleep
 };
 
-struct EnergyInputs {
+struct SUMMITSIM_API EnergyInputs {
   double metabolicRateW = 100.0;
   double exertion01 = 0.0;               // fraction of current VO2max
   double ambientTempC = 15.0;
@@ -48,7 +50,7 @@ struct EnergyInputs {
   double altitudeM = 0.0;                // appetite suppression / malabsorption above ~5000 m
 };
 
-class EnergySystem {
+class SUMMITSIM_API EnergySystem {
  public:
   explicit EnergySystem(const EnergyParams& params = {});
 

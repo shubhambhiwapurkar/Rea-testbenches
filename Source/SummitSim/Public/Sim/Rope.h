@@ -1,12 +1,14 @@
 #pragma once
 
+#include "Sim/Export.h"
+
 #include <cstdint>
 
 #include "Sim/Random.h"
 
 namespace summit::sim {
 
-struct RopeSpec {
+struct SUMMITSIM_API RopeSpec {
   double diameterMm = 9.8;
   double massPerMeterG = 62.0;
   double ratedImpactForceKN = 8.8;   // EN 892 / UIAA 101: first drop, 80 kg, fall factor ~1.77
@@ -16,16 +18,16 @@ struct RopeSpec {
 };
 
 // Fall factor = fall distance / rope length paid out between climber and belay.
-double FallFactor(double fallDistanceM, double ropeOutM);
+SUMMITSIM_API double FallFactor(double fallDistanceM, double ropeOutM);
 
 // Rope stiffness k = E·A (N), derived from the rated impact force under the standard UIAA drop
 // (80 kg mass, fall factor 1.77) by inverting the equation below. Static ropes use a far higher k.
-double RopeStiffnessN(const RopeSpec& rope);
+SUMMITSIM_API double RopeStiffnessN(const RopeSpec& rope);
 
 // Peak force on the climber (Wexler 1950 / standard rope mechanics):
 //   F = m g + sqrt((m g)^2 + 2 m g k f)
 // belayDynamic01 models a dynamic belay or device slip (0 = locked off, 1 = very soft catch).
-double PeakImpactForceKN(double climberMassKg, double fallFactor, const RopeSpec& rope,
+SUMMITSIM_API double PeakImpactForceKN(double climberMassKg, double fallFactor, const RopeSpec& rope,
                          double belayDynamic01 = 0.0);
 
 enum class AnchorType : std::uint8_t {
@@ -41,7 +43,7 @@ enum class AnchorType : std::uint8_t {
   Count
 };
 
-struct Anchor {
+struct SUMMITSIM_API Anchor {
   AnchorType type = AnchorType::IceScrew;
   double ratedStrengthKN = 10.0;
   double placementQuality01 = 0.8;   // player skill and time taken
@@ -50,13 +52,13 @@ struct Anchor {
 
 // Typical rated strength of the hardware of each anchor type (EN/UIAA minimums), a sensible value for
 // Anchor::ratedStrengthKN when the gameplay layer has nothing better (e.g. 25 kN for a bolt).
-double NominalAnchorStrengthKN(AnchorType type);
+SUMMITSIM_API double NominalAnchorStrengthKN(AnchorType type);
 
 // Strength after medium quality and temperature. Ice is brittle when very cold and soft when warm,
 // and snow anchors depend on snow hardness.
-double AnchorEffectiveStrengthKN(const Anchor& anchor, double mediumQuality01, double temperatureC);
+SUMMITSIM_API double AnchorEffectiveStrengthKN(const Anchor& anchor, double mediumQuality01, double temperatureC);
 
-struct FallOutcome {
+struct SUMMITSIM_API FallOutcome {
   double fallDistanceM = 0.0;
   double fallFactor = 0.0;
   double peakForceKN = 0.0;
@@ -65,7 +67,7 @@ struct FallOutcome {
   double injurySeverity01 = 0.0;   // 0 none, 1 fatal
 };
 
-struct FallScenario {
+struct SUMMITSIM_API FallScenario {
   double climberMassKg = 85.0;     // body plus pack
   double distanceAboveProtectionM = 2.0;
   double ropeOutM = 10.0;
@@ -75,16 +77,16 @@ struct FallScenario {
   bool sharpEdge = false;
 };
 
-FallOutcome ResolveFall(const FallScenario& scenario, const RopeSpec& rope, const Anchor& anchor,
+SUMMITSIM_API FallOutcome ResolveFall(const FallScenario& scenario, const RopeSpec& rope, const Anchor& anchor,
                         double mediumQuality01, double temperatureC, Pcg32& rng);
 
 // Injury severity (0..1, 1 = fatal) of an unprotected fall or slide of the given length. Falls beyond
 // ~20-30 m on steep ground are usually fatal; on gentle slopes much longer slides are survivable.
-double UnprotectedFallInjury01(double fallDistanceM, double slopeAngleDeg);
+SUMMITSIM_API double UnprotectedFallInjury01(double fallDistanceM, double slopeAngleDeg);
 
 // Unroped slide on snow/ice: probability a self-arrest with an ice axe succeeds (0..1) given
 // slope, surface and reaction time. Slides on hard snow above ~40° rarely stop.
-double SelfArrestSuccessProbability(double slopeAngleDeg, bool iceOrHardSnow, double skill01,
+SUMMITSIM_API double SelfArrestSuccessProbability(double slopeAngleDeg, bool iceOrHardSnow, double skill01,
                                     double reactionTimeS, double fatigue01);
 
 }  // namespace summit::sim

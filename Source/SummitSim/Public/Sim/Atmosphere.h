@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Sim/Export.h"
+
 namespace summit::sim {
 
 // Barometric pressure at altitude.
@@ -9,22 +11,22 @@ namespace summit::sim {
 // This fits subtropical Himalayan observations (Everest summit ~253 Torr / 33.7 kPa in May), whereas
 // ISA underestimates pressure there. Latitude and season corrections are applied on top: pressure is
 // lower at high latitude (Denali) and in winter.
-double BarometricPressureKPa(double altitudeM, double latitudeDeg = 28.0, int dayOfYear = 140);
+SUMMITSIM_API double BarometricPressureKPa(double altitudeM, double latitudeDeg = 28.0, int dayOfYear = 140);
 
 // Inverse of the uncorrected West (1996) model (28°N, May): the altitude at which PB equals
 // `pressureKPa`. Used for "physiological equivalent altitude".
-double AltitudeForPressureKPa(double pressureKPa);
+SUMMITSIM_API double AltitudeForPressureKPa(double pressureKPa);
 
 // ICAO standard atmosphere (troposphere + lower stratosphere), for reference and comparison.
-double IsaPressureKPa(double altitudeM);
+SUMMITSIM_API double IsaPressureKPa(double altitudeM);
 
 // Dry-air density from the ideal gas law.
-double AirDensityKgM3(double pressureKPa, double temperatureC);
+SUMMITSIM_API double AirDensityKgM3(double pressureKPa, double temperatureC);
 
 // Inspired O2 partial pressure in the trachea: PiO2 = FiO2 * (PB - 47 mmHg).
-double InspiredPO2MmHg(double pressureKPa, double fio2 = 0.2093);
+SUMMITSIM_API double InspiredPO2MmHg(double pressureKPa, double fio2 = 0.2093);
 
 // Boiling point of water (deg C) at a given pressure (Antoine equation). Affects cooking and melting snow.
-double WaterBoilingPointC(double pressureKPa);
+SUMMITSIM_API double WaterBoilingPointC(double pressureKPa);
 
 }  // namespace summit::sim

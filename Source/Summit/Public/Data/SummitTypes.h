@@ -281,14 +281,14 @@ struct SUMMIT_API FSummitCargoItem
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Summit|Cargo")
 	bool bStrapped = true;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Summit|Cargo", meta = (ClampMin = "0", Units = "Liters"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Summit|Cargo", meta = (ClampMin = "0"))
 	float VolumeL = 1.f;
 
 	// Optional consumable payload: food energy and water, consumed by Eat/Drink from the inventory.
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Summit|Cargo", meta = (ClampMin = "0"))
 	float FoodKcal = 0.f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Summit|Cargo", meta = (ClampMin = "0", Units = "Liters"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Summit|Cargo", meta = (ClampMin = "0"))
 	float WaterL = 0.f;
 };
 

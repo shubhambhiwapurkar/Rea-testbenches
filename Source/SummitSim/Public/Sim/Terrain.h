@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Sim/Export.h"
+
 #include <cstdint>
 
 namespace summit::sim {
@@ -20,16 +22,16 @@ enum class TerrainType : std::uint8_t {
   Count
 };
 
-const char* TerrainTypeName(TerrainType type);
+SUMMITSIM_API const char* TerrainTypeName(TerrainType type);
 
 // Pandolf terrain coefficient eta (Pandolf 1977; Soule & Goldman 1972 for snow/sand).
 // snowDepthM is only used for snow types (footprint depression).
-double PandolfTerrainFactor(TerrainType type, double snowDepthM = 0.0);
+SUMMITSIM_API double PandolfTerrainFactor(TerrainType type, double snowDepthM = 0.0);
 
 // Effective static friction coefficient between boot (optionally with crampons) and surface.
-double SurfaceFriction(TerrainType type, bool crampons, double temperatureC);
+SUMMITSIM_API double SurfaceFriction(TerrainType type, bool crampons, double temperatureC);
 
 // Steepest slope (deg) a climber can walk upright on before needing hands/tools.
-double MaxWalkableSlopeDeg(TerrainType type, bool crampons);
+SUMMITSIM_API double MaxWalkableSlopeDeg(TerrainType type, bool crampons);
 
 }  // namespace summit::sim

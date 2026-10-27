@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Sim/Export.h"
+
 #include <array>
 #include <cstdint>
 #include <vector>
@@ -11,11 +13,11 @@ namespace summit::sim {
 // Simulation clock: seconds since 00:00 local solar time on 1 January of the campaign year.
 using SimTimeSeconds = double;
 
-int DayOfYear(SimTimeSeconds t);      // 0..364
-double HourOfDay(SimTimeSeconds t);   // 0..24
-int MonthOfYear(SimTimeSeconds t);    // 0..11
+SUMMITSIM_API int DayOfYear(SimTimeSeconds t);      // 0..364
+SUMMITSIM_API double HourOfDay(SimTimeSeconds t);   // 0..24
+SUMMITSIM_API int MonthOfYear(SimTimeSeconds t);    // 0..11
 
-struct WeatherSample {
+struct SUMMITSIM_API WeatherSample {
   double temperatureC = 0.0;
   double windSpeedMS = 0.0;         // sustained
   double windGustMS = 0.0;
@@ -31,7 +33,7 @@ struct WeatherSample {
 
 // Per-region climatology. Values are monthly means at `referenceElevationM`.
 // Profiles for real ranges live in Data/Mountains/climate/*.json and are loaded by the UE layer.
-struct ClimateProfile {
+struct SUMMITSIM_API ClimateProfile {
   double latitudeDeg = 28.0;
   double referenceElevationM = 5364.0;               // e.g. Everest Base Camp
   std::array<double, 12> meanTempC{};                // daily mean at reference elevation
@@ -47,17 +49,17 @@ struct ClimateProfile {
 };
 
 // A Himalaya (Khumbu) climatology for tests and the CLI.
-ClimateProfile KhumbuClimate();
+SUMMITSIM_API ClimateProfile KhumbuClimate();
 
 // Solar elevation angle above the horizon (deg, negative at night) for local solar time.
 // Declination after Cooper (1969); hour angle 15 deg per hour from solar noon.
-double SolarElevationDeg(double latitudeDeg, int dayOfYear, double hourOfDay);
+SUMMITSIM_API double SolarElevationDeg(double latitudeDeg, int dayOfYear, double hourOfDay);
 
 // Clear-sky global shortwave irradiance on a horizontal surface (W/m^2) at a given altitude.
 // Zero when the sun is below the horizon.
-double ClearSkyGlobalIrradianceWm2(double latitudeDeg, int dayOfYear, double hourOfDay, double altitudeM);
+SUMMITSIM_API double ClearSkyGlobalIrradianceWm2(double latitudeDeg, int dayOfYear, double hourOfDay, double altitudeM);
 
-struct ForecastEntry {
+struct SUMMITSIM_API ForecastEntry {
   SimTimeSeconds time = 0.0;
   WeatherSample expected;
   double confidence01 = 1.0;  // decays with lead time
@@ -66,7 +68,7 @@ struct ForecastEntry {
 // Stochastic but seeded weather. Storm systems arrive as a Poisson process modulated by
 // month, build, peak and decay; the jet stream oscillates on a multi-day period, which creates
 // summit "windows". Wind increases with altitude toward jet-stream speed.
-class WeatherSystem {
+class SUMMITSIM_API WeatherSystem {
  public:
   WeatherSystem(const ClimateProfile& climate, std::uint64_t seed);
 

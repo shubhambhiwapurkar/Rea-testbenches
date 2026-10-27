@@ -1,22 +1,24 @@
 #pragma once
 
+#include "Sim/Export.h"
+
 #include <cstdint>
 
 namespace summit::sim {
 
 // Bottled oxygen system (e.g. a Summit Oxygen / Poisk set). flow = 0 means no supplemental O2.
-struct OxygenSupply {
+struct SUMMITSIM_API OxygenSupply {
   bool maskOn = false;
   double flowLitersPerMin = 0.0;  // typical: 0.5 sleeping, 2-4 climbing, 4+ emergency
 };
 
-struct Medications {
+struct SUMMITSIM_API Medications {
   bool acetazolamide = false;  // speeds ventilatory acclimatization, AMS prophylaxis
   bool dexamethasone = false;  // treats AMS/HACE symptoms (masks, doesn't acclimatize)
   bool nifedipine = false;     // HAPE treatment/prophylaxis
 };
 
-struct PhysiologyParams {
+struct SUMMITSIM_API PhysiologyParams {
   double bodyMassKg = 75.0;
   double vo2MaxSeaLevelMlKgMin = 55.0;   // trained mountaineer ~50-65
   double hemoglobinGdl = 15.0;           // sea-level baseline
@@ -25,7 +27,7 @@ struct PhysiologyParams {
   double haceSusceptibility = 1.0;
 };
 
-struct PhysiologyInputs {
+struct SUMMITSIM_API PhysiologyInputs {
   double altitudeM = 0.0;
   double pressureKPa = 101.325;
   double exertion01 = 0.0;   // fraction of *current* (altitude-limited) VO2max being used
@@ -36,7 +38,7 @@ struct PhysiologyInputs {
 };
 
 // One evaluation of the ventilation / gas-exchange model (see Physiology.cpp for sources).
-struct GasExchange {
+struct SUMMITSIM_API GasExchange {
   double effectiveFiO2 = 0.2093;
   double inspiredPO2MmHg = 149.0;
   double paCO2MmHg = 40.0;
@@ -49,7 +51,7 @@ struct GasExchange {
   double equivalentAltitudeM = 0.0;     // altitude with the same PiO2 breathing air
 };
 
-struct PhysiologyState {
+struct SUMMITSIM_API PhysiologyState {
   // Acclimatization. Ventilatory: days-scale. Hematologic: weeks-scale. Both 0..1 relative to full
   // adaptation to `acclimatizedAltitudeM`.
   double ventilatoryAcclimatization = 0.0;
@@ -83,7 +85,7 @@ struct PhysiologyState {
   double arterialPH = 7.40;
 };
 
-class Physiology {
+class SUMMITSIM_API Physiology {
  public:
   explicit Physiology(const PhysiologyParams& params = {});
 

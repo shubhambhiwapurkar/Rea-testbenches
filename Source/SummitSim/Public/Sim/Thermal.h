@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Sim/Export.h"
+
 #include <array>
 #include <cstdint>
 
@@ -7,7 +9,7 @@ namespace summit::sim {
 
 // North American / UK wind chill index (JAG/TI 2001). Wind measured at 10 m, km/h.
 // Valid for T <= 10 °C and V >= 4.8 km/h; returns air temperature outside that range.
-double WindChillC(double airTempC, double windKmh);
+SUMMITSIM_API double WindChillC(double airTempC, double windKmh);
 
 enum class BodyPart : std::uint8_t { Hands = 0, Feet = 1, Face = 2, Count = 3 };
 
@@ -20,7 +22,7 @@ enum class HypothermiaStage : std::uint8_t {
   Severe     // < 28 °C: unconscious, arrhythmia risk
 };
 
-struct ClothingSystem {
+struct SUMMITSIM_API ClothingSystem {
   double torsoClo = 4.0;          // 1 clo = 0.155 m²K/W. Down suit ≈ 6-8, softshell ≈ 1.5
   double handsClo = 2.0;          // liner ≈ 0.5, gloves ≈ 1.5, expedition mitts ≈ 3+
   double feetClo = 2.5;           // single boot ≈ 1.5, double/8000 m boot ≈ 3+
@@ -29,7 +31,7 @@ struct ClothingSystem {
   double wetness01 = 0.0;         // sweat or snowmelt; wet insulation loses most of its value
 };
 
-struct ThermalEnvironment {
+struct SUMMITSIM_API ThermalEnvironment {
   double airTempC = 0.0;
   double windMS = 0.0;
   double solarWm2 = 0.0;          // direct + reflected (snow albedo ~0.8 makes this large)
@@ -39,7 +41,7 @@ struct ThermalEnvironment {
   double sleepingBagComfortC = -20.0;
 };
 
-struct ThermalState {
+struct SUMMITSIM_API ThermalState {
   double coreTempC = 37.0;
   double meanSkinTempC = 33.0;
   std::array<double, 3> extremityTempC{30.0, 30.0, 32.0};   // indexed by BodyPart
@@ -54,7 +56,7 @@ struct ThermalState {
   std::array<double, 3> surfaceTempC{28.0, 28.0, 30.0};  // skin surface of each extremity
 };
 
-struct ThermalInputs {
+struct SUMMITSIM_API ThermalInputs {
   ThermalEnvironment env;
   ClothingSystem clothing;
   double metabolicHeatW = 100.0;  // from EnergySystem / Pandolf, includes shivering added internally
@@ -70,7 +72,7 @@ struct ThermalInputs {
 
 // Two-node (core/skin) heat balance after Gagge et al. (1971), with three peripheral nodes for
 // frostbite. Tissue freezes around -0.55 °C (Danielsson 1996). Damage accumulates while below.
-class ThermalModel {
+class SUMMITSIM_API ThermalModel {
  public:
   ThermalModel() = default;
 

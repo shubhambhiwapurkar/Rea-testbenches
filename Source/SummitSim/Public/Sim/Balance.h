@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Sim/Export.h"
+
 #include <array>
 #include <cstdint>
 #include <string>
@@ -17,14 +19,14 @@ namespace summit::sim {
 // disturb it, and player lean input corrects it. When the CoM leaves the support polygon for longer
 // than the recovery window, the climber stumbles, and then falls.
 
-struct CargoItem {
+struct SUMMITSIM_API CargoItem {
   std::string id;
   double massKg = 1.0;
   Vec3 offsetM;            // from the pack attachment point (x right, y forward, z up); packs sit at y < 0
   bool strapped = true;    // unstrapped cargo sways and amplifies disturbances
 };
 
-struct BalanceInputs {
+struct SUMMITSIM_API BalanceInputs {
   double slopeAlongDeg = 0.0;   // + uphill along travel direction
   double slopeAcrossDeg = 0.0;  // + ground falls away to the right
   double speedMS = 0.0;
@@ -42,7 +44,7 @@ struct BalanceInputs {
   double airDensityKgM3 = 0.74; // for wind drag; ~0.74 at 5000 m (ISA), 1.225 at sea level
 };
 
-struct BalanceState {
+struct SUMMITSIM_API BalanceState {
   double lateralTiltRad = 0.0;     // + leaning right
   double forwardTiltRad = 0.0;     // + leaning forward
   double lateralVelRadS = 0.0;
@@ -54,7 +56,7 @@ struct BalanceState {
   double secondsOutsideSupport = 0.0;
 };
 
-struct BodyGeometry {
+struct SUMMITSIM_API BodyGeometry {
   double bodyMassKg = 75.0;
   double heightM = 1.78;
   double comHeightM = 1.0;          // body CoM height while standing
@@ -62,7 +64,7 @@ struct BodyGeometry {
   double packAttachHeightM = 1.25;  // shoulders/upper back
 };
 
-class BalanceModel {
+class SUMMITSIM_API BalanceModel {
  public:
   explicit BalanceModel(const BodyGeometry& body = {}, std::uint64_t seed = 1);
 
@@ -122,6 +124,6 @@ class BalanceModel {
 // Load-to-bodyweight guidance: >30-35% of body mass sharply raises injury and stumble rates
 // (Knapik et al. 2004, "Soldier load carriage: historical, physiological, biomechanical and
 // medical aspects"). Himalayan porters routinely carry far more on gentle trails.
-double LoadPenalty01(double loadKg, double bodyMassKg);
+SUMMITSIM_API double LoadPenalty01(double loadKg, double bodyMassKg);
 
 }  // namespace summit::sim
