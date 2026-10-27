@@ -5,7 +5,8 @@
 // footing (balance safe speed) allow. Game logic lives in the components:
 //   USummitClimberComponent  physiology/thermal/energy sim       USummitCargoComponent    pack contents
 //   USummitBalanceComponent  load-carriage balance sim           USummitClimbingComponent walls, ropes, slides
-// Input assets are soft references assigned in BP_SummitCharacter.
+// Input assets are soft references assigned in BP_SummitCharacter. Any left empty fall back to a
+// keyboard/mouse/gamepad scheme built in code (see EnsureDefaultInput), so the class plays as-is.
 
 #pragma once
 
@@ -14,8 +15,10 @@
 #include "Data/SummitTypes.h"
 #include "SummitCharacter.generated.h"
 
+class UAnimInstance;
 class UCameraComponent;
 class UInputAction;
+class USkeletalMesh;
 class UInputMappingContext;
 class USpringArmComponent;
 class USummitBalanceComponent;
@@ -101,6 +104,15 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Summit|Input")
 	TSoftObjectPtr<UInputAction> OpenInventoryAction;
+
+	// ---- Body (used when the mesh component has no mesh, e.g. spawning the native class) --------------
+
+	// Placeholder until the climber MetaHuman exists: the UE template mannequin (Tools/setup copies it in).
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Summit|Body")
+	TSoftObjectPtr<USkeletalMesh> DefaultBodyMesh;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Summit|Body")
+	TSoftClassPtr<UAnimInstance> DefaultAnimClass;
 
 	// ---- Tuning ---------------------------------------------------------------------------------------
 
@@ -198,6 +210,15 @@ private:
 
 	void EnterFallen(bool bHardImpact);
 	void UpdateMovementLimits();
+	void EnsureDefaultInput();
+	void ApplyDefaultBody();
+
+	// Code-built input used when the soft input references are unset; kept alive here.
+	UPROPERTY(Transient)
+	TObjectPtr<UInputMappingContext> RuntimeMappingContext;
+
+	UPROPERTY(Transient)
+	TArray<TObjectPtr<UInputAction>> RuntimeActions;
 
 	ESummitClimbMode ClimbMode = ESummitClimbMode::Walking;
 	float LeanLeftValue = 0.f;

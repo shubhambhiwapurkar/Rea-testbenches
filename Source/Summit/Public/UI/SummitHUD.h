@@ -17,6 +17,9 @@ public:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
+	// Text readout of the climber's vitals and weather, drawn when no HUDWidgetClass is set.
+	virtual void DrawHUD() override;
+
 	// Set to WBP_SummitHUD in a Blueprint subclass (or BP_SummitGameMode's HUD class).
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Summit|HUD")
 	TSubclassOf<USummitHUDWidget> HUDWidgetClass;

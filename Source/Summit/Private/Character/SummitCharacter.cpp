@@ -7,8 +7,12 @@
 #include "Simulation/SummitClimberComponent.h"
 #include "Summit.h"
 
+#include "Animation/AnimInstance.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Components/SkeletalMeshComponent.h"
+#include "Engine/SkeletalMesh.h"
+#include "InputModifiers.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "Engine/HitResult.h"
@@ -66,6 +70,122 @@ ASummitCharacter::ASummitCharacter(const FObjectInitializer& ObjectInitializer)
 	Cargo = CreateDefaultSubobject<USummitCargoComponent>(TEXT("Cargo"));
 	Balance = CreateDefaultSubobject<USummitBalanceComponent>(TEXT("Balance"));
 	Climbing = CreateDefaultSubobject<USummitClimbingComponent>(TEXT("Climbing"));
+
+	// Mannequin convention: feet at the capsule bottom, facing +X.
+	GetMesh()->SetRelativeLocationAndRotation(FVector(0.f, 0.f, -90.f), FRotator(0.f, -90.f, 0.f));
+	DefaultBodyMesh = TSoftObjectPtr<USkeletalMesh>(FSoftObjectPath(TEXT("/Game/Characters/Mannequins/Meshes/SKM_Manny_Simple.SKM_Manny_Simple")));
+	DefaultAnimClass = TSoftClassPtr<UAnimInstance>(FSoftObjectPath(TEXT("/Game/Characters/Mannequins/Anims/Unarmed/ABP_Unarmed.ABP_Unarmed_C")));
+}
+
+void ASummitCharacter::ApplyDefaultBody()
+{
+	USkeletalMeshComponent* Body = GetMesh();
+	if (!Body || Body->GetSkeletalMeshAsset())
+	{
+		return;
+	}
+	if (USkeletalMesh* BodyMesh = DefaultBodyMesh.LoadSynchronous())
+	{
+		Body->SetSkeletalMeshAsset(BodyMesh);
+		if (UClass* AnimClass = DefaultAnimClass.LoadSynchronous())
+		{
+			Body->SetAnimInstanceClass(AnimClass);
+		}
+	}
+	else
+	{
+		UE_LOG(LogSummit, Warning, TEXT("SummitCharacter: no body mesh at %s; run Tools/setup/setup_project.ps1."), *DefaultBodyMesh.ToString());
+	}
+}
+
+void ASummitCharacter::EnsureDefaultInput()
+{
+	if (!MoveAction.IsNull() || RuntimeMappingContext)
+	{
+		return;
+	}
+
+	RuntimeMappingContext = NewObject<UInputMappingContext>(this, TEXT("IMC_SummitRuntime"));
+	UInputMappingContext* Context = RuntimeMappingContext;
+
+	const auto MakeAction = [this](const TCHAR* Name, EInputActionValueType Type)
+	{
+		UInputAction* Action = NewObject<UInputAction>(this, Name);
+		Action->ValueType = Type;
+		RuntimeActions.Add(Action);
+		return Action;
+	};
+	const auto Map = [Context](UInputAction* Action, const FKey& Key, bool bSwizzle = false, bool bNegate = false) -> FEnhancedActionKeyMapping&
+	{
+		FEnhancedActionKeyMapping& Mapping = Context->MapKey(Action, Key);
+		if (bSwizzle)
+		{
+			Mapping.Modifiers.Add(NewObject<UInputModifierSwizzleAxis>(Context));
+		}
+		if (bNegate)
+		{
+			Mapping.Modifiers.Add(NewObject<UInputModifierNegate>(Context));
+		}
+		return Mapping;
+	};
+
+	UInputAction* Move = MakeAction(TEXT("IA_Move"), EInputActionValueType::Axis2D);
+	Map(Move, EKeys::W, true);
+	Map(Move, EKeys::S, true, true);
+	Map(Move, EKeys::A, false, true);
+	Map(Move, EKeys::D);
+	Map(Move, EKeys::Gamepad_Left2D);
+
+	UInputAction* Look = MakeAction(TEXT("IA_Look"), EInputActionValueType::Axis2D);
+	FEnhancedActionKeyMapping& MouseLook = Map(Look, EKeys::Mouse2D);
+	UInputModifierNegate* InvertY = NewObject<UInputModifierNegate>(Context);
+	InvertY->bX = false;
+	InvertY->bZ = false;
+	MouseLook.Modifiers.Add(InvertY);
+	Map(Look, EKeys::Gamepad_Right2D);
+
+	// Death Stranding layout: triggers lean on a pad, Q/E on keyboard.
+	UInputAction* LeanLeft = MakeAction(TEXT("IA_LeanLeft"), EInputActionValueType::Axis1D);
+	Map(LeanLeft, EKeys::Q);
+	Map(LeanLeft, EKeys::Gamepad_LeftTriggerAxis);
+	UInputAction* LeanRight = MakeAction(TEXT("IA_LeanRight"), EInputActionValueType::Axis1D);
+	Map(LeanRight, EKeys::E);
+	Map(LeanRight, EKeys::Gamepad_RightTriggerAxis);
+
+	UInputAction* Brace = MakeAction(TEXT("IA_Brace"), EInputActionValueType::Boolean);
+	Map(Brace, EKeys::LeftControl);
+	Map(Brace, EKeys::Gamepad_LeftShoulder);
+	UInputAction* Interact = MakeAction(TEXT("IA_Interact"), EInputActionValueType::Boolean);
+	Map(Interact, EKeys::F);
+	Map(Interact, EKeys::Gamepad_FaceButton_Left);
+	UInputAction* Climb = MakeAction(TEXT("IA_Climb"), EInputActionValueType::Boolean);
+	Map(Climb, EKeys::LeftMouseButton);
+	Map(Climb, EKeys::Gamepad_FaceButton_Top);
+	UInputAction* Axe = MakeAction(TEXT("IA_UseAxe"), EInputActionValueType::Boolean);
+	Map(Axe, EKeys::RightMouseButton);
+	Map(Axe, EKeys::Gamepad_RightShoulder);
+	UInputAction* Jump = MakeAction(TEXT("IA_Jump"), EInputActionValueType::Boolean);
+	Map(Jump, EKeys::SpaceBar);
+	Map(Jump, EKeys::Gamepad_FaceButton_Bottom);
+	UInputAction* Oxygen = MakeAction(TEXT("IA_ToggleOxygen"), EInputActionValueType::Boolean);
+	Map(Oxygen, EKeys::O);
+	Map(Oxygen, EKeys::Gamepad_DPad_Up);
+	UInputAction* Inventory = MakeAction(TEXT("IA_OpenInventory"), EInputActionValueType::Boolean);
+	Map(Inventory, EKeys::Tab);
+	Map(Inventory, EKeys::Gamepad_Special_Right);
+
+	DefaultMappingContext = Context;
+	MoveAction = Move;
+	LookAction = Look;
+	LeanLeftAction = LeanLeft;
+	LeanRightAction = LeanRight;
+	BraceAction = Brace;
+	InteractAction = Interact;
+	ClimbAction = Climb;
+	UseAxeAction = Axe;
+	JumpAction = Jump;
+	ToggleOxygenAction = Oxygen;
+	OpenInventoryAction = Inventory;
 }
 
 USummitCharacterMovementComponent* ASummitCharacter::GetSummitMovement() const
@@ -77,6 +197,7 @@ void ASummitCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
+	ApplyDefaultBody();
 	Balance->OnFallen.AddDynamic(this, &ASummitCharacter::HandleBalanceFallen);
 	Climber->OnDeath.AddDynamic(this, &ASummitCharacter::HandleClimberDeath);
 
@@ -88,6 +209,7 @@ void ASummitCharacter::NotifyControllerChanged()
 {
 	Super::NotifyControllerChanged();
 
+	EnsureDefaultInput();
 	const APlayerController* PC = Cast<APlayerController>(Controller);
 	if (!PC || DefaultMappingContext.IsNull())
 	{
@@ -113,6 +235,7 @@ void ASummitCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 		return;
 	}
 
+	EnsureDefaultInput();
 	BindSoftAction(Input, MoveAction, ETriggerEvent::Triggered, this, &ASummitCharacter::HandleMove);
 	BindSoftAction(Input, MoveAction, ETriggerEvent::Completed, this, &ASummitCharacter::HandleMoveCompleted);
 	BindSoftAction(Input, LookAction, ETriggerEvent::Triggered, this, &ASummitCharacter::HandleLook);
