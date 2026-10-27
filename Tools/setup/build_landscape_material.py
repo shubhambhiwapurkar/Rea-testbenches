@@ -16,6 +16,7 @@ MATERIAL = "/Game/Summit/Materials/M_SummitLandscape"
 MEL = unreal.MaterialEditingLibrary
 TILE_CM = {"snow": 400.0, "rock": 800.0, "moraine": 500.0}  # world size of one detail tile
 NEAR_CM, FAR_CM = 2000.0, 30000.0                             # detail fades out between 20 m and 300 m
+MACRO_SCALE = 4.73                                            # second detail scale; irrational-ish to avoid realignment
 
 meta = json.load(open(next(os.path.join(TERRAIN_DIR, f) for f in os.listdir(TERRAIN_DIR) if f.endswith(".json"))))
 extent_cm = meta["grid"]["extent_m"] * 100.0
@@ -94,10 +95,19 @@ class Graph:
         sub = self.op(unreal.MaterialExpressionSubtract, x, a_out=x_out, const_b=offset)
         return self.sat(self.op(unreal.MaterialExpressionMultiply, sub, const_b=gain))
 
-    def sample(self, tex, uv, sampler):
-        n = self.node(unreal.MaterialExpressionTextureSample, texture=tex, sampler_type=sampler)
+    def sample(self, tex, uv, sampler, clamp=False, mip=None):
+        # Shared samplers lift the 16-sampler limit (we use ~20 samples).
+        source = unreal.SamplerSourceMode.SSM_CLAMP_WORLD_GROUP_SETTINGS if clamp else unreal.SamplerSourceMode.SSM_WRAP_WORLD_GROUP_SETTINGS
+        n = self.node(unreal.MaterialExpressionTextureSample, texture=tex, sampler_type=sampler, sampler_source=source)
+        if mip is not None:
+            n.set_editor_property("mip_value_mode", unreal.TextureMipValueMode.TMVM_MIP_LEVEL)
+            n.set_editor_property("const_mip_value", mip)
         self.link(uv, n, "UVs")
         return n
+
+    def lum(self, color, color_out=""):
+        weights = self.node(unreal.MaterialExpressionConstant3Vector, constant=unreal.LinearColor(0.2126, 0.7152, 0.0722, 0.0))
+        return self.op(unreal.MaterialExpressionDotProduct, color, weights, a_out=color_out)
 
 
 def build_material(tx):
@@ -117,14 +127,22 @@ def build_material(tx):
     shifted = g.op(unreal.MaterialExpressionSubtract, xy,
                    g.node(unreal.MaterialExpressionConstant2Vector, r=origin["x"], g=origin["y"]))
     sat_uv = g.op(unreal.MaterialExpressionMultiply, shifted, const_b=1.0 / extent_cm)
-    satellite = g.sample(tx["T_satellite"], sat_uv, S.SAMPLERTYPE_COLOR)
+    satellite = g.sample(tx["T_satellite"], sat_uv, S.SAMPLERTYPE_COLOR, clamp=True)
 
     layers = {}
     for role, tile in TILE_CM.items():
         uv = g.op(unreal.MaterialExpressionMultiply, xy, const_b=1.0 / tile)
-        layers[role] = (g.sample(tx[f"T_{role}_diff"], uv, S.SAMPLERTYPE_COLOR),
+        # A second, larger and unaligned scale of the same scan breaks up visible tiling.
+        uv_macro = g.op(unreal.MaterialExpressionMultiply, xy, const_b=1.0 / (tile * MACRO_SCALE))
+        diff = g.lerp(g.sample(tx[f"T_{role}_diff"], uv, S.SAMPLERTYPE_COLOR),
+                      g.sample(tx[f"T_{role}_diff"], uv_macro, S.SAMPLERTYPE_COLOR),
+                      g.node(unreal.MaterialExpressionConstant, r=0.5))
+        # The scan's average colour (its smallest mip), so only its relative light/dark pattern is kept.
+        average = g.sample(tx[f"T_{role}_diff"], uv, S.SAMPLERTYPE_COLOR, mip=12)
+        layers[role] = (diff,
                         g.sample(tx[f"T_{role}_nor"], uv, S.SAMPLERTYPE_NORMAL),
-                        g.sample(tx[f"T_{role}_rough"], uv, S.SAMPLERTYPE_MASKS))
+                        g.sample(tx[f"T_{role}_rough"], uv, S.SAMPLERTYPE_MASKS),
+                        average)
 
     # Masks: steep faces shed snow and show rock; elsewhere snow follows what the satellite actually saw.
     normal_ws = g.node(unreal.MaterialExpressionVertexNormalWS)
@@ -153,10 +171,12 @@ def build_material(tx):
             parts = masked
         return g.lerp(g.lerp(parts[0], parts[1], steep), parts[2], snow)
 
-    detail_color = blend(0)
-    near_color = g.node(unreal.MaterialExpressionLinearInterpolate, const_alpha=0.6)  # 60 % scan detail, 40 % real colour
-    g.link(satellite, near_color, "A", "RGB")
-    g.link(detail_color, near_color, "B")
+    # Colour comes from the satellite (real hue: grey moraine, white snow); the scans only add their light/dark
+    # pattern, as a luminance ratio against their own average. Scans with lichen or moss no longer tint the mountain.
+    pattern = g.op(unreal.MaterialExpressionDivide, g.lum(blend(0)),
+                   g.op(unreal.MaterialExpressionMax, g.lum(blend(3)), const_b=0.02))
+    pattern = g.op(unreal.MaterialExpressionMin, g.op(unreal.MaterialExpressionMax, pattern, const_b=0.35), const_b=2.2)
+    near_color = g.op(unreal.MaterialExpressionMultiply, satellite, pattern, a_out="RGB")
     base = g.node(unreal.MaterialExpressionLinearInterpolate)
     g.link(near_color, base, "A")
     g.link(satellite, base, "B", "RGB")
