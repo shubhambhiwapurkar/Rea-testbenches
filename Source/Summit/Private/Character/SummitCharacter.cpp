@@ -25,6 +25,9 @@
 
 namespace
 {
+	TAutoConsoleVariable<int32> CVarAutoWalk(TEXT("summit.AutoWalk"), 0,
+		TEXT("1 = walk forward and log movement state each second. 2 = also screenshot every 10 s and quit after 60 s (visual smoke test)."));
+
 	using FSummitInputHandler = void (ASummitCharacter::*)(const FInputActionValue&);
 
 	// Loads a soft input action and binds it; missing assets are skipped so a half-configured BP still runs.
@@ -435,6 +438,35 @@ void ASummitCharacter::Tick(float DeltaSeconds)
 	Balance->SetBracing(IsBracing());
 
 	UpdateMovementLimits();
+
+	// Debug: walk forward without input and log movement state once a second (summit.AutoWalk 1).
+	if (CVarAutoWalk.GetValueOnGameThread() != 0 && IsLocallyControlled())
+	{
+		AddMovementInput(GetActorForwardVector(), 1.f);
+		DebugLogTimerS += DeltaSeconds;
+		if (DebugLogTimerS >= 1.f)
+		{
+			DebugLogTimerS = 0.f;
+			const UCharacterMovementComponent* Move = GetCharacterMovement();
+			UE_LOG(LogSummit, Display, TEXT("AutoWalk speed %.0f/%.0f cm/s sustainable %.0f safe %.0f stamina %.2f mode %d moveMode %d stability %.2f stumbling %d slope %.1f alt %.0f"),
+				GetVelocity().Size2D(), Move->MaxWalkSpeed, Climber->GetMaxSustainableSpeedCmS(), Balance->GetSafeSpeedCmS(),
+				Climber->GetStamina01(), static_cast<int32>(ClimbMode), static_cast<int32>(Move->MovementMode.GetValue()),
+				Balance->GetStability01(), Balance->IsStumbling() ? 1 : 0, Balance->GetSlopeAlongDeg(), Climber->GetAltitudeM());
+
+			DebugSeconds += 1;
+			if (CVarAutoWalk.GetValueOnGameThread() >= 2)
+			{
+				if (DebugSeconds % 10 == 0)
+				{
+					FScreenshotRequest::RequestScreenshot(FString::Printf(TEXT("SummitSmoke_%02d"), DebugSeconds), false, false);
+				}
+				if (DebugSeconds >= 60)
+				{
+					FPlatformMisc::RequestExit(false, TEXT("summit.AutoWalk smoke test finished"));
+				}
+			}
+		}
+	}
 }
 
 void ASummitCharacter::UpdateMovementLimits()

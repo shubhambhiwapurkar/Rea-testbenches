@@ -226,6 +226,8 @@ private:
 	bool bBraceHeld = false;
 	bool bAxePlanted = false;
 	float FallenTimeS = 0.f;
+	float DebugLogTimerS = 0.f;
+	int32 DebugSeconds = 0;
 	bool bDead = false;
 	bool bChangingMode = false;
 };

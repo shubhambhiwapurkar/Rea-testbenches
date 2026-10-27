@@ -216,12 +216,17 @@ int32 USummitSetupCommandlet::Main(const FString& Params)
 	Heights.SetNumUninitialized(Size * Size);
 	FMemory::Memcpy(Heights.GetData(), Raw.GetData(), Raw.Num());
 
-	// ---- Material ----
-	UMaterial* LandscapeMaterial = BuildLandscapeMaterial(TEXT("/Game/Summit/Materials/M_SummitLandscape"), SeaLevelOffsetM);
-	if (!SaveAsset(LandscapeMaterial))
+	// ---- Material: keep the textured one from Tools/setup/build_landscape_material.py if it exists ----
+	const FString MaterialPath = TEXT("/Game/Summit/Materials/M_SummitLandscape");
+	UMaterial* LandscapeMaterial = LoadObject<UMaterial>(nullptr, *(MaterialPath + TEXT(".M_SummitLandscape")), nullptr, LOAD_NoWarn | LOAD_Quiet);
+	if (!LandscapeMaterial)
 	{
-		UE_LOG(LogSummitSetup, Error, TEXT("Failed to save the landscape material"));
-		return 1;
+		LandscapeMaterial = BuildLandscapeMaterial(MaterialPath, SeaLevelOffsetM);
+		if (!SaveAsset(LandscapeMaterial))
+		{
+			UE_LOG(LogSummitSetup, Error, TEXT("Failed to save the landscape material"));
+			return 1;
+		}
 	}
 
 	// ---- Map ----
