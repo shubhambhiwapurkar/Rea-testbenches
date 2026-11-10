@@ -212,7 +212,7 @@ export class Ui {
     let text = '';
     if (kind === 'dead') {
       text = `Cause: ${st.dead}. You reached ${Math.round(st.highPoint).toLocaleString('en-US')} m${st.summited ? ', and stood on the summit' : ''}. `
-        + 'Everest has killed more than 330 climbers; most died on the descent, of the same things that happened here.';
+        + 'Everest has killed more than 330 climbers, many of them on the way down, of the same things that happened here.';
     } else if (kind === 'summit') {
       text = `8,848.86 m, ${game.dateString()}. ${usedO2 ? 'You climbed on bottled oxygen, as about 97% of summiters do.' : 'Without bottled oxygen: fewer than 250 people have done that.'} `
         + 'The air here holds a third of the oxygen at sea level. You are only halfway: now get down.';

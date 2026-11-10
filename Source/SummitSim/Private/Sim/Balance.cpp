@@ -400,6 +400,8 @@ void BalanceModel::SubStep(double h, const BalanceInputs& in) {
   const double xcomFwd = xFwd + comHeight * std::cos(comFwdRad_) * state_.forwardVelRadS / w0;
   const double marginLat = (halfWidth - std::fabs(xcomLat)) / halfWidth;
   const double marginFwd = xcomFwd >= 0.0 ? (front - xcomFwd) / front : (back + xcomFwd) / back;
+  state_.lateralImbalance = Clamp(xcomLat / halfWidth, -2.0, 2.0);
+  state_.forwardImbalance = Clamp(xcomFwd >= 0.0 ? xcomFwd / front : xcomFwd / back, -2.0, 2.0);
   // Both axes' margins count (a product, so any loss of margin shows on the gauge).
   double target = Clamp01(marginLat) * Clamp01(marginFwd) * (1.0 - 0.4 * footing.slipRisk01);
   if (state_.stumbling) target = std::min(target, 0.35);

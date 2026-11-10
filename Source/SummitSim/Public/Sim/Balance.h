@@ -54,6 +54,12 @@ struct SUMMITSIM_API BalanceState {
   bool stumbling = false;
   bool fallen = false;
   double secondsOutsideSupport = 0.0;
+  // Where the climber's weight is heading across the base of support (extrapolated centre of mass,
+  // Hof 2005): 0 = centred, -1 = at the left or rear edge, +1 = at the right or front edge. Beyond
+  // +/-1 a recovery step or a fall follows. This is what a balance gauge should show, and what the
+  // player counters by leaning the other way.
+  double lateralImbalance = 0.0;
+  double forwardImbalance = 0.0;
 };
 
 struct SUMMITSIM_API BodyGeometry {

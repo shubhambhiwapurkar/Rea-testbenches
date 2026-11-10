@@ -73,7 +73,8 @@ export class Hud {
     const active = !st.camp && !st.marching && st.move !== 'rest';
     const stability = g('B_STABILITY');
     balance.style.opacity = active ? (stability < 0.9 || Math.abs(st.lean) > 0.05 || g('B_SLIP') > 0.3 ? 1 : 0.45) : 0;
-    const tilt = clamp(g('B_TILT_LAT') / 0.42, -1, 1);
+    // The dot is where your weight is heading across your feet; the green arc is safe ground.
+    const tilt = clamp(g('B_IMBALANCE_LAT') / 1.6, -1, 1);
     const a = tilt * 64 / DEG;
     const dot = $('bal-dot');
     dot.setAttribute('cx', (Math.sin(a) * 100).toFixed(1));

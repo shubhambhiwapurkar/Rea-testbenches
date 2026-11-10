@@ -50,7 +50,7 @@ using namespace summit::sim;
   X(COND_DEHYDRATION) X(COND_EXHAUSTION) X(COND_STARVATION) X(COND_SNOWBLIND)                          \
   /* ---- balance outputs ---- */                                                                      \
   X(B_TILT_LAT) X(B_TILT_FWD) X(B_STABILITY) X(B_SLIP) X(B_STUMBLING) X(B_FALLEN) X(B_SAFE_SPEED)      \
-  X(B_CARGO_BIAS) X(B_CARGO_KG) X(MAX_WALK_SLOPE) X(FRICTION)                                          \
+  X(B_CARGO_BIAS) X(B_CARGO_KG) X(MAX_WALK_SLOPE) X(FRICTION) X(B_IMBALANCE_LAT) X(B_IMBALANCE_FWD)    \
   /* ---- snowpack outputs ---- */                                                                     \
   X(S_NEW24) X(S_NEW72) X(S_WINDLOAD) X(S_WARMING) X(S_DANGER_INDEX) X(S_DANGER_LEVEL)                 \
   X(AV_NATURAL_PER_HOUR) X(AV_HUMAN_TRIGGER)
@@ -358,6 +358,8 @@ void EXPORT(sim_tick)(double dtSim, double dtReal) {
   g_io[B_TILT_LAT] = bs.lateralTiltRad;
   g_io[B_TILT_FWD] = bs.forwardTiltRad;
   g_io[B_STABILITY] = bs.stability01;
+  g_io[B_IMBALANCE_LAT] = bs.lateralImbalance;
+  g_io[B_IMBALANCE_FWD] = bs.forwardImbalance;
   g_io[B_SLIP] = bs.slipRisk01;
   g_io[B_STUMBLING] = bs.stumbling ? 1.0 : 0.0;
   g_io[B_FALLEN] = bs.fallen ? 1.0 : 0.0;
