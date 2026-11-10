@@ -232,7 +232,17 @@ ${FOG}
 uniform sampler2D uNormal;
 uniform sampler2D uAux;
 uniform sampler2D uNoise;
+uniform sampler2D uSatellite;
+uniform float uHasSatellite;
 uniform vec4 uHole;
+
+// Snow cover from Sentinel-2 surface reflectance: sunlit snow is bright, and snow lying in terrain
+// shadow is dim but distinctly blue. Mirrors satellite_snow() in Tools/web/export_web_assets.py.
+float satelliteSnow(vec3 sat, float lum) {
+  float blueness = sat.b / max(sat.r, 0.02);
+  float shadowed = smoothstep(1.10, 1.32, blueness) * smoothstep(0.035, 0.10, lum);
+  return max(smoothstep(0.30, 0.50, lum), shadowed);
+}
 uniform float uDetailShading;
 varying vec3 vWorld;
 varying vec3 vGeoNormal;
@@ -296,6 +306,21 @@ void main() {
     rock = mix((1.0 - farSnow) * smoothstep(0.12, 0.35, steep), rock, nearW);
     glacier *= nearW;
   }
+  // The satellite image says where snow really lies, at twice the resolution of the masks.
+  vec3 sat = vec3(0.0);
+  float satLum = 0.0;
+  float useSat = uHasSatellite * nearW;
+  if (useSat > 0.001) {
+    sat = texture(uSatellite, xz / uNearExtent + 0.5).rgb;
+    satLum = dot(sat, vec3(0.30, 0.50, 0.20));
+    float seen = satelliteSnow(sat, satLum);
+    float bareNow = max(1.0 - seen, 0.0);
+    float bareWas = max(1.0 - snow, 0.001);
+    float keep = mix(1.0, bareNow / bareWas, useSat);
+    snow = mix(snow, seen, useSat);
+    rock = min(rock * keep, 1.0 - snow);
+    glacier = min(glacier * keep, max(0.0, 1.0 - snow - rock));
+  }
   float soil = max(0.0, 1.0 - rock - snow - glacier);
   // Fresh snowfall dusts whatever is flat enough to hold it; steep facets shed snow and show rock.
   float holds = 1.0 - smoothstep(0.38, 0.70, steep + (n2.b - 0.5) * 0.2);
@@ -328,7 +353,21 @@ void main() {
   float meadow = (1.0 - smoothstep(4750.0, 5150.0, y + (n1.r - 0.5) * 300.0)) * holds;
   soilColor = mix(soilColor, vec3(0.085, 0.12, 0.045) * (0.7 + 0.6 * n3.g), meadow * 0.75);
 
-  vec3 albedo = snowColor * snowCover + rockColor * wRock + iceColor * wIce + soilColor * wSoil;
+  vec3 bareColor = rockColor * wRock + iceColor * wIce + soilColor * wSoil;
+  if (useSat > 0.001) {
+    // Real colour for bare ground: keep the satellite's hue, but only half of its brightness, because
+    // the photograph has that morning's shadows baked in and the game lights the scene itself.
+    float bare = wRock + wIce + wSoil;
+    float modelLum = dot(bareColor, vec3(0.30, 0.50, 0.20)) / max(bare, 0.001);
+    // Dark pixels carry sensor noise, so trust their hue less.
+    vec3 hue = clamp(sat / max(satLum, 0.02), vec3(0.6), vec3(1.5));
+    hue = mix(vec3(1.0), hue, 0.7 * smoothstep(0.02, 0.09, satLum));
+    float lum = clamp(mix(modelLum, satLum, 0.5), 0.035, 0.34);
+    vec3 real = hue * lum * (0.80 + 0.40 * n3.b) * (0.90 + 0.20 * n2.g);
+    real = mix(real, vec3(0.035, 0.12, 0.20), crevasse * 0.8 * wIce / max(bare, 0.001));
+    bareColor = mix(bareColor, real * bare, useSat * 0.85);
+  }
+  vec3 albedo = snowColor * snowCover + bareColor;
 
   // ---- light ----
   float nl = dot(N, uSunDir);

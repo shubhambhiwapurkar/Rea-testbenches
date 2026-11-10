@@ -77,7 +77,7 @@ export function buildNoiseTexture(size = 256) {
 }
 
 export class TerrainView {
-  constructor(data, env, noiseTexture, { quads = 128, finestCellDivisor = 8, detailShading = 1 } = {}) {
+  constructor(data, env, noiseTexture, { quads = 128, finestCellDivisor = 8, detailShading = 1, satellite = null } = {}) {
     this.data = data;
     this.quads = quads;
     this.spacing0 = data.cell / finestCellDivisor;
@@ -101,6 +101,8 @@ export class TerrainView {
       uMasks: { value: this.textures.masks },
       uAux: { value: this.textures.aux },
       uNoise: { value: noiseTexture },
+      uSatellite: { value: satellite ?? noiseTexture },
+      uHasSatellite: { value: satellite ? 1 : 0 },
       uHorizon0: { value: this.textures.horizon[0] },
       uHorizon1: { value: this.textures.horizon[1] },
       uHorizon2: { value: this.textures.horizon[2] },

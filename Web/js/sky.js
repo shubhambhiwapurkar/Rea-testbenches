@@ -48,7 +48,7 @@ export class Sky {
   // Khumbu: clear mornings, cloud boiling up the valleys by afternoon.
   update(camera, hour, cloudCover) {
     const afternoon = Math.max(0, Math.sin(((hour - 8) / 12) * Math.PI));
-    const base = 5150 + 700 * afternoon + 500 * cloudCover;
+    const base = 4650 + 950 * afternoon * (0.4 + 0.6 * cloudCover) + 450 * cloudCover;
     const thickness = 260 + 420 * cloudCover;
     this.env.uCloudBase.value = base;
     this.env.uCloudTop.value = base + thickness;

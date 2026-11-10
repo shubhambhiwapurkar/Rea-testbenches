@@ -160,7 +160,7 @@ button.ghost { background: transparent; }
 .camp-inner header { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; }
 .camp-inner header h2 { font-size: 26px; color: var(--text); margin: 0; font-weight: 750; }
 #camp-sub { color: var(--muted); }
-.camp-grid { display: grid; grid-template-columns: 1fr 1fr 1.5fr; gap: 6px 26px; }
+.camp-grid { display: grid; grid-template-columns: 1fr 1.15fr 1.6fr; gap: 6px 26px; }
 .camp-inner footer { margin-top: 18px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
 #camp-advice { color: var(--amber); font-weight: 600; margin-left: 8px; }
 #camp-progress { margin: 12px 0 0; }
@@ -170,12 +170,14 @@ button.ghost { background: transparent; }
 .facts { display: grid; grid-template-columns: auto 1fr; gap: 4px 14px; font-variant-numeric: tabular-nums; }
 .facts span:nth-child(odd) { color: var(--muted); }
 .end-inner .facts { text-align: left; max-width: 420px; margin: 14px auto 0; }
-.supply { display: grid; grid-template-columns: 1fr auto auto auto auto; gap: 8px; align-items: center; padding: 4px 0; font-variant-numeric: tabular-nums; }
+.supply { display: grid; grid-template-columns: minmax(130px, 1fr) auto auto auto auto; gap: 8px; align-items: center; padding: 5px 0; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.supply > span:first-child { white-space: normal; }
+.supply > span:first-child .muted { display: block; font-size: 11px; }
 .supply button { padding: 3px 10px; }
 .muted { color: var(--muted); font-weight: 500; text-transform: none; letter-spacing: 0; }
 table.forecast { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; font-size: 13px; }
 table.forecast th { text-align: right; color: var(--muted); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; font-weight: 600; padding: 3px 6px; }
-table.forecast td { text-align: right; padding: 3px 6px; border-top: 1px solid rgba(255, 255, 255, 0.07); }
+table.forecast td { text-align: right; padding: 3px 6px; border-top: 1px solid rgba(255, 255, 255, 0.07); white-space: nowrap; }
 table.forecast th:first-child, table.forecast td:first-child { text-align: left; }
 table.forecast tr.go td { color: #9be8b6; }
 table.forecast tr.no td { color: #f3a79e; }
@@ -188,6 +190,16 @@ table.forecast tr.no td { color: #f3a79e; }
 #bigmap .hint { color: var(--muted); }
 
 #fatal { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; padding: 30px; background: #0a0d12; color: #ffd0c8; font: 14px ui-monospace, monospace; white-space: pre-wrap; z-index: 99; }
+
+/* Short windows: shrink the corner panels so they do not crowd the climber. */
+@media (max-height: 780px) {
+  #hud-vitals { transform: scale(0.8); transform-origin: left bottom; }
+  #hud-map { transform: scale(0.8); transform-origin: right bottom; }
+  #hud-top-left { transform: scale(0.86); transform-origin: left top; }
+  #hud-top-right { transform: scale(0.86); transform-origin: right top; }
+  #prompt { bottom: 150px; }
+  #hud-balance { bottom: 56px; }
+}
 
 @media (max-width: 900px) {
   #mode-list { grid-template-columns: 1fr; }

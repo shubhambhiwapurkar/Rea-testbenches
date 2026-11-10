@@ -50,7 +50,18 @@ async function boot() {
   const camera = new THREE.PerspectiveCamera(58, window.innerWidth / window.innerHeight, 0.35, 220000);
   const env = createEnvironmentUniforms();
   const noise = buildNoiseTexture();
-  const terrain = new TerrainView(data, env, noise, lowQuality ? { quads: 64, finestCellDivisor: 4, detailShading: 0 } : {});
+  // Real colour: a cloud-free Sentinel-2 image draped over the terrain.
+  let satellite = null;
+  if (world.satellite) {
+    satellite = await new THREE.TextureLoader().loadAsync(`assets/${world.satellite}`).catch(() => null);
+    if (satellite) {
+      satellite.colorSpace = THREE.SRGBColorSpace;
+      satellite.flipY = false;
+      satellite.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
+      satellite.needsUpdate = true;
+    }
+  }
+  const terrain = new TerrainView(data, env, noise, lowQuality ? { quads: 64, finestCellDivisor: 4, detailShading: 0, satellite } : { satellite });
   scene.add(terrain.group);
   const sky = new Sky(env, noise, terrain.shared);
   scene.add(sky.group);

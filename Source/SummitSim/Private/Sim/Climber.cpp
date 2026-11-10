@@ -94,6 +94,10 @@ bool IsWalkedFixedLine(const ClimberAction& action) {
   return action.activity == Activity::Jumaring && action.gradePercent < kWalkedFixedLineMaxGradePercent;
 }
 
+// Lowering the body (eccentric work) costs roughly a quarter to a third of raising it at the same
+// rate (Abbott, Bigland & Ritchie 1952; Minetti et al. 2002 for steep downhill gradients).
+constexpr double kEccentricCostFraction = 0.3;
+
 double StandingW(double massKg, double loadKg) {
   return 1.5 * massKg + 2.0 * (massKg + loadKg) * (loadKg / massKg) * (loadKg / massKg);
 }
@@ -121,8 +125,10 @@ double MetabolicRateW(const ClimberProfile& profile, const ClimberEnvironment& e
                                                                  TerrainFactorFor(env, Activity::Walking));
       }
       const TechnicalCost c = TechnicalCostFor(action.activity, profile, env.terrain, massKg, StandingW(massKg, loadKg));
-      const double vVert = std::fmax(0.0, action.speedMS) * VerticalFraction(action.gradePercent);
-      return c.baseW + (massKg + loadKg) * kGravity * vVert / c.efficiency;
+      const double vVert = std::fmax(0.0, action.speedMS) * VerticalFraction(std::fabs(action.gradePercent));
+      const double liftW = (massKg + loadKg) * kGravity * vVert / c.efficiency;
+      // Down-climbing: the muscles brake the body instead of lifting it.
+      return c.baseW + (action.gradePercent < 0.0 ? kEccentricCostFraction * liftW : liftW);
     }
     case Activity::Rappelling:
       return kRappellingMets * kWattsPerMetPerKg * massKg * (massKg + loadKg) / massKg;
@@ -156,7 +162,10 @@ void Climber::SubStep(double dt, const ClimberEnvironment& env, const ClimberAct
   // Cold muscle and a cooling core cut maximal power (Oksa 2002; Pugh 1966).
   const double thermalPerf = 0.4 + 0.6 * SmoothStep(31.0, 35.5, coreT);
   const double rawVo2Max = std::fmax(preview.vo2MaxMlKgMin, 1.0);
-  const double effVo2Max = rawVo2Max * energy_.PerformanceMultiplier() * thermalPerf;
+  // Fuel is an absolute ceiling (a fraction of sea-level VO2max), not a multiplier on the
+  // altitude-limited one: see EnergySystem::FuelIntensityLimit01.
+  const double fuelCeiling = energy_.FuelIntensityLimit01() * profile_.physiology.vo2MaxSeaLevelMlKgMin;
+  const double effVo2Max = std::fmin(rawVo2Max * energy_.HydrationFatigueMultiplier() * thermalPerf, fuelCeiling);
   const double exertionRaw = std::fmin(kMaxExertion, vo2Required / rawVo2Max);
   const double exertionEff = std::fmin(kMaxExertion, vo2Required / std::fmax(effVo2Max, 0.5));
 
@@ -255,7 +264,9 @@ double Climber::MaxSustainableSpeedMS(const ClimberEnvironment& env, const Climb
   const double sustainable = physiology_.MaxSustainableExertion01();
   const GasExchange g = physiology_.EvaluateGasExchange(pressure, sustainable, false, gear.oxygen, gear.meds);
   const double thermalPerf = 0.4 + 0.6 * SmoothStep(31.0, 35.5, thermal_.State().coreTempC);
-  const double vo2Target = sustainable * g.vo2MaxMlKgMin * energy_.PerformanceMultiplier() * thermalPerf;
+  const double fuelCeiling = energy_.FuelIntensityLimit01() * profile_.physiology.vo2MaxSeaLevelMlKgMin;
+  const double vo2Target =
+      std::fmin(sustainable * g.vo2MaxMlKgMin * energy_.HydrationFatigueMultiplier() * thermalPerf, fuelCeiling);
   const double targetW = vo2Target * mass * kWattsPerMetPerKg / 3.5;
 
   if ((action.activity == Activity::Climbing || action.activity == Activity::Jumaring) && !IsWalkedFixedLine(action)) {
@@ -263,7 +274,10 @@ double Climber::MaxSustainableSpeedMS(const ClimberEnvironment& env, const Climb
     // Technical ascent runs at ~0.2-0.4 m/s along the route; evaluate clothing hobbling there.
     const double budgetW = targetW / ClothingHobblingFactor(gear.clothing, 0.3);
     const double vVert = std::fmax(0.0, budgetW - c.baseW) * c.efficiency / ((mass + slowLoad) * kGravity);
-    return std::fmin(vVert / VerticalFraction(action.gradePercent), 1.0);
+    const double along = vVert / VerticalFraction(std::fabs(action.gradePercent));
+    // Going down, the same budget buys more distance, but careful down-climbing is never fast.
+    if (action.gradePercent < 0.0) return std::fmin(along / kEccentricCostFraction, 0.5);
+    return std::fmin(along, 1.0);
   }
 
   // Walking / trail breaking: largest speed whose Pandolf cost fits the budget. A coarse scan then

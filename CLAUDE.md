@@ -10,6 +10,8 @@ SUMMIT is a realistic high-altitude mountaineering game: an expedition RPG with 
 | `Source/SummitSim/` | **Engine-independent simulation core** (pure C++17) plus a thin UE module wrapper | UBT *and* CMake |
 | `Source/Summit/` | UE gameplay module: characters, components, subsystems, UI glue | UBT only |
 | `Tests/Sim/` | Unit tests for the simulation core | CMake (`ctest`) |
+| `Web/` | Playable browser game: WebGL 2 client plus `bridge/`, the WebAssembly build of the sim core | static files; `Web/bridge/build_wasm.sh` |
+| `Tools/web/` | Exports terrain, satellite colour and the route for the browser game | Python 3.10+ |
 | `Tools/terrain/` | Real-world DEM to UE Landscape heightmap pipeline (Python) | Python 3.10+ |
 | `Tools/data/` | Scripts that build or validate the mountain database | Python 3.10+ |
 | `Data/Mountains/` | Mountain, route and camp database (JSON, source of truth) | n/a |
@@ -33,6 +35,19 @@ cmake --build build -j
 ctest --test-dir build --output-on-failure
 ./build/summit_sim_cli everest   # headless summit-push simulation, prints an hourly log
 ```
+
+## Browser game conventions (`Web`)
+
+- Plain ES modules, no bundler and no runtime dependencies beyond the vendored three.js.
+- The game never re-implements a model in JavaScript. Anything about the body, weather, snowpack,
+  balance or ropes goes through `Web/bridge/SummitBridge.cpp`. Add a field to `IO_FIELDS` there and
+  rebuild; `Web/js/simLayout.js` is generated from that list.
+- After changing `Source/SummitSim`, run `ctest` and then `Web/bridge/build_wasm.sh`, and commit the
+  rebuilt `Web/assets/summit_sim.wasm`.
+- Terrain height must match between `Web/js/terrainData.js` (CPU) and `Web/js/shaders.js` (GPU): the
+  climber stands on what the CPU says and the player sees what the GPU draws.
+- Test in a real browser: `Web/dev/view.html` renders a fixed camera, and `index.html?autostart=push`
+  skips the menu.
 
 ## UE module conventions (`Source/Summit`)
 

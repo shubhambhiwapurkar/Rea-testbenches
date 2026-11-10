@@ -10,7 +10,7 @@ Outputs (Web/assets/):
   <peak>_masks.png       1025^2 RGB = rock, snow, glacier weights (the remainder is scree or soil)
   <peak>_aux.png         1025^2 RGB = sky visibility (ambient occlusion), wind exposure, unused
   <peak>_horizon_N.png   horizon elevation angles for 12 azimuths, three per image, for sun shadows
-  <peak>_minimap.jpg     shaded relief for the in-game map
+  <peak>_minimap.jpg     the in-game map (satellite image if Tools/web/fetch_satellite.py has run)
   <peak>_world.json      metadata, camps snapped onto the terrain, the climbing route, landmarks
 
 Run from the repository root:
@@ -110,15 +110,56 @@ def slope_degrees(dem: Dem) -> np.ndarray:
     return np.degrees(np.arctan(np.hypot(gx, gz)))
 
 
-def export_masks(layer_dir: pathlib.Path, name: str, path: pathlib.Path) -> np.ndarray:
-    channels = []
+def satellite_snow(rgb: np.ndarray) -> np.ndarray:
+    """Snow cover (0..1) from Sentinel-2 surface reflectance. Sunlit snow is simply bright; snow in
+    terrain shadow is dim but distinctly blue, which separates it from rock (neutral to brown).
+    The terrain shader applies the same test per pixel (see satelliteSnow in shaders.js)."""
+    srgb = rgb.astype(np.float32) / 255.0
+    linear = np.where(srgb <= 0.04045, srgb / 12.92, ((srgb + 0.055) / 1.055) ** 2.4)
+    lum = linear @ np.array([0.30, 0.50, 0.20], np.float32)
+    blueness = linear[..., 2] / np.maximum(linear[..., 0], 0.02)
+    smooth = lambda a, b, x: np.clip((x - a) / (b - a), 0, 1) ** 2 * (3 - 2 * np.clip((x - a) / (b - a), 0, 1))
+    shadowed = smooth(1.10, 1.32, blueness) * smooth(0.035, 0.10, lum)
+    return np.maximum(smooth(0.30, 0.50, lum), shadowed)
+
+
+def export_masks(layer_dir: pathlib.Path, name: str, path: pathlib.Path, slope: np.ndarray,
+                 satellite: pathlib.Path | None) -> np.ndarray:
+    channels = {}
     for layer in ("rock", "snow", "glacier"):
         img = np.asarray(Image.open(layer_dir / f"{name}_layer_{layer}.png").convert("L"), np.float32)
         img = ndimage.gaussian_filter(img, 1.2)
-        channels.append(np.clip(resample_grid(img, COARSE_SIZE, order=1), 0, 255))
-    rgb = np.stack(channels, axis=-1).astype(np.uint8)
+        channels[layer] = np.clip(resample_grid(img, COARSE_SIZE, order=1), 0, 255) / 255.0
+    rock, snow, glacier = channels["rock"], channels["snow"], channels["glacier"]
+    if satellite is not None and satellite.exists():
+        # Where snow really lies beats where a slope-and-altitude rule guesses it lies.
+        image = Image.open(satellite).convert("RGB").resize((COARSE_SIZE, COARSE_SIZE), Image.LANCZOS)
+        seen = satellite_snow(np.asarray(image))
+        soil = np.clip(1.0 - rock - snow - glacier, 0.0, 1.0)
+        bare = (1.0 - seen) * (1.0 - glacier)
+        # Ground the rule called snow but the satellite shows bare: rock if steep, scree if not.
+        steep = np.clip((slope - 25.0) / 15.0, 0.0, 1.0)
+        rock_share = np.where(rock + soil > 0.05, rock / np.maximum(rock + soil, 1e-3), steep)
+        rock = bare * rock_share
+        snow = seen * (1.0 - glacier)
+        print(f"  satellite snow cover {seen.mean():.0%} (rule-based layers said {channels['snow'].mean():.0%})")
+    rgb = (np.stack([rock, snow, glacier], axis=-1) * 255.0).astype(np.uint8)
     Image.fromarray(rgb, "RGB").save(path, optimize=True)
     return rgb
+
+
+def load_horizon_maps(out_prefix: pathlib.Path, size: int) -> np.ndarray | None:
+    files = [pathlib.Path(f"{out_prefix}_{i}.png") for i in range(HORIZON_DIRECTIONS // 3)]
+    if not all(f.exists() for f in files):
+        return None
+    result = np.zeros((HORIZON_DIRECTIONS, size, size), np.uint8)
+    for i, f in enumerate(files):
+        rgb = np.asarray(Image.open(f).convert("RGB"))
+        if rgb.shape[0] != size:
+            return None
+        for c in range(3):
+            result[i * 3 + c] = rgb[..., c]
+    return result
 
 
 def horizon_maps(near: Dem, far: Dem, out_prefix: pathlib.Path) -> np.ndarray:
@@ -241,6 +282,7 @@ def main() -> None:
     parser.add_argument("--peak", default="everest")
     parser.add_argument("--route", default="everest__south_col")
     parser.add_argument("--first-camp", default="ebc", help="first camp of the route that lies inside the map")
+    parser.add_argument("--reuse-horizons", action="store_true", help="skip the slow horizon pass if its images exist")
     args = parser.parse_args()
 
     out = ROOT / "Web/assets"
@@ -258,15 +300,21 @@ def main() -> None:
     coarse = resample(near, COARSE_SIZE, smooth_sigma=0.6)
 
     print("masks, horizons, exposure, minimap")
-    masks = export_masks(terrain_out / args.peak / "layers", args.peak, out / f"{args.peak}_masks.png")
-    horizons = horizon_maps(coarse, far, out / f"{args.peak}_horizon")
+    slope = slope_degrees(coarse)
+    satellite = out / f"{args.peak}_satellite.jpg"
+    masks = export_masks(terrain_out / args.peak / "layers", args.peak, out / f"{args.peak}_masks.png", slope, satellite)
+    horizons = load_horizon_maps(out / f"{args.peak}_horizon", COARSE_SIZE) if args.reuse_horizons else None
+    if horizons is None:
+        horizons = horizon_maps(coarse, far, out / f"{args.peak}_horizon")
     export_aux(coarse, horizons, out / f"{args.peak}_aux.png")
-    export_minimap(coarse, masks, out / f"{args.peak}_minimap.jpg")
+    if satellite.exists():
+        Image.open(satellite).convert("RGB").resize((1024, 1024), Image.LANCZOS).save(out / f"{args.peak}_minimap.jpg", quality=86)
+    else:
+        export_minimap(coarse, masks, out / f"{args.peak}_minimap.jpg")
 
     print("camps and route")
     projection = Proj(meta["projection"]["proj4"])
     route = json.loads((ROOT / "Data/Mountains/routes" / f"{args.route}.json").read_text())
-    slope = slope_degrees(coarse)
     ids = [c["id"] for c in route["camps"]]
     in_map = route["camps"][ids.index(args.first_camp):]
     camps, stops = [], []
@@ -373,6 +421,9 @@ def main() -> None:
         "horizon": {"files": [f"{args.peak}_horizon_{i}.png" for i in range(HORIZON_DIRECTIONS // 3)],
                     "size": COARSE_SIZE, "directions": HORIZON_DIRECTIONS, "degrees_per_step": 0.25},
         "minimap": f"{args.peak}_minimap.jpg",
+        "satellite": satellite.name if satellite.exists() else None,
+        "satellite_attribution": (out / f"{args.peak}_satellite.txt").read_text().strip()
+        if (out / f"{args.peak}_satellite.txt").exists() else None,
         "summit": {"x": summit_x, "z": summit_z, "altitude_m": summit_elevation},
         "camps": camps,
         "route": {

@@ -33,7 +33,15 @@ try {
   const env = createEnvironmentUniforms();
   const noise = buildNoiseTexture();
   const low = q.get('q') === 'low';
-  const terrain = new TerrainView(data, env, noise, low ? { quads: 64, finestCellDivisor: 4, detailShading: 0 } : {});
+  let satellite = null;
+  if (world.satellite && !q.has('nosat')) {
+    satellite = await new THREE.TextureLoader().loadAsync(`../assets/${world.satellite}`);
+    satellite.colorSpace = THREE.SRGBColorSpace;
+    satellite.flipY = false;
+    satellite.anisotropy = 8;
+    satellite.needsUpdate = true;
+  }
+  const terrain = new TerrainView(data, env, noise, low ? { quads: 64, finestCellDivisor: 4, detailShading: 0, satellite } : { satellite });
   scene.add(terrain.group);
   const sky = new Sky(env, noise, terrain.shared);
   scene.add(sky.group);

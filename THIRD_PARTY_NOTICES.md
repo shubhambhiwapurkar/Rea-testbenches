@@ -7,3 +7,5 @@
 | Snow, rock, moraine scans | Poly Haven (`snow_02`, `cliff_side`, `aerial_rocks_02`) | CC0 | none required; credit appreciated |
 | Placeholder climber | Unreal Engine template mannequin | Unreal Engine EULA (UE projects only) | n/a |
 | Peak list import (optional) | OpenStreetMap | ODbL | © OpenStreetMap contributors |
+| Satellite colour in the browser game (`Web/assets/everest_satellite.jpg`) | Copernicus Sentinel-2 L2A, scene of 2023-11-23, via the AWS Open Data `sentinel-cogs` bucket | Copernicus Sentinel data terms (free incl. commercial) | Contains modified Copernicus Sentinel data 2023 |
+| three.js (`Web/vendor/`) | https://threejs.org | MIT | Copyright © 2010-2025 three.js authors (`Web/vendor/three.LICENSE`) |

@@ -153,6 +153,9 @@ export class Hud {
       el.textContent = t.toFixed(0);
       el.className = g(fb) >= 1 || t < 5 ? 'bad' : t < 14 ? 'warn' : '';
     }
+    const fatigue = g('FATIGUE');
+    $('v-fatigue').textContent = fatigue > 0.8 ? 'spent' : fatigue > 0.55 ? 'tired' : '';
+    setBar('b-fatigue', fatigue, grade(fatigue, 0.55, 0.8, false));
     const glycogen = g('GLYCOGEN');
     $('v-energy').textContent = `${Math.round(glycogen / 10) * 10} kcal`;
     setBar('b-energy', glycogen / 2000, grade(glycogen, 700, 300));

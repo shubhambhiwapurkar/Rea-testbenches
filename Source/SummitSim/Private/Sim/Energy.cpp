@@ -202,7 +202,10 @@ void EnergySystem::Step(double dtSeconds, const EnergyInputs& in) {
     // Calibrated so a 12 h summit day at ~65 % VO2max ends near 0.8 and an 8 h trekking day at
     // ~50 % near 0.2-0.3.
     double rate = 0.28 * std::pow(std::fmax(0.0, ex - 0.3), 1.5);
-    rate *= (1.0 + glyLow) * (1.0 + 10.0 * dehydrationFrac);
+    // Empty glycogen makes the same work feel harder, but at the low absolute work rates of extreme
+    // altitude fat oxidation still covers most of the demand (see FuelIntensityLimit01), so the
+    // penalty is +50 %, not a doubling.
+    rate *= (1.0 + 0.5 * glyLow) * (1.0 + 10.0 * dehydrationFrac);
     rate += 0.004 * std::fmax(0.0, s.sleepDebtHours - 8.0);
     s.fatigue01 += rate * hours;
     if (ex < 0.3) {
@@ -214,17 +217,24 @@ void EnergySystem::Step(double dtSeconds, const EnergyInputs& in) {
   s.fatigue01 = Clamp01(s.fatigue01);
 }
 
-double EnergySystem::PerformanceMultiplier() const {
-  const EnergyState& s = state_;
-  const double glyFrac = Clamp01(s.glycogenKcal / std::fmax(params_.glycogenCapacityKcal, 1.0));
+double EnergySystem::FuelIntensityLimit01() const {
+  const double glyFrac = Clamp01(state_.glycogenKcal / std::fmax(params_.glycogenCapacityKcal, 1.0));
   // Fat-only metabolism supports roughly 50-60 % of VO2max (Coyle 1986).
-  const double glycogen = 0.55 + 0.45 * SmoothStep(0.0, 0.2, glyFrac);
+  return 0.55 + 0.45 * SmoothStep(0.0, 0.2, glyFrac);
+}
+
+double EnergySystem::HydrationFatigueMultiplier() const {
+  const EnergyState& s = state_;
   // Endurance falls measurably beyond ~2 % body-mass water deficit (Cheuvront & Kenefick 2014).
   const double bodyMass = std::fmax(params_.bodyMassKg - s.bodyMassLostKg, 20.0);
   const double pct = s.hydrationDeficitL / bodyMass;
   const double hydration = 1.0 - Clamp((pct - 0.01) * 8.0, 0.0, 0.7);
   const double fatigue = 1.0 - 0.5 * std::pow(Clamp01(s.fatigue01), 1.5);
-  return Clamp(glycogen * hydration * fatigue, 0.1, 1.0);
+  return Clamp(hydration * fatigue, 0.1, 1.0);
+}
+
+double EnergySystem::PerformanceMultiplier() const {
+  return Clamp(FuelIntensityLimit01() * HydrationFatigueMultiplier(), 0.1, 1.0);
 }
 
 }  // namespace summit::sim

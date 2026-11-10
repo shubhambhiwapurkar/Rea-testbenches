@@ -133,7 +133,7 @@ export class Ui {
     };
     row('Energy gels', stock.gels, st.inv.gels, 'gels', '110 kcal');
     row('Meals', stock.meals, st.inv.meals, 'meals', '650 kcal');
-    row('Oxygen bottles', stock.o2, st.inv.o2.length, 'o2', '4 L, 3.9 kg, ~9 h at 2 L/min');
+    row('Oxygen bottles', stock.o2, st.inv.o2.length, 'o2', '4.2 kg, 9 h at 2 L/min');
     const info = document.createElement('div');
     info.className = 'muted';
     info.style.marginTop = '6px';

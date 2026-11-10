@@ -64,6 +64,15 @@ class SUMMITSIM_API EnergySystem {
   // Multiplier (0..1] on maximal output from glycogen depletion, dehydration and fatigue.
   double PerformanceMultiplier() const;
 
+  // The dehydration and fatigue part of PerformanceMultiplier() alone.
+  double HydrationFatigueMultiplier() const;
+
+  // Highest intensity the current fuel supply supports, as a fraction of SEA-LEVEL VO2max: 1 with
+  // glycogen available, ~0.55 on fat alone (Coyle 1986; fat oxidation tops out near 0.5-1 g/min).
+  // It is an absolute ceiling, not a multiplier on altitude-limited output: above ~7,000 m hypoxia
+  // already holds a climber below it, which is why depleted climbers can still plod to a summit.
+  double FuelIntensityLimit01() const;
+
   // Respiratory water loss (L/h) from humidifying cold, dry air.
   static double RespiratoryWaterLossLPerHour(double minuteVentilationLMin, double ambientTempC,
                                              double relativeHumidity01);

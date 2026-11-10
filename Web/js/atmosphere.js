@@ -96,7 +96,7 @@ export class Atmosphere {
     const m = airMass(el) * pr;
     const tau = [0.058, 0.135, 0.331];
     const above = smooth(-1.6, 0.4, el);
-    const direct = 3.4 * above * (1 - 0.92 * overcast);
+    const direct = 3.0 * above * (1 - 0.92 * overcast);
     u.uSunColor.value.setRGB(
       direct * Math.exp(-(tau[0] + 0.06) * m),
       direct * Math.exp(-(tau[1] + 0.06) * m),
@@ -165,7 +165,7 @@ export class Atmosphere {
 
     // Eye adaptation: open up at night so moonlit snow stays readable.
     const brightness = day * (1 - 0.45 * overcast) + 0.03;
-    const target = mix(5.5, 0.82, Math.pow(Math.min(1, brightness), 0.45));
+    const target = mix(5.5, 0.56, Math.pow(Math.min(1, brightness), 0.45));
     this.exposure += (target - this.exposure) * Math.min(1, dtReal * 1.5);
 
     // In-cloud fog when the camera is inside the valley cloud layer.

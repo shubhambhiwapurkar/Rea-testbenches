@@ -89,7 +89,8 @@ export class Game {
       injury: 0, wetness: 0,
       gear: { suit: mode.suit, crampons: true, goggles: true, poles: false, mask: false, flow: 2, lamp: false,
         aceta: false, dex: false, nife: false, sleepO2: false },
-      inv: { gels: 6, meals: 1, waterL: 1.0, o2: modeId === 'expedition' ? [] : [this.bottleFullL], extraKg: 0 },
+      inv: { gels: modeId === 'roam' ? 20 : 6, meals: 1, waterL: modeId === 'roam' ? 2.0 : 1.0,
+        o2: modeId === 'expedition' ? [] : modeId === 'roam' ? [this.bottleFullL, this.bottleFullL] : [this.bottleFullL], extraKg: 0 },
       stock: campStock(modeId),
       visited: { [mode.camp]: true },
       slide: null, fallenTimer: 0, arrestCooldown: 0,
@@ -114,9 +115,23 @@ export class Game {
     this.sim.tick(0, 0);
   }
 
-  // In free roam the body is not simulated (so nothing can kill you), but weather, daylight and
-  // balance still run.
-  tick(dtSim, dtReal) { this.sim.tick(this.roam ? 0 : dtSim, dtReal); }
+  tick(dtSim, dtReal) { this.sim.tick(dtSim, dtReal); }
+
+  // Free roam: the body is simulated like anywhere else, but dying only costs a message. The sim's
+  // climber cannot be un-killed, so the world is rebuilt at the same moment with a fresh body.
+  reviveBody(cause) {
+    const st = this.state;
+    this.toast(`On a real climb you would now be dead of ${cause}. Free roam gives you a fresh body.`, 'warn');
+    this.sim.init({
+      SEED: st.seed, VO2MAX: 56, BODY_MASS: 75, SKILL_TECH: 0.6, SKILL_ICE: 0.6, SKILL_ROPE: 0.6, AMS_SUSCEPT: 1,
+      ACCLIM_PRESET: 2, LATITUDE: this.world.latitude, TIME: st.time,
+    });
+    st.injury = 0;
+    st.wetness = 0;
+    st.collapsed = false;
+    st.collapses = 0;
+    this.syncCargo();
+  }
 
   save() {
     if (!this.state || this.state.dead) return false;
@@ -312,7 +327,7 @@ export class Game {
         dirX /= l; dirZ /= l;
         wantsMove = true;
       }
-      if (st.move === 'rest' && wantsMove) st.move = 'walk';
+      if (st.move === 'rest' && wantsMove && !this.tooSpentToStand()) { st.move = 'walk'; st.collapsed = false; }
     }
     if (st.move === 'rest') wantsMove = false;
 
@@ -351,6 +366,8 @@ export class Game {
     if (wantsMove) {
       const steep = Math.abs(slopeAlong);
       if (steep > 74) blocked = true;
+      // Clipped to a fixed line going down steep ground: rappel or arm-wrap, which is fast and cheap.
+      else if (st.clipped && grade < -0.3) activity = ACTIVITY.Rappelling;
       else if (steep > maxWalk) { activity = ACTIVITY.Climbing; moveMode = 'climb'; }
       else if (st.clipped && grade > 0.2) activity = ACTIVITY.Jumaring;
       else if (cls.type === TERRAIN.DeepSnow) activity = ACTIVITY.BreakingTrail;
@@ -371,7 +388,7 @@ export class Game {
       if (sim.get('B_STUMBLING') > 0.5) target *= 0.35;
       if (this.bracing) target = Math.min(target, 0.12);
       // A body that cannot sustain any speed can still inch along (and must, to get down).
-      target = Math.max(target, 0.05);
+      target = Math.max(target, 0.015);
     }
     st.speed += (target - st.speed) * Math.min(1, dtReal * 3.5);
     if (!wantsMove && st.speed < 0.05) st.speed = 0;
@@ -478,11 +495,34 @@ export class Game {
     const cause = sim.get('DEAD');
     if (!this.roam) {
       if (cause > 0) this.die(CAUSE_OF_DEATH[cause] ?? 'the mountain');
-      else if (sim.get('INCAPACITATED') > 0.5 && !st.camp) this.die('exhaustion and exposure: you collapsed and could not go on');
       else if (st.injury >= 1) this.die(st.lastInjuryCause ?? 'a fall');
+      else if (sim.get('INCAPACITATED') > 0.5 && !st.camp) this.collapse();
     } else {
+      if (sim.get('INCAPACITATED') > 0.5 && !st.camp && cause <= 0) this.collapse();
       st.injury = Math.min(st.injury, 0.5);
+      if (cause > 0) this.reviveBody(CAUSE_OF_DEATH[cause] ?? 'exposure');
+      else if (sim.get('INCAPACITATED') > 0.5 && !st.camp && sim.get('CORE') < 32.5) this.reviveBody('exhaustion and exposure');
     }
+  }
+
+  // The body gives out: the climber goes down where they stand. Rest can bring them back if they
+  // stay warm enough; if the cold gets into the core first, nobody is coming.
+  collapse() {
+    const st = this.state;
+    const core = this.sim.get('CORE');
+    if (st.move !== 'rest' || !st.collapsed) {
+      st.collapsed = true;
+      st.collapses = (st.collapses ?? 0) + 1;
+      this.stopMarch();
+      this.dropWarp();
+      st.move = 'rest';
+      st.speed = 0;
+      this.onEvent('warning');
+      this.toast('You collapse in the snow, completely spent. Rest, eat and drink, and hope you stay warm.', 'danger');
+    }
+    if (this.roam) return;
+    if (core < 32.5) this.die('exhaustion and exposure: you collapsed and the cold did the rest');
+    else if (st.collapses > 3) this.die('exhaustion: you collapsed and could not get up again');
   }
 
   die(cause) {
@@ -501,7 +541,7 @@ export class Game {
     const st = this.state;
     const sim = this.sim;
     const now = st.time;
-    if (now - st.lastVitalsWarning < 1500 || this.roam) return;
+    if (now - st.lastVitalsWarning < 1500) return;
     let warning = null;
     if (sim.get('HACE') > 0.3) warning = 'Confusion and loss of coordination: this is cerebral edema (HACE). Descend NOW.';
     else if (sim.get('HAPE') > 0.3) warning = 'Breathless at rest with a wet cough: pulmonary edema (HAPE). Descend NOW.';
@@ -509,10 +549,16 @@ export class Game {
     else if (sim.get('FBG_HAND') >= 2 || sim.get('FBG_FOOT') >= 2 || sim.get('FBG_FACE') >= 2) warning = 'Frostbite is setting in. Warm the affected part or descend.';
     else if (sim.get('HAND_T') < 6 || sim.get('FOOT_T') < 6) warning = 'Your fingers and toes are going numb. Frostbite is close.';
     else if (sim.get('AMS') >= 5) warning = 'Severe altitude sickness. Do not go higher; descend if it does not improve.';
+    else if (sim.get('FATIGUE') > 0.8 && !st.camp) warning = 'You are close to collapse. Stop at the next tent, or turn around while you still can.';
     else if (sim.get('DEHYDRATION') > 2.5) warning = 'You are badly dehydrated. Drink.';
     else if (sim.get('GLYCOGEN') < 250) warning = 'You are running on empty. Eat something.';
     else if (st.gear.mask === false && sim.get('SPO2') < 0.5 && st.inv.o2.length) warning = 'Blood oxygen is very low. Put your oxygen mask on (O).';
+    // The same warning is not repeated for three hours of game time: once is a decision to make,
+    // every few minutes is nagging.
+    st.warned ??= {};
+    if (warning && st.warned[warning] !== undefined && now - st.warned[warning] < 3 * 3600) warning = null;
     if (warning) {
+      st.warned[warning] = now;
       st.lastVitalsWarning = now;
       this.toast(warning, 'danger');
       this.onEvent('warning');
@@ -698,6 +744,8 @@ export class Game {
     const st = this.state;
     if (st.marching) { this.stopMarch('You stop.'); return; }
     if (st.move !== 'walk' && st.move !== 'rest' && st.move !== 'climb') return;
+    if (this.tooSpentToStand()) { this.toast('You cannot get up yet.', 'hint'); return; }
+    st.collapsed = false;
     const near = this.route.nearest(st.x, st.z);
     if (near.dist > 25) { this.toast('Get onto the wanded route first (within 25 m of the wands).', 'hint'); return; }
     const target = this.route.nextStop(near.s, upward);
@@ -757,9 +805,12 @@ export class Game {
   toggleRest() {
     const st = this.state;
     if (st.marching) this.stopMarch();
-    if (st.move === 'rest') st.move = 'walk';
+    if (st.move === 'rest' && this.tooSpentToStand()) { this.toast('You cannot get up yet.', 'hint'); return; }
+    if (st.move === 'rest') { st.move = 'walk'; st.collapsed = false; }
     else if (st.move === 'walk' || st.move === 'climb') { st.move = 'rest'; st.speed = 0; }
   }
+
+  tooSpentToStand() { return this.state.collapsed && this.sim.get('INCAPACITATED') > 0.5; }
 
   toggleClip() {
     const st = this.state;
@@ -970,7 +1021,7 @@ export class Game {
   // Objective line for the HUD.
   objective() {
     const st = this.state;
-    if (st.mode === 'roam') return 'Free roam: explore. Keys 1-3 change time speed.';
+    if (st.mode === 'roam') return 'Free roam: explore. Enter a tent to jump between camps or change the time of day.';
     if (st.finished) return 'Expedition complete. You made it back.';
     if (st.summited) return `Summit reached. Now get down alive to ${this.route.camp(MODES[st.mode].goal).short}.`;
     if (st.mode === 'push') return 'Reach the summit (8,849 m) and return to Camp 2.';

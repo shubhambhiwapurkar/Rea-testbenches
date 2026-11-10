@@ -11,6 +11,7 @@ Status key: ✅ done · 🟡 in progress · ⬜ not started
 - ✅ UE5 project and gameplay module written (character, climbing, balance, cargo, weather, expedition, HUD). **Not yet compiled.**
 - ✅ Real-world terrain pipeline (Copernicus DEM → UE Landscape heightmaps plus layer masks); Everest generated
 - ✅ Mountain database: 124 peaks, 17 detailed routes, 21 regional climatologies
+- ✅ **Playable browser build** (`Web/`): Everest South Col on real terrain and satellite colour, with the sim core as WebAssembly. Day and night, weather, altitude, cold, balance, ropes, hazards, camps, time-lapse marching, three modes.
 
 ## Phase 1: First run on a workstation (2-4 weeks)
 
