@@ -6,22 +6,34 @@ import { IO, IO_COUNT } from './simLayout.js';
 const AUX_SIZE = 2048;
 
 export class Sim {
-  static async load(url) {
-    const response = await fetch(url);
-    if (!response.ok) throw new Error(`Could not load the simulation (${response.status})`);
-    const module = await WebAssembly.compile(await response.arrayBuffer());
-    // The core does no I/O, but the C library still imports a few file calls; give them stubs.
-    const imports = {};
-    for (const entry of WebAssembly.Module.imports(module)) {
-      (imports[entry.module] ??= {})[entry.name] = () => 0;
+  // Loads the WebAssembly build; if this page is not allowed to compile WebAssembly (some hosts
+  // forbid it), falls back to the same module translated to plain JavaScript, which is slower but
+  // computes identical results.
+  static async load(url, fallbackUrl) {
+    try {
+      const response = await fetch(url);
+      if (!response.ok) throw new Error(`Could not load the simulation (${response.status})`);
+      const module = await WebAssembly.compile(await response.arrayBuffer());
+      // The core does no I/O, but the C library still imports a few file calls; give them stubs.
+      const imports = {};
+      for (const entry of WebAssembly.Module.imports(module)) {
+        (imports[entry.module] ??= {})[entry.name] = () => 0;
+      }
+      const instance = await WebAssembly.instantiate(module, imports);
+      instance.exports._initialize?.();
+      return new Sim(instance.exports, 'wasm');
+    } catch (error) {
+      if (!fallbackUrl) throw error;
+      console.warn('WebAssembly unavailable, using the JavaScript build of the simulation:', error);
+      const exports = await import(fallbackUrl);
+      exports._initialize?.();
+      return new Sim(exports, 'js');
     }
-    const instance = await WebAssembly.instantiate(module, imports);
-    instance.exports._initialize?.();
-    return new Sim(instance.exports);
   }
 
-  constructor(exports) {
+  constructor(exports, kind = 'wasm') {
     this.x = exports;
+    this.kind = kind;
     if (exports.sim_io_count() !== IO_COUNT) throw new Error('simLayout.js is out of date; rebuild the bridge');
     this.buffer = null;
     this.refreshViews();

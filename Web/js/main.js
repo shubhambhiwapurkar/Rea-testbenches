@@ -41,7 +41,8 @@ async function boot() {
   dummyUi.loading(0.05, 'Loading 400 square kilometres of Himalaya…');
   const [data, sim] = await Promise.all([
     TerrainData.load('assets/', world, (f) => dummyUi.loading(0.05 + 0.75 * f)),
-    Sim.load('assets/summit_sim.wasm'),
+    // ?sim=js forces the plain-JavaScript build of the simulation, for testing the fallback.
+    Sim.load(params.get('sim') === 'js' ? 'assets/unavailable.wasm' : 'assets/summit_sim.wasm', new URL('../assets/summit_sim_fallback.js', import.meta.url).href),
   ]);
   dummyUi.loading(0.85, 'Building the mountain…');
   await new Promise((r) => setTimeout(r, 30));
