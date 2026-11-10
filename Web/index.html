@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SUMMIT: Everest</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<canvas id="view"></canvas>
+<div id="fx-vignette"></div>
+<div id="fx-frost"></div>
+<div id="fx-flash"></div>
+
+<div id="hud" class="hidden">
+  <section class="panel" id="hud-top-left">
+    <div class="altitude"><span id="hud-alt">5,364</span><span class="unit">m</span></div>
+    <div class="sub" id="hud-alt-sub">17,598 ft · 53.4 kPa · 53% of sea-level oxygen</div>
+    <div class="row clock"><span id="hud-clock">19 May 06:30</span><span id="hud-warp" class="chip">×1</span><span id="hud-march" class="chip amber hidden">MARCH</span><span id="hud-rope" class="chip green hidden">CLIPPED</span></div>
+  </section>
+
+  <section class="panel" id="hud-top-right">
+    <div class="weather-grid">
+      <div><label>Air</label><b id="hud-temp">-12°C</b></div>
+      <div><label>Wind</label><b id="hud-wind">8 m/s</b><i id="hud-wind-arrow">↑</i></div>
+      <div><label>Feels like</label><b id="hud-chill">-22°C</b></div>
+      <div><label>Visibility</label><b id="hud-vis">clear</b></div>
+      <div><label>Avalanche</label><b id="hud-danger">2 Moderate</b></div>
+      <div><label>Ground</label><b id="hud-ground">hard snow 12°</b></div>
+    </div>
+  </section>
+
+  <section id="hud-nav">
+    <div id="hud-compass"><div id="hud-compass-strip"></div><div id="hud-compass-target">▼</div><div class="needle"></div></div>
+    <div id="hud-target">Camp 3 · 1.2 km · +756 m</div>
+    <div id="hud-objective"></div>
+  </section>
+
+  <section class="panel" id="hud-vitals">
+    <div class="vital big"><label>SpO₂</label><b id="v-spo2">88%</b><div class="bar"><span id="b-spo2"></span></div></div>
+    <div class="vital"><label>Effort</label><b id="v-effort">42%</b><div class="bar"><span id="b-effort"></span></div></div>
+    <div class="vital"><label>Stamina</label><b id="v-stamina"></b><div class="bar"><span id="b-stamina"></span></div></div>
+    <div class="vital"><label>Core</label><b id="v-core">37.0°C</b><div class="bar"><span id="b-core"></span></div></div>
+    <div class="vital trio"><label>Hands · Feet · Face</label><b><span id="v-hand">30</span> · <span id="v-foot">30</span> · <span id="v-face">31</span> °C</b></div>
+    <div class="vital"><label>Energy</label><b id="v-energy">1,800 kcal</b><div class="bar"><span id="b-energy"></span></div></div>
+    <div class="vital"><label>Hydration</label><b id="v-water">-0.2 L</b><div class="bar"><span id="b-water"></span></div></div>
+    <div class="vital"><label>Oxygen</label><b id="v-o2">off</b><div class="bar"><span id="b-o2"></span></div></div>
+    <div class="vital"><label>Health</label><b id="v-health"></b><div class="bar"><span id="b-health"></span></div></div>
+    <div class="vital small"><label>Pack</label><b id="v-pack">9.2 kg</b><label class="gap">Acclimatized</label><b id="v-acclim">5,400 m</b></div>
+  </section>
+
+  <section id="hud-balance">
+    <svg viewBox="-110 -20 220 80" aria-hidden="true">
+      <path d="M -90 40 A 100 100 0 0 1 90 40" class="arc"/>
+      <path d="M -34 2 A 100 100 0 0 1 34 2" class="arc safe"/>
+      <circle id="bal-dot" cx="0" cy="-6" r="7"/>
+      <path id="bal-lean" d="M0 30 L0 12" class="lean"/>
+    </svg>
+    <div id="bal-label">BALANCE</div>
+  </section>
+
+  <div id="hud-conditions"></div>
+  <div id="prompt" class="hidden"></div>
+  <div id="toasts"></div>
+
+  <section class="panel" id="hud-map"><canvas id="minimap" width="220" height="220"></canvas></section>
+  <div id="hud-keys">WASD move · Mouse look · Q/E lean · Space brace · T march · F tent/rope · R rest · G eat · H drink · O oxygen · Tab help</div>
+</div>
+
+<!-- Start menu -->
+<div id="menu" class="screen">
+  <div class="menu-inner">
+    <h1>SUMMIT</h1>
+    <h2>Everest · South Col route</h2>
+    <p class="lead">A real mountain at real scale. Real altitude, cold, weather and daylight, computed from published science. Carry your load, keep your balance, read the forecast, and decide when to turn around.</p>
+    <div id="loading"><div class="bar"><span id="load-bar"></span></div><div id="load-text">Loading the mountain…</div></div>
+    <div id="mode-list" class="hidden"></div>
+    <div id="menu-foot" class="hidden">
+      <button id="btn-continue" class="ghost hidden">Continue saved climb</button>
+      <label class="check"><input type="checkbox" id="opt-low"> Lower graphics quality</label>
+      <label class="check"><input type="checkbox" id="opt-mute"> Mute sound</label>
+    </div>
+    <p class="credit" id="credit"></p>
+  </div>
+</div>
+
+<!-- Camp -->
+<div id="camp" class="screen hidden">
+  <div class="camp-inner">
+    <header><h2 id="camp-title">Camp 2</h2><div id="camp-sub"></div></header>
+    <div id="camp-progress" class="hidden"><div class="bar"><span id="camp-bar"></span></div><div id="camp-progress-text"></div></div>
+    <div class="camp-grid">
+      <div class="camp-col">
+        <h3>Rest &amp; recover</h3>
+        <div class="buttons" id="camp-actions"></div>
+        <h3>Your body</h3>
+        <div id="camp-body" class="facts"></div>
+      </div>
+      <div class="camp-col">
+        <h3>Supplies <span class="muted">(tent ⇄ pack)</span></h3>
+        <div id="camp-supplies"></div>
+        <h3>Clothing</h3>
+        <div class="buttons" id="camp-gear"></div>
+        <h3>Medication</h3>
+        <div class="buttons" id="camp-meds"></div>
+      </div>
+      <div class="camp-col wide">
+        <h3>Radio: summit forecast <span class="muted" id="camp-forecast-note"></span></h3>
+        <div id="camp-forecast"></div>
+        <div id="camp-roam" class="hidden"><h3>Free roam</h3><div class="buttons" id="camp-roam-buttons"></div></div>
+      </div>
+    </div>
+    <footer><button id="camp-leave" class="primary">Leave the tent</button><button id="camp-save" class="ghost">Save</button><span id="camp-advice"></span></footer>
+  </div>
+</div>
+
+<!-- Help / pause -->
+<div id="help" class="screen hidden">
+  <div class="help-inner">
+    <h2>Controls</h2>
+    <div class="keys">
+      <div><kbd>W A S D</kbd> walk · <kbd>Shift</kbd> push harder · <kbd>Ctrl</kbd> careful steps</div>
+      <div><kbd>Mouse</kbd> look (click the view to capture the pointer) · <kbd>Wheel</kbd> zoom</div>
+      <div><kbd>Q</kbd> <kbd>E</kbd> lean left / right against wind, slope and load · <kbd>Space</kbd> brace (or self-arrest when sliding)</div>
+      <div><kbd>T</kbd> march up the route in time-lapse · <kbd>B</kbd> march down · <kbd>1</kbd>–<kbd>3</kbd> time speed</div>
+      <div><kbd>F</kbd> enter a tent / clip the fixed rope · <kbd>R</kbd> sit and rest</div>
+      <div><kbd>G</kbd> eat a gel · <kbd>H</kbd> drink · <kbd>O</kbd> oxygen mask · <kbd>[</kbd> <kbd>]</kbd> oxygen flow</div>
+      <div><kbd>C</kbd> crampons · <kbd>V</kbd> goggles · <kbd>P</kbd> poles · <kbd>L</kbd> headlamp · <kbd>M</kbd> big map</div>
+      <div><kbd>Tab</kbd> or <kbd>Esc</kbd> this screen</div>
+    </div>
+    <h2>How to stay alive</h2>
+    <ul>
+      <li><b>Follow the wands.</b> The marked route avoids hidden crevasses, and its fixed ropes catch falls.</li>
+      <li><b>Lean into it.</b> A gust, a side slope or a lopsided pack pulls the white dot off centre. Counter it with Q/E or brace.</li>
+      <li><b>Watch SpO₂.</b> Above Camp 3 most climbers need bottled oxygen. A bottle lasts about 9 hours at 2 L/min.</li>
+      <li><b>Mind your hands.</b> Wind chill freezes fingers in under an hour. Stopping makes you colder; so does sweat-soaked clothing.</li>
+      <li><b>Read the forecast.</b> Summit winds above 15 m/s end climbs. Wait in a tent for a window.</li>
+      <li><b>Set a turnaround time.</b> The summit is halfway. Most deaths happen on the way down.</li>
+    </ul>
+    <div class="buttons"><button id="help-close" class="primary">Back to the mountain</button><button id="help-menu" class="ghost">Quit to menu</button></div>
+  </div>
+</div>
+
+<!-- Big map -->
+<div id="bigmap" class="screen hidden"><canvas id="bigmap-canvas" width="900" height="900"></canvas><div class="hint">M or Esc to close</div></div>
+
+<!-- End screens -->
+<div id="end" class="screen hidden">
+  <div class="end-inner">
+    <h1 id="end-title"></h1>
+    <p id="end-text"></p>
+    <div id="end-stats" class="facts"></div>
+    <div class="buttons" id="end-buttons"></div>
+  </div>
+</div>
+
+<div id="fatal" class="hidden"></div>
+<script type="module" src="js/main.js"></script>
+</body>
+</html>

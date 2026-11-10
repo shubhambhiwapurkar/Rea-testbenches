@@ -1,0 +1,76 @@
+<!doctype html>
+<!-- Developer view: renders the world from a fixed camera without the game on top.
+     dev/view.html?x=-5800&z=-1900&up=40&yaw=120&pitch=5&hour=7.5&day=139&cloud=0.3&q=high -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>SUMMIT terrain view</title>
+<style>html,body{margin:0;height:100%;background:#000;overflow:hidden}canvas{display:block}#log{position:fixed;left:8px;top:8px;color:#fff;font:12px monospace;white-space:pre;text-shadow:0 0 3px #000}</style>
+</head>
+<body>
+<div id="log">loading…</div>
+<script type="module">
+import * as THREE from '../vendor/three.module.min.js';
+import { Sim } from '../js/sim.js';
+import { TerrainData } from '../js/terrainData.js';
+import { TerrainView, buildNoiseTexture } from '../js/terrainView.js';
+import { Sky } from '../js/sky.js';
+import { Atmosphere, createEnvironmentUniforms } from '../js/atmosphere.js';
+
+const q = new URLSearchParams(location.search);
+const num = (k, d) => (q.has(k) ? parseFloat(q.get(k)) : d);
+const log = document.getElementById('log');
+try {
+  const world = await (await fetch('../assets/everest_world.json')).json();
+  const data = await TerrainData.load('../assets/', world);
+  const sim = await Sim.load('../assets/summit_sim.wasm');
+  const renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer.setSize(innerWidth, innerHeight);
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  document.body.appendChild(renderer.domElement);
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(num('fov', 55), innerWidth / innerHeight, 1, 200000);
+  const env = createEnvironmentUniforms();
+  const noise = buildNoiseTexture();
+  const low = q.get('q') === 'low';
+  const terrain = new TerrainView(data, env, noise, low ? { quads: 64, finestCellDivisor: 4, detailShading: 0 } : {});
+  scene.add(terrain.group);
+  const sky = new Sky(env, noise, terrain.shared);
+  scene.add(sky.group);
+  const atmosphere = new Atmosphere(env, data.horizonDirections);
+
+  const x = num('x', world.camps[0].x), z = num('z', world.camps[0].z);
+  const ground = data.height(x, z);
+  camera.position.set(x, ground + num('up', 30), z);
+  const yaw = num('yaw', 120) * Math.PI / 180, pitch = num('pitch', 0) * Math.PI / 180;
+  camera.lookAt(x + Math.sin(yaw) * Math.cos(pitch) * 100, camera.position.y + Math.sin(pitch) * 100, z - Math.cos(yaw) * Math.cos(pitch) * 100);
+
+  const day = num('day', 139), hour = num('hour', 9);
+  sim.init({ SEED: num('seed', 7), VO2MAX: 55, BODY_MASS: 75, ACCLIM_PRESET: 2, LATITUDE: world.latitude, TIME: day * 86400 + hour * 3600 });
+  sim.set({ ALT: camera.position.y, EXPOSURE: 1, SUNLIT: 1 });
+  sim.tick(0, 0);
+  const weather = {
+    sunElevDeg: sim.get('SUN_ELEV'), sunAzDeg: sim.get('SUN_AZ'), pressureKPa: sim.get('W_PRESSURE'),
+    cloud: num('cloud', sim.get('W_CLOUD')), storm: num('storm', sim.get('W_STORM')), visibilityM: num('vis', sim.get('W_VIS')),
+    windMS: sim.get('W_WIND'), windFromDeg: sim.get('W_DIR'), snowfallCmH: sim.get('W_SNOW'), dayOfYear: day, hour,
+  };
+  env.uFreshSnow.value = num('fresh', 0);
+  for (let i = 0; i < 60; i++) atmosphere.update(weather, camera.position.y, 0.1);
+  renderer.toneMappingExposure = atmosphere.exposure;
+  sky.update(camera, hour, weather.cloud);
+  terrain.update(camera);
+  const t0 = performance.now();
+  renderer.render(scene, camera);
+  renderer.getContext().finish();
+  log.textContent = `ground ${ground.toFixed(0)} m  sun el ${weather.sunElevDeg.toFixed(1)} az ${weather.sunAzDeg.toFixed(0)}  cloud ${weather.cloud.toFixed(2)}  `
+    + `exposure ${atmosphere.exposure.toFixed(2)}  frame ${(performance.now() - t0).toFixed(0)} ms  levels ${terrain.levels.length}`;
+  if (q.has('nolog')) log.remove();
+  window.__done = true;
+} catch (e) {
+  log.textContent = 'ERROR ' + (e.stack || e);
+  window.__done = true;
+  window.__error = String(e.stack || e);
+}
+</script>
+</body>
+</html>
